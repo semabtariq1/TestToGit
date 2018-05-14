@@ -98,7 +98,7 @@ instalationProc = windows.install.Installation()
 
 if operatingSystem is "Windows":
 
-    # Setting up folder hierarchy
+    # Setting up folder hierarchy..
     print("Setting up folder hierarchy\n")
     print("Following directories are being created ...\n")
     for need in configFile.fullPgsqlVersion:
