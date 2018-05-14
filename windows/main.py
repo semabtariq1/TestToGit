@@ -98,6 +98,17 @@ instalationProc = windows.install.Installation()
 
 if operatingSystem is "Windows":
 
+    # Setting up folder hierarchy
+    print("Setting up folder hierarchy\n")
+    print("Following directories are being created ...\n")
+    for need in configFile.fullPgsqlVersion:
+        directory = pathVariable.rootDirectory + "\\workDir\\" + savedDateTime + "\\"+need+"\\src\\build"
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+            print(directory)
+            time.sleep(3)
+    # Process endds
+
 
     print("Downloading required tools")
 
@@ -108,9 +119,6 @@ if operatingSystem is "Windows":
 
         # Installing Python
         installPython.installPython()
-
-    else:
-        print("Skipping Python")
     # Process completed
 
 
@@ -121,9 +129,6 @@ if operatingSystem is "Windows":
 
         # Installing Perl
         installPerl.silentInstallPerl()
-
-    else:
-        print("Skipping Perl")
     # Process completed
 
 
@@ -134,9 +139,6 @@ if operatingSystem is "Windows":
 
         # Installing openssl
         installOpenssl.installOpenssl()
-
-    else:
-        print("Skipping Openssl")
     # Process completed
 
 
@@ -147,9 +149,6 @@ if operatingSystem is "Windows":
 
         # Installing Zlib
         installZlib.installZlib()
-
-    else:
-        print("Skipping Zlib")
     # Process completed
 
 
@@ -160,88 +159,46 @@ if operatingSystem is "Windows":
 
         # Initializing Diff
         installDiff.installDiff()
-
-    else:
-        print("Skipping Diff")
     # Process completed
 
 
     # Downloading Pgsql code
     if configFile.pgSql == 1:
         pullPgsqlSrc = windows.srcDownloads.pullPgsqlSrc.PullPgsqlSourceCode()
-        pullPgsqlSrc.pullCodeAndUnzip()
+        pullPgsqlSrc.pullCode()
 
         # Installing PGSQL
         installPgsql.unzipPgsqlSrc()
-
-    else:
-        print("Skipping Pgsql source code")
     # Process completed
 
-
-    # Setting up folder hierarchy
-    print("Setting up folder hierarchy\n")
-    print("Following directories are being created ...\n")
-
-    directory = pathVariable.rootDirectory + "\\workDir\\" + savedDateTime + "\\version\\src\\build"
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-        print(directory)
+    # Generating envoirnment files
+    for need in configFile.fullPgsqlVersion:
+        print("Generating envoirnment file for version ...", need)
+        f = open(os.path.dirname(os.path.abspath(__file__))+"\\workDir\\"+savedDateTime+"\\"+need+"\\src\\postgresql-"+need+"\\src\\tools\\msvc\\buildenv.pl", "w+")
+        f.write("$ENV{PATH}=$ENV{PATH} . ';C:\Program Files (x86)\GnuWin32\\bin';")
         time.sleep(3)
-    # Process endds
-
-
-    # Removig setup.exe files from root directory to setup folder
-    # try:
-    #
-    #      print("removing files from root directory to setup folder required files")
-    #      files = ['ActivePerl-5.24.3.2404-MSWin32-x64-404865.exe', 'diffutils-2.8.7-1.exe', 'postgresql-10.3.tar.gz', 'python-3.3.0.amd64.msi',
-    #              'Win32OpenSSL-1_1_0h.exe', 'zlib-1.2.3.exe']
-    #      # Creating setup folder
-    #      directory = pathVariable.rootDirectory + "\\setup"
-    #      if not os.path.exists(directory):
-    #         os.makedirs(directory)
-    #      # Process ends
-    #
-    #      for word in files:
-    #          shutil.move(pathVariable.rootDirectory + "\\" + word, pathVariable.rootDirectory + "\\setup")
-    #          #copy(pathVariable.rootDirectory + "\\" + word, pathVariable.rootDirectory + "\\setup")
-    #      time.sleep(3)
-    #      print("Files copied")
-    #
-    # except:
-    #     print("No file to copy")
-    # Process ends
-
-
-
-    # Generating envoirnment file
-    print("Generating envoirnment file")
-    f = open(pathVariable.pgSqlMsvc+"\\buildenv.pl", "w+")
-    f.write("$ENV{PATH}=$ENV{PATH} . ';C:\Program Files (x86)\GnuWin32\\bin';")
-    time.sleep(3)
-    f.close()
+        f.close()
     # Process ends
 
 
     # Starting build process
-    print("\n\nStarting build process ...")
-    time.sleep(3)
-    buildProc.startBuildProcess()
+    # print("\n\nStarting build process ...")
+    # time.sleep(3)
+    # buildProc.startBuildProcess()
     # Process ends
 
 
     # Start regression
-    print("\n\nStarting regression test ...")
-    time.sleep(3)
-    regressionProc.startRegresstion()
+    # print("\n\nStarting regression test ...")
+    # time.sleep(3)
+    # regressionProc.startRegresstion()
     # Process ends
 
 
     # Start install
-    print("\n\nStarting instalation ...")
-    time.sleep(3)
-    instalationProc.startInstation()
+    # print("\n\nStarting instalation ...")
+    # time.sleep(3)
+    # instalationProc.startInstation()
     # Proces ends
 
 

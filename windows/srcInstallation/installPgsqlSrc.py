@@ -1,8 +1,12 @@
 import tarfile
 import windows.pathVariables
 import windows.currentDateTime
+import windows.configFile
 
 
+# Initiliing configuration file
+configFile = windows.configFile.ConfigFile();
+# Process ends
 
 # Initializing path variable
 pathVariable = windows.pathVariables.PathVarriables()
@@ -16,12 +20,13 @@ savedDateTime = windows.currentDateTime.savedDateTime
 class InstallPgsqlSrc:
     def unzipPgsqlSrc(self):
         # Unzipping PGSQL source code
-        print("\nUnzipping the file...")
-        fname = pathVariable.rootDirectory + "\\postgresql-10.3.tar.gz"
-        tar = tarfile.open(fname, "r:gz")
-        tempPathToExtract = pathVariable.rootDirectory + "\\workDir\\"+savedDateTime+"\\version\\src"
-        tar.extractall(
-            path=tempPathToExtract)
-        tar.close()
-        print("\nUnzipping completed")
+        for need in configFile.fullPgsqlVersion:
+            print("\nUnzipping the version ...", need)
+            fname = pathVariable.rootDirectory + "\\postgresql-"+need+".tar.gz"
+            tar = tarfile.open(fname, "r:gz")
+            tempPathToExtract = pathVariable.rootDirectory + "\\workDir\\"+savedDateTime+"\\"+need+"\\src"
+            tar.extractall(
+                path=tempPathToExtract)
+            tar.close()
+            print("\nUnzipping completed")
         # Process completed

@@ -2,7 +2,8 @@
 
 class ConfigFile:
 
-    pgSql = 0;
+    pgSql = 1;
+    fullPgsqlVersion = ["10.4", "9.6.9", "10.0"]
 
     perl = 0;
 
