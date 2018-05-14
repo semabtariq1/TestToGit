@@ -98,7 +98,7 @@ instalationProc = windows.install.Installation()
 
 if operatingSystem is "Windows":
 
-    # Setting up folder hierarchy..
+    # # Setting up folder hierarchy..
     print("Setting up folder hierarchy\n")
     print("Following directories are being created ...\n")
     for need in configFile.fullPgsqlVersion:
@@ -110,7 +110,7 @@ if operatingSystem is "Windows":
     # Process endds
 
 
-    print("Downloading required tools")
+
 
     # Downloading Python
     if configFile.python == 1:
@@ -181,25 +181,24 @@ if operatingSystem is "Windows":
     # Process ends
 
 
-    # Starting build process
-    # print("\n\nStarting build process ...")
-    # time.sleep(3)
-    # buildProc.startBuildProcess()
+    # Build + Regression + installation
+    for need in configFile.fullPgsqlVersion:
+        print("Build + Regression + Installation for version ... ", need)
+        print("\n\nStarting build process ...")
+        time.sleep(3)
+        buildProc.startBuildProcess(need)
+        print("Build process completed")
+
+        print("\n\nStarting regression test ...")
+        time.sleep(3)
+        regressionProc.startRegresstion(need)
+        print("Regression process completed")
+
+        print("\n\nStarting instalation ...")
+        time.sleep(3)
+        instalationProc.startInstation(need)
+        print("Installation process completed")
     # Process ends
-
-
-    # Start regression
-    # print("\n\nStarting regression test ...")
-    # time.sleep(3)
-    # regressionProc.startRegresstion()
-    # Process ends
-
-
-    # Start install
-    # print("\n\nStarting instalation ...")
-    # time.sleep(3)
-    # instalationProc.startInstation()
-    # Proces ends
 
 
     # Finall message

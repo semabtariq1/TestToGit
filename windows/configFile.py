@@ -2,15 +2,15 @@
 
 class ConfigFile:
 
-    pgSql = 1;
-    fullPgsqlVersion = ["10.4", "9.6.9", "10.0"]
+    pgSql = 1
+    fullPgsqlVersion = ["10.4"]
 
-    perl = 0;
+    perl = 0
 
-    deff = 0;
+    deff = 0
 
-    zlib = 0;
+    zlib = 0
 
-    openssl = 0;
+    openssl = 0
 
-    python = 0;
+    python = 0

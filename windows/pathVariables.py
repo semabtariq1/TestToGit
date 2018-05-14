@@ -21,10 +21,10 @@ class PathVarriables:
     windowsCmd = 'C:\\Windows\\system32\\cmd.exe'
     rootDirectory = os.path.dirname(os.path.abspath(__file__))
     pgSqlMsvc = os.path.dirname(os.path.abspath(__file__))+"\\workDir\\"+savedDateTime+"\\version\\src\\postgresql-10.3\\src\\tools\\msvc"
-
+    pgsqlCode = os.path.dirname(os.path.abspath(__file__)) + "\\workDir\\"+savedDateTime
 
     build = "build"
     regression = "vcregress check"
-    install = 'install "'+ rootDirectory+'\\workDir\\' + savedDateTime + '\\version\\src\\build"'
+    install = 'install "'+ rootDirectory+'\\workDir\\abc'
 
 
