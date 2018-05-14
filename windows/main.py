@@ -105,6 +105,10 @@ if operatingSystem is "Windows":
     if configFile.python == 1:
         pullPython = windows.srcDownloads.pullPython.PullPython()
         pullPython.PullPython()
+
+        # Installing Python
+        installPython.installPython()
+
     else:
         print("Skipping Python")
     # Process completed
@@ -114,6 +118,10 @@ if operatingSystem is "Windows":
     if configFile.perl == 1:
         pullPerl = windows.srcDownloads.pullPerl.PullPerl()
         pullPerl.pullPerl()
+
+        # Installing Perl
+        installPerl.silentInstallPerl()
+
     else:
         print("Skipping Perl")
     # Process completed
@@ -123,6 +131,10 @@ if operatingSystem is "Windows":
     if configFile.openssl == 1:
         pullOpenssl = windows.srcDownloads.pullOpenssl.PullOpenSsl()
         pullOpenssl.PullOpenSsl()
+
+        # Installing openssl
+        installOpenssl.installOpenssl()
+
     else:
         print("Skipping Openssl")
     # Process completed
@@ -132,6 +144,10 @@ if operatingSystem is "Windows":
     if configFile.zlib == 1:
         pullZlib = windows.srcDownloads.pullZlib.PullZlib()
         pullZlib.PullZlib()
+
+        # Installing Zlib
+        installZlib.installZlib()
+
     else:
         print("Skipping Zlib")
     # Process completed
@@ -141,6 +157,10 @@ if operatingSystem is "Windows":
     if configFile.deff == 1:
         pullDiff = windows.srcDownloads.pullDiff.PullDiff()
         pullDiff.pullDiff()
+
+        # Initializing Diff
+        installDiff.installDiff()
+
     else:
         print("Skipping Diff")
     # Process completed
@@ -150,6 +170,10 @@ if operatingSystem is "Windows":
     if configFile.pgSql == 1:
         pullPgsqlSrc = windows.srcDownloads.pullPgsqlSrc.PullPgsqlSourceCode()
         pullPgsqlSrc.pullCodeAndUnzip()
+
+        # Installing PGSQL
+        installPgsql.unzipPgsqlSrc()
+
     else:
         print("Skipping Pgsql source code")
     # Process completed
@@ -165,31 +189,6 @@ if operatingSystem is "Windows":
         print(directory)
         time.sleep(3)
     # Process endds
-
-
-    # Installation
-
-    # Installing PGSQL
-    #installPgsql.unzipPgsqlSrc()
-
-    #Installing Perl
-    #installPerl.silentInstallPerl()
-
-    # Initializing Diff
-    #installDiff.installDiff()
-
-    # Installing Zlib
-    #installZlib.installZlib()
-    # Process ends
-
-    # Installing Python
-    #installPython.installPython()
-    # Process ends
-
-    # Installing openssl
-    #installOpenssl.installOpenssl()
-
-    # Process ends
 
 
     # Removig setup.exe files from root directory to setup folder
@@ -214,36 +213,35 @@ if operatingSystem is "Windows":
     #     print("No file to copy")
     # Process ends
 
-    # Start build
 
 
     # Generating envoirnment file
-    # print("Generating envoirnment file")
-    # f = open(pathVariable.pgSqlMsvc+"\\buildenv.pl", "w+")
-    # f.write("$ENV{PATH}=$ENV{PATH} . ';C:\Program Files (x86)\GnuWin32\\bin';")
-    # time.sleep(3)
-    # f.close()
+    print("Generating envoirnment file")
+    f = open(pathVariable.pgSqlMsvc+"\\buildenv.pl", "w+")
+    f.write("$ENV{PATH}=$ENV{PATH} . ';C:\Program Files (x86)\GnuWin32\\bin';")
+    time.sleep(3)
+    f.close()
     # Process ends
 
 
     # Starting build process
-    # print("\n\nStarting build process ...")
-    # time.sleep(3)
-    # buildProc.startBuildProcess()
+    print("\n\nStarting build process ...")
+    time.sleep(3)
+    buildProc.startBuildProcess()
     # Process ends
 
 
     # Start regression
-    # print("\n\nStarting regression test ...")
-    # time.sleep(3)
-    # regressionProc.startRegresstion()
+    print("\n\nStarting regression test ...")
+    time.sleep(3)
+    regressionProc.startRegresstion()
     # Process ends
 
 
     # Start install
-    # print("\n\nStarting instalation ...")
-    # time.sleep(3)
-    # instalationProc.startInstation()
+    print("\n\nStarting instalation ...")
+    time.sleep(3)
+    instalationProc.startInstation()
     # Proces ends
 
 
