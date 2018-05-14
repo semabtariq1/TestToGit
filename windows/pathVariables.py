@@ -25,6 +25,6 @@ class PathVarriables:
 
     build = "build"
     regression = "vcregress check"
-    install = 'install "'+ rootDirectory+'\\workDir\\abc'
+    install = 'install "'+ rootDirectory+'\\workDir\\'+savedDateTime
 
 

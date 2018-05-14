@@ -4,7 +4,7 @@ import windows.pathVariables
 
 
 # Initializing path variable file
-pathvariable = windows.pathVariables.PathVarriables;
+pathvariable = windows.pathVariables.PathVarriables
 # Process ends
 
 
