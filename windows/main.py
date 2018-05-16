@@ -24,7 +24,6 @@ import windows.build
 import windows.regression
 import windows.install
 
-import shutil
 import platform
 import os
 import time
@@ -102,11 +101,23 @@ if operatingSystem is "Windows":
     print("Setting up folder hierarchy\n")
     print("Following directories are being created ...\n")
     for version in configFile.decoded['v']:
-        directory = pathVariable.rootDirectory + "\\workDir\\"+savedDateTime+"\\"+version['fullVersion']+"\\src\\build"
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-            print(directory)
+        rootPathSrc = pathVariable.rootDirectory + "\\workDir\\"+savedDateTime+"\\"+version['fullVersion']+"\\src"
+        rootPathBuild = pathVariable.rootDirectory + "\\workDir\\" + savedDateTime + "\\" + version['fullVersion']+"\\build\\"+version['majorVersion']
+        installationLogs = pathVariable.rootDirectory+ "\\workDir\\"+savedDateTime+"\\"+version['fullVersion']+"\\logs"
+        if not os.path.exists(rootPathSrc):
+            os.makedirs(rootPathSrc)
+            print(rootPathSrc)
             time.sleep(3)
+        # Setting build folder
+        if not os.path.exists(rootPathBuild):
+            os.makedirs(rootPathBuild)
+            print(rootPathBuild)
+            time.sleep(3)
+    # Setting log directory
+    if not os.path.exists(installationLogs):
+        os.makedirs(installationLogs)
+        print(installationLogs)
+        time.sleep(3)
     # Process endds
 
 
@@ -184,20 +195,20 @@ if operatingSystem is "Windows":
     # Build + Regression + installation
     for version in configFile.decoded['v']:
         print("Build + Regression + Installation for version ... ", version['fullVersion'])
-        print("\n\nStarting build process ...")
-        time.sleep(3)
-        buildProc.startBuildProcess(version['fullVersion'])
-        print("Build process completed")
+        print("\n\nRunning build ...")
 
-        print("\n\nStarting regression test ...")
+        buildProc.startBuildProcess(version['fullVersion'])
+
+
+        print("\n\nRunning regression ...")
         time.sleep(3)
         regressionProc.startRegresstion(version['fullVersion'])
-        print("Regression process completed")
 
-        print("\n\nStarting instalation ...")
+
+        print("\n\nRunning instalation ...")
         time.sleep(3)
-        instalationProc.startInstation(version['fullVersion'])
-        print("Installation process completed")
+        instalationProc.startInstation(version['fullVersion'], version['majorVersion'])
+
     # Process ends
 
 

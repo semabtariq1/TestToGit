@@ -9,9 +9,13 @@ pathvariable = windows.pathVariables.PathVarriables
 
 
 class Installation:
-    def startInstation(self, need):
-        # path = pathvariable.windowsCmd + ' /c ' + '""' + pathvariable.vsCommandPrompt64 + '" & cd ' + pathvariable.pgSqlMsvc + ' &  ' + pathvariable.install + '"'
-        # os.system(path)
+    def startInstation(self, need, majorVersion):
+        #Works fine without hiding anything
+        #installationTaskok = pathvariable.windowsCmd + ' /c ' + '""' + pathvariable.vsCommandPrompt64 + '" & cd ' + pathvariable.pgsqlCode + '\\' + need + '\\src\\postgresql-' + need + '\\src\\tools\\msvc' ' &  ' + pathvariable.install + '\\' + need + '\\build\\'+ majorVersion+ '"'
+        # os.system(installationTask)
 
-        installationTask = pathvariable.windowsCmd + ' /c ' + '""' + pathvariable.vsCommandPrompt64 + '" & cd ' + pathvariable.pgsqlCode + '\\' + need + '\\src\\postgresql-' + need + '\\src\\tools\\msvc' ' &  ' + pathvariable.install +'\\'+need+'\\src\\build'+ '"'
+        installationTask = pathvariable.windowsCmd + ' /c ' + '""' + pathvariable.vsCommandPrompt64 + '" & cd ' + pathvariable.pgsqlCode + '\\' + need + '\\src\\postgresql-' + need + '\\src\\tools\\msvc' ' &  ' + pathvariable.install + '\\' + need + '\\build\\' +\
+                           majorVersion + '" > "'+pathvariable.pgsqlCode+"\\"+need+'\\logs\install.log""'
         os.system(installationTask)
+        #print(installationTask)
+        #print(installationTaskok)

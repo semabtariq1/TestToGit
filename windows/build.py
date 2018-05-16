@@ -11,11 +11,18 @@ pathvariable = windows.pathVariables.PathVarriables;
 class Building:
 
     def startBuildProcess(self, need):
-        buildTask = pathvariable.windowsCmd + ' /c ' + '""' + pathvariable.vsCommandPrompt64 + '" & cd ' + pathvariable.pgsqlCode + '\\'+need+ '\\src\\postgresql-'+need+'\\src\\tools\\msvc' ' &  ' + pathvariable.build + '"'
-        os.system(buildTask)
-
-        #buildTask = pathvariable.windowsCmd + ' /c echo semab & echo tariq"'
-        # buildTask = pathvariable.windowsCmd + ' /c ' + '""' + pathvariable.vsCommandPrompt64 + '" & cd ' + pathvariable.pgsqlCode + '\\'+need+ '\\src\\postgresql-'+need+'\\src\\tools\\msvc' ' &  echo hello"'
-        #
+        # correct
+        # buildTask = pathvariable.windowsCmd + ' /c ' + '""' + pathvariable.vsCommandPrompt64 + '" & cd ' + pathvariable.pgsqlCode + '\\'+need+ '\\src\\postgresql-'+need+'\\src\\tools\\msvc' ' &  ' + pathvariable.build + '"'
         # os.system(buildTask)
+        # correct ends
+
+
+        # Build output not showing now
+        #buildTask = pathvariable.windowsCmd + ' /c ' + '""' + pathvariable.vsCommandPrompt64 + '" & cd ' + pathvariable.pgsqlCode + '\\' + need + '\\src\\postgresql-' + need + '\\src\\tools\\msvc  &  ' + pathvariable.build + ' > "' + pathvariable.pgsqlCode + '\\' + need + '\\logs\\build.log" 2>&1"'
+        # os.system(buildTask)
+
+
+        buildTask = pathvariable.windowsCmd + ' /c ' + '""' + pathvariable.vsCommandPrompt64 + '" & cd ' + pathvariable.pgsqlCode + '\\' + need + '\\src\\postgresql-' + need + '\\src\\tools\\msvc  &  ' + pathvariable.build + ' > "' + pathvariable.pgsqlCode + '\\' + need + '\\logs\\build.log" 2>&1"'
+
+        os.system(buildTask)
         #print(buildTask)
