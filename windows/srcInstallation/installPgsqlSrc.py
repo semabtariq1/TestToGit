@@ -20,11 +20,11 @@ savedDateTime = windows.currentDateTime.savedDateTime
 class InstallPgsqlSrc:
     def unzipPgsqlSrc(self):
         # Unzipping PGSQL source code
-        for need in configFile.fullPgsqlVersion:
-            print("\nUnzipping the version ...", need)
-            fname = pathVariable.rootDirectory + "\\postgresql-"+need+".tar.gz"
+        for version in configFile.decoded['v']:
+            print("\nUnzipping the version ...", version['fullVersion'])
+            fname = pathVariable.rootDirectory + "\\postgresql-"+version['fullVersion']+".tar.gz"
             tar = tarfile.open(fname, "r:gz")
-            tempPathToExtract = pathVariable.rootDirectory + "\\workDir\\"+savedDateTime+"\\"+need+"\\src"
+            tempPathToExtract = pathVariable.rootDirectory + "\\workDir\\"+savedDateTime+"\\"+version['fullVersion']+"\\src"
             tar.extractall(
                 path=tempPathToExtract)
             tar.close()

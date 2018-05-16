@@ -1,16 +1,19 @@
 # 1 for needed 0 for not needed
+import json
 
 class ConfigFile:
 
     pgSql = 1
-    fullPgsqlVersion = ["10.4", "10.3"] #pg
 
-    perl = 1
+    pgVersions = '{"v": [{"fullVersion": "10.4", "majorVersion": "10", "minerVersion" : "4"}, {"fullVersion": "9.6.9", "majorVersion": "9.6", "minerVersion" : "9"} ] }'
+    decoded = json.loads(pgVersions)
 
-    deff = 1
+    perl = 0
 
-    zlib = 1
+    deff = 0
 
-    openssl = 1
+    zlib = 0
 
-    python = 1
+    openssl = 0
+
+    python = 0

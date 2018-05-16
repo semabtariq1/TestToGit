@@ -101,8 +101,8 @@ if operatingSystem is "Windows":
     # # Setting up folder hierarchy..
     print("Setting up folder hierarchy\n")
     print("Following directories are being created ...\n")
-    for need in configFile.fullPgsqlVersion:
-        directory = pathVariable.rootDirectory + "\\workDir\\"+savedDateTime+"\\"+need+"\\src\\build"
+    for version in configFile.decoded['v']:
+        directory = pathVariable.rootDirectory + "\\workDir\\"+savedDateTime+"\\"+version['fullVersion']+"\\src\\build"
         if not os.path.exists(directory):
             os.makedirs(directory)
             print(directory)
@@ -172,9 +172,9 @@ if operatingSystem is "Windows":
     # Process completed
 
     # Generating envoirnment files
-    for need in configFile.fullPgsqlVersion:
-        print("Generating envoirnment file for version ...", need)
-        f = open(os.path.dirname(os.path.abspath(__file__))+"\\workDir\\"+savedDateTime+"\\"+need+"\\src\\postgresql-"+need+"\\src\\tools\\msvc\\buildenv.pl", "w+")
+    for version in configFile.decoded['v']:
+        print("Generating envoirnment file for version ...", version['fullVersion'])
+        f = open(os.path.dirname(os.path.abspath(__file__))+"\\workDir\\"+savedDateTime+"\\"+version['fullVersion']+"\\src\\postgresql-"+version['fullVersion']+"\\src\\tools\\msvc\\buildenv.pl", "w+")
         f.write("$ENV{PATH}=$ENV{PATH} . ';C:\Program Files (x86)\GnuWin32\\bin';")
         time.sleep(3)
         f.close()
@@ -182,21 +182,21 @@ if operatingSystem is "Windows":
 
 
     # Build + Regression + installation
-    for need in configFile.fullPgsqlVersion:
-        print("Build + Regression + Installation for version ... ", need)
+    for version in configFile.decoded['v']:
+        print("Build + Regression + Installation for version ... ", version['fullVersion'])
         print("\n\nStarting build process ...")
         time.sleep(3)
-        buildProc.startBuildProcess(need)
+        buildProc.startBuildProcess(version['fullVersion'])
         print("Build process completed")
 
         print("\n\nStarting regression test ...")
         time.sleep(3)
-        regressionProc.startRegresstion(need)
+        regressionProc.startRegresstion(version['fullVersion'])
         print("Regression process completed")
 
         print("\n\nStarting instalation ...")
         time.sleep(3)
-        instalationProc.startInstation(need)
+        instalationProc.startInstation(version['fullVersion'])
         print("Installation process completed")
     # Process ends
 

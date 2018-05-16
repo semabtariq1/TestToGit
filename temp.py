@@ -20,16 +20,29 @@
     #     print("No file to copy")
     # Process ends
 import json
+#
+# json_input = '{"persons": [{"name": "Brian", "city": "Seattle"}, {"name": "David", "city": "Amsterdam"} ] }'
+#
+# try:
+#     decoded = json.loads(json_input)
+#
+#     # Access data
+#     for x in decoded['persons']:
+#         print(x['name'])
+#
+# except (ValueError, KeyError, TypeError):
+#     print
+#     "JSON format error"
 
-json_input = '{"persons": [{"name": "Brian", "city": "Seattle"}, {"name": "David", "city": "Amsterdam"} ] }'
 
-try:
-    decoded = json.loads(json_input)
+class temp:
 
-    # Access data
-    for x in decoded['persons']:
-        print(x['name'])
+        pgVersions = '{"v": [{"fullVersion": "10.4", "majorVersion": "10", "minerVersion" : "4"}, {"fullVersion": "9.6.9", "majorVersion": "9.6", "minerVersion" : "9"} ] }'
+        try:
+            decoded = json.loads(pgVersions)
 
-except (ValueError, KeyError, TypeError):
-    print
-    "JSON format error"
+
+
+        except (ValueError, KeyError, TypeError):
+            print
+            "JSON format error"

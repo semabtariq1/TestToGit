@@ -17,10 +17,10 @@ class PullPgsqlSourceCode:
     def pullCode(self):
         # pre download steps
 
-        for need in configFile.fullPgsqlVersion:
-            print("Downloading PGSQL source code for ", need);
-            link = "https://ftp.postgresql.org/pub/source/v"+need+"/postgresql-"+need+".tar.gz"
-            file_name = "postgresql-"+need+".tar.gz"
+        for version in configFile.decoded['v']:
+            print("Downloading PGSQL source code for ", version['fullVersion']);
+            link = "https://ftp.postgresql.org/pub/source/v"+version['fullVersion']+"/postgresql-"+version['fullVersion']+".tar.gz"
+            file_name = "postgresql-"+version['fullVersion']+".tar.gz"
             with open(file_name, "wb") as f:
                 print
                 "Downloading %s" % file_name
