@@ -3,7 +3,7 @@ import json
 
 class ConfigFile:
 
-    pgSql = 1
+    pgSql = 1;
 
     pgVersions = '{"v": [{"fullVersion": "10.4", "majorVersion": "10", "minerVersion" : "4"} ] }'
     decoded = json.loads(pgVersions)
