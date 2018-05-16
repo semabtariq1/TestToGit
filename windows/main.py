@@ -102,7 +102,7 @@ if operatingSystem is "Windows":
     print("Setting up folder hierarchy\n")
     print("Following directories are being created ...\n")
     for need in configFile.fullPgsqlVersion:
-        directory = pathVariable.rootDirectory + "\\workDir\\" + savedDateTime + "\\"+need+"\\src\\build"
+        directory = pathVariable.rootDirectory + "\\workDir\\"+savedDateTime+"\\"+need+"\\src\\build"
         if not os.path.exists(directory):
             os.makedirs(directory)
             print(directory)
@@ -145,7 +145,7 @@ if operatingSystem is "Windows":
     # Downloading Zlib
     if configFile.zlib == 1:
         pullZlib = windows.srcDownloads.pullZlib.PullZlib()
-        pullZlib.PullZlib()
+        pullZlib.pullZlib()
 
         # Installing Zlib
         installZlib.installZlib()

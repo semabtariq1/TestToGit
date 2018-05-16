@@ -11,7 +11,7 @@ class InstallPython:
     def installPython(self):
         print("Installing Python")
         # installing python
-        path = "start /B start cmd.exe @cmd /k cd "+pathVariables.rootDirectory
+        path = pathVariables.windowsCmd+" /c cd "+pathVariables.rootDirectory
         command = ' && python-3.3.0.amd64.msi /qn'
         os.system(path+command)
         print("Python installed")

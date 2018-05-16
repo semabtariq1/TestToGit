@@ -3,14 +3,14 @@
 class ConfigFile:
 
     pgSql = 1
-    fullPgsqlVersion = ["10.4"]
+    fullPgsqlVersion = ["10.4", "10.3"] #pg
 
-    perl = 0
+    perl = 1
 
-    deff = 0
+    deff = 1
 
-    zlib = 0
+    zlib = 1
 
-    openssl = 0
+    openssl = 1
 
-    python = 0
+    python = 1

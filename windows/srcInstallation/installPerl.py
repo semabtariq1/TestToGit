@@ -11,7 +11,7 @@ pathVariables = windows.pathVariables.PathVarriables()
 class InstallPerl:
     def silentInstallPerl(self):
         print("Installing perl")
-        path = "start /B start cmd.exe @cmd /k cd " + pathVariables.rootDirectory
+        path = pathVariables.windowsCmd+" /c cd " + pathVariables.rootDirectory
         command = ' && ActivePerl-5.24.3.2404-MSWin32-x64-404865.exe /qn+ APPDIR="C:\\apps\Perl" ^ /L*v ./install.log'
         os.system(path + command)
         print("Perl installed")

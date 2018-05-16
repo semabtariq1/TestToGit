@@ -11,7 +11,7 @@ class InstallOpenssl:
     def installOpenssl(self):
         # Installing Openssl
         print("Installing Openssl")
-        path = "start /B start cmd.exe @cmd /c cd "+pathVariables.rootDirectory
+        path = pathVariables.windowsCmd+" /c cd "+pathVariables.rootDirectory
         command = ' && Win32OpenSSL-1_1_0h.exe /SILENT, /VERYSILENT'
         os.system(path+command)
         print("Openssl installed")
