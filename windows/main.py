@@ -4,12 +4,7 @@
 import windows.configFile
 import windows.pathVariables
 
-import windows.srcDownloads.pullPgsqlSrc
-import windows.srcDownloads.pullPython
-import windows.srcDownloads.pullPerl
-import windows.srcDownloads.pullDiff
-import windows.srcDownloads.pullOpenssl
-import windows.srcDownloads.pullZlib
+import windows.srcDownloads.downloadFile
 
 import windows.srcInstallation.installPgsqlSrc
 import windows.srcInstallation.installPerl
@@ -124,90 +119,103 @@ if operatingSystem is "Windows":
 
 
     # Downloading Python
-    if configFile.python == 1:
-        pullPython = windows.srcDownloads.pullPython.PullPython()
-        pullPython.PullPython()
+    if configFile.python[0] == "1":
+        downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
+        downloadFile.downloadFile(configFile.python[1], configFile.python[2])
 
-        # Installing Python
-        installPython.installPython()
+        # # Installing Python
+        # installPython.installPython()
     # Process completed
 
 
     # Downloading Perl
-    if configFile.perl == 1:
-        pullPerl = windows.srcDownloads.pullPerl.PullPerl()
-        pullPerl.pullPerl()
+    if configFile.perl[0] == "1":
+        downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
+        downloadFile.downloadFile(configFile.perl[1], configFile.perl[2])
+
+
 
         # Installing Perl
-        installPerl.silentInstallPerl()
+        #installPerl.silentInstallPerl()
     # Process completed
 
 
     # Downloading Openssl
-    if configFile.openssl == 1:
-        pullOpenssl = windows.srcDownloads.pullOpenssl.PullOpenSsl()
-        pullOpenssl.PullOpenSsl()
+    if configFile.openssl[0] == "1":
+        downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
+        downloadFile.downloadFile(configFile.openssl[1], configFile.openssl[2])
+
+
 
         # Installing openssl
-        installOpenssl.installOpenssl()
+        #installOpenssl.installOpenssl()
     # Process completed
 
 
     # Downloading Zlib
-    if configFile.zlib == 1:
-        pullZlib = windows.srcDownloads.pullZlib.PullZlib()
-        pullZlib.pullZlib()
+    if configFile.zlib[0] == "1":
+        downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
+        downloadFile.downloadFile(configFile.zlib[1], configFile.zlib[2])
+
+
 
         # Installing Zlib
-        installZlib.installZlib()
+        #installZlib.installZlib()
     # Process completed
 
 
     # Downloading Diff
-    if configFile.deff == 1:
-        pullDiff = windows.srcDownloads.pullDiff.PullDiff()
-        pullDiff.pullDiff()
+    if configFile.diff[0] == "1":
+        downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
+        downloadFile.downloadFile(configFile.diff[1], configFile.diff[2])
+
+
 
         # Initializing Diff
-        installDiff.installDiff()
+        #installDiff.installDiff()
     # Process completed
 
 
     # Downloading Pgsql code
     if configFile.pgSql == 1:
-        pullPgsqlSrc = windows.srcDownloads.pullPgsqlSrc.PullPgsqlSourceCode()
-        pullPgsqlSrc.pullCode()
+        downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
+        for version in configFile.decoded['v']:
+            link = "https://ftp.postgresql.org/pub/source/v" + version['fullVersion'] + "/postgresql-" + version[
+                'fullVersion'] + ".tar.gz"
+            downloadFile.downloadFile(link, "postgres-"+version['fullVersion']+".tar.gz")
+            #installPgsql.unzipPgsqlSrc()
 
-        # Installing PGSQL
-        installPgsql.unzipPgsqlSrc()
-    # Process completed
+
+
+
+
 
     # Generating envoirnment files
-    for version in configFile.decoded['v']:
-        print("Generating envoirnment file for version ...", version['fullVersion'])
-        f = open(os.path.dirname(os.path.abspath(__file__))+"\\workDir\\"+savedDateTime+"\\"+version['fullVersion']+"\\src\\postgresql-"+version['fullVersion']+"\\src\\tools\\msvc\\buildenv.pl", "w+")
-        f.write("$ENV{PATH}=$ENV{PATH} . ';C:\Program Files (x86)\GnuWin32\\bin';")
-        time.sleep(3)
-        f.close()
+    # for version in configFile.decoded['v']:
+    #     print("Generating envoirnment file for version ...", version['fullVersion'])
+    #     f = open(os.path.dirname(os.path.abspath(__file__))+"\\workDir\\"+savedDateTime+"\\"+version['fullVersion']+"\\src\\postgresql-"+version['fullVersion']+"\\src\\tools\\msvc\\buildenv.pl", "w+")
+    #     f.write("$ENV{PATH}=$ENV{PATH} . ';C:\Program Files (x86)\GnuWin32\\bin';")
+    #     time.sleep(3)
+    #     f.close()
     # Process ends
 
 
     # Build + Regression + installation
-    for version in configFile.decoded['v']:
-        print("Build + Regression + Installation for version ... ", version['fullVersion'])
-        print("\n\nRunning build ...")
-        time.sleep(3)
-        buildProc.startBuildProcess(version['fullVersion'])
-
-
-        print("\n\nRunning regression ...")
-        time.sleep(3)
-        regressionProc.startRegresstion(version['fullVersion'])
-
-
-        print("\n\nRunning instalation ...")
-        time.sleep(3)
-        instalationProc.startInstation(version['fullVersion'], version['majorVersion'])
+    # for version in configFile.decoded['v']:
+    #     print("Build + Regression + Installation for version ... ", version['fullVersion'])
+    #     print("\n\nRunning build ...")
+    #     time.sleep(3)
+    #     buildProc.startBuildProcess(version['fullVersion'])
+    #
+    #
+    #     print("\n\nRunning regression ...")
+    #     time.sleep(3)
+    #     regressionProc.startRegresstion(version['fullVersion'])
+    #
+    #
+    #     print("\n\nRunning instalation ...")
+    #     time.sleep(3)
+    #     instalationProc.startInstation(version['fullVersion'], version['majorVersion'])
 
     # Process ends
 

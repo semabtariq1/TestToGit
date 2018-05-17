@@ -1,16 +1,15 @@
 import requests
 import sys
 
-class PullDiff:
-    def pullDiff(self):
+class DownloadFile:
+    def downloadFile(self,link, fileName):
         try:
             # Downloading diff
-            print("Downloading Diff")
-            link = "https://excellmedia.dl.sourceforge.net/project/gnuwin32/diffutils/2.8.7-1/diffutils-2.8.7-1.exe"
-            file_name = "diffutils-2.8.7-1.exe"
-            with open(file_name, "wb") as f:
+            print("\nDownloading "+fileName+ " ..." )
+
+            with open(fileName, "wb") as f:
                 print
-                "Downloading %s" % file_name
+                "Downloading %s" % fileName
                 response = requests.get(link, stream=True)
                 total_length = response.headers.get('content-length')
 
@@ -25,8 +24,8 @@ class PullDiff:
                         done = int(50 * dl / total_length)
                         sys.stdout.write("\r[%s%s]" % ('=' * done, ' ' * (50 - done)))
                         sys.stdout.flush()
-            print("\nDownloading completed");
         except:
             print("Network issue found ... ")
+            sys.exit(0)
 
         # Process completed
