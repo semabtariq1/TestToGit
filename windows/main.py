@@ -6,7 +6,6 @@ import windows.pathVariables
 
 import windows.srcDownloads.downloadFile
 
-import windows.srcInstallation.installPgsqlSrc
 import windows.srcInstallation.installPerl
 import windows.srcInstallation.installSoftware
 
@@ -34,12 +33,6 @@ configFile = windows.configFile.ConfigFile()
 # Initializing path variable file
 pathVariable = windows.pathVariables.PathVarriables()
 # Process ends
-
-
-# Initialize install pgsql
-installPgsql = windows.srcInstallation.installPgsqlSrc.InstallPgsqlSrc()
-# Process done
-
 
 # Initialize install Perl
 installPerl = windows.srcInstallation.installPerl.InstallPerl()
@@ -158,7 +151,7 @@ if operatingSystem is "Windows":
                 'fullVersion'] + ".tar.gz"
             downloadFile.downloadFile(link, "postgres-"+version['fullVersion']+".tar.gz")
             #installPgsql.unzipPgsqlSrc()
-
+            installSoftware.unzipPostgres(version['fullVersion'])
 
 
 

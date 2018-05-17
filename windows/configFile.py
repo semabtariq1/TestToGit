@@ -3,9 +3,8 @@ import json
 
 class ConfigFile:
 
-    pgSql = 0
-    pgVersions = '{"v": [{"fullVersion": "10.4", "majorVersion": "10", "minerVersion" : "4"},' \
-                 '  {"fullVersion": "9.6.9", "majorVersion": "9.6", "minerVersion" : "9"} ] }'
+    pgSql = 1
+    pgVersions = '{"v": [{"fullVersion": "10.4", "majorVersion": "10", "minerVersion" : "4"} ] }'
     decoded = json.loads(pgVersions)
 
     perl = ["0", "http://downloads.activestate.com/ActivePerl/releases/5.24.3.2404/ActivePerl-5.24.3.2404-MSWin32-x64-404865.exe",
@@ -20,5 +19,5 @@ class ConfigFile:
     openssl = ["0", "https://slproweb.com/download/Win32OpenSSL-1_1_0h.exe",
               "Win32OpenSSL-1_1_0h.exe"]
 
-    python = ["1", "https://www.python.org/ftp/python/3.3.0/python-3.3.0.amd64.msi",
+    python = ["0", "https://www.python.org/ftp/python/3.3.0/python-3.3.0.amd64.msi",
               "python-3.3.0.amd64.msi"]
