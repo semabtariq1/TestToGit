@@ -8,10 +8,8 @@ import windows.srcDownloads.downloadFile
 
 import windows.srcInstallation.installPgsqlSrc
 import windows.srcInstallation.installPerl
-import windows.srcInstallation.installDiff
-import windows.srcInstallation.installZlib
-import windows.srcInstallation.installPython
-import windows.srcInstallation.installOpenssl
+import windows.srcInstallation.installSoftware
+
 
 import windows.currentDateTime
 
@@ -47,26 +45,9 @@ installPgsql = windows.srcInstallation.installPgsqlSrc.InstallPgsqlSrc()
 installPerl = windows.srcInstallation.installPerl.InstallPerl()
 # Process done
 
-
-# Initialize install Diff
-installDiff = windows.srcInstallation.installDiff.InstallDiff()
+# Initialize install software
+installSoftware = windows.srcInstallation.installSoftware.InstallSoftware()
 # Process done
-
-
-# Initialize install Zlib
-installZlib = windows.srcInstallation.installZlib.InstallZlib()
-# Process done
-
-
-# Initialize install Python
-installPython = windows.srcInstallation.installPython.InstallPython()
-# Process done
-
-
-# Initialize install Openssl
-installOpenssl = windows.srcInstallation.installOpenssl.InstallOpenssl()
-# Process done
-
 
 # Getting saved date time
 savedDateTime = windows.currentDateTime.savedDateTime
@@ -122,11 +103,10 @@ if operatingSystem is "Windows":
     if configFile.python[0] == "1":
         downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
         downloadFile.downloadFile(configFile.python[1], configFile.python[2])
-
-        # # Installing Python
-        # installPython.installPython()
-    # Process completed
-
+        # Installation
+        path = pathVariable.windowsCmd + " /c cd " + pathVariable.rootDirectory
+        command = ' && python-3.3.0.amd64.msi /qn'
+        installSoftware.installSoftware("Python", path+command)
 
     # Downloading Perl
     if configFile.perl[0] == "1":
@@ -144,36 +124,30 @@ if operatingSystem is "Windows":
     if configFile.openssl[0] == "1":
         downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
         downloadFile.downloadFile(configFile.openssl[1], configFile.openssl[2])
-
-
-
-        # Installing openssl
-        #installOpenssl.installOpenssl()
-    # Process completed
+        # Installation
+        path = pathVariable.windowsCmd + " /c cd " + pathVariable.rootDirectory
+        command = ' && Win32OpenSSL-1_1_0h.exe /SILENT, /VERYSILENT'
+        installSoftware.installSoftware("Openssl", path + command)
 
 
     # Downloading Zlib
     if configFile.zlib[0] == "1":
         downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
         downloadFile.downloadFile(configFile.zlib[1], configFile.zlib[2])
-
-
-
-        # Installing Zlib
-        #installZlib.installZlib()
-    # Process completed
+        # Installation
+        path = pathVariable.windowsCmd + " /c cd " + pathVariable.rootDirectory
+        command = ' && zlib-1.2.3.exe /SILENT, /VERYSILENT'
+        installSoftware.installSoftware("Zlib", path + command)
 
 
     # Downloading Diff
     if configFile.diff[0] == "1":
         downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
         downloadFile.downloadFile(configFile.diff[1], configFile.diff[2])
-
-
-
-        # Initializing Diff
-        #installDiff.installDiff()
-    # Process completed
+        # Installation
+        path = pathVariable.windowsCmd + " /c cd " + pathVariable.rootDirectory
+        command = ' && diffutils-2.8.7-1.exe /SILENT, /VERYSILENT'
+        installSoftware.installSoftware("Diff", path + command)
 
 
     # Downloading Pgsql code
