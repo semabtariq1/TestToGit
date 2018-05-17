@@ -113,11 +113,11 @@ if operatingSystem is "Windows":
             os.makedirs(rootPathBuild)
             print(rootPathBuild)
             time.sleep(3)
-    # Setting log directory
-    if not os.path.exists(installationLogs):
-        os.makedirs(installationLogs)
-        print(installationLogs)
-        time.sleep(3)
+        # Setting log directory
+        if not os.path.exists(installationLogs):
+            os.makedirs(installationLogs)
+            print(installationLogs)
+            time.sleep(3)
     # Process endds
 
 
@@ -196,7 +196,7 @@ if operatingSystem is "Windows":
     for version in configFile.decoded['v']:
         print("Build + Regression + Installation for version ... ", version['fullVersion'])
         print("\n\nRunning build ...")
-
+        time.sleep(3)
         buildProc.startBuildProcess(version['fullVersion'])
 
 

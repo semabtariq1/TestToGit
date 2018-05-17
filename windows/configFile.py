@@ -3,9 +3,9 @@ import json
 
 class ConfigFile:
 
-    pgSql = 1;
+    pgSql = 1
 
-    pgVersions = '{"v": [{"fullVersion": "10.4", "majorVersion": "10", "minerVersion" : "4"} ] }'
+    pgVersions = '{"v": [{"fullVersion": "10.4", "majorVersion": "10", "minerVersion" : "4"},  {"fullVersion": "9.6.9", "majorVersion": "9.6", "minerVersion" : "9"} ] }'
     decoded = json.loads(pgVersions)
 
     perl = 0
