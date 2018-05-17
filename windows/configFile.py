@@ -3,11 +3,11 @@ import json
 
 class ConfigFile:
 
-    pgSql = 1
+    pgSql = 0
     pgVersions = '{"v": [{"fullVersion": "10.4", "majorVersion": "10", "minerVersion" : "4"} ] }'
     decoded = json.loads(pgVersions)
 
-    perl = ["0", "http://downloads.activestate.com/ActivePerl/releases/5.24.3.2404/ActivePerl-5.24.3.2404-MSWin32-x64-404865.exe",
+    perl = ["1", "http://downloads.activestate.com/ActivePerl/releases/5.24.3.2404/ActivePerl-5.24.3.2404-MSWin32-x64-404865.exe",
               "ActivePerl-5.24.3.2404-MSWin32-x64-404865.exe"]
 
     diff = ["0", "https://excellmedia.dl.sourceforge.net/project/gnuwin32/diffutils/2.8.7-1/diffutils-2.8.7-1.exe",

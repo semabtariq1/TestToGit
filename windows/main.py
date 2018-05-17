@@ -6,7 +6,6 @@ import windows.pathVariables
 
 import windows.srcDownloads.downloadFile
 
-import windows.srcInstallation.installPerl
 import windows.srcInstallation.installSoftware
 
 
@@ -33,10 +32,6 @@ configFile = windows.configFile.ConfigFile()
 # Initializing path variable file
 pathVariable = windows.pathVariables.PathVarriables()
 # Process ends
-
-# Initialize install Perl
-installPerl = windows.srcInstallation.installPerl.InstallPerl()
-# Process done
 
 # Initialize install software
 installSoftware = windows.srcInstallation.installSoftware.InstallSoftware()
@@ -67,8 +62,7 @@ instalationProc = windows.install.Installation()
 if operatingSystem is "Windows":
 
     # # Setting up folder hierarchy..
-    print("Setting up folder hierarchy\n")
-    print("Following directories are being created ...\n")
+    print("\nFollowing directories are being created ...")
     for version in configFile.decoded['v']:
         rootPathSrc = pathVariable.rootDirectory + "\\workDir\\"+savedDateTime+"\\"+version['fullVersion']+"\\src"
         rootPathBuild = pathVariable.rootDirectory + "\\workDir\\" + savedDateTime + "\\" + version['fullVersion']+"\\build\\"+version['majorVersion']
@@ -101,16 +95,15 @@ if operatingSystem is "Windows":
         command = ' && python-3.3.0.amd64.msi /qn'
         installSoftware.installSoftware("Python", path+command)
 
+
     # Downloading Perl
     if configFile.perl[0] == "1":
         downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
         downloadFile.downloadFile(configFile.perl[1], configFile.perl[2])
-
-
-
-        # Installing Perl
-        #installPerl.silentInstallPerl()
-    # Process completed
+        # Installation
+        path = pathVariable.windowsCmd + " /c cd " + pathVariable.rootDirectory
+        command = ' && ActivePerl-5.24.3.2404-MSWin32-x64-404865.exe /qn+ APPDIR="C:\\apps\Perl" ^ /L*v ./install.log'
+        installSoftware.installSoftware("Perl", path + command)
 
 
     # Downloading Openssl
