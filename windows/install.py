@@ -16,6 +16,9 @@ class Installation:
 
         installationTask = pathvariable.windowsCmd + ' /c ' + '""' + pathvariable.vsCommandPrompt64 + '" & cd ' + pathvariable.pgsqlCode + '\\' + need + '\\src\\postgresql-' + need + '\\src\\tools\\msvc' ' &  ' + pathvariable.install + '\\' + need + '\\build\\' +\
                            majorVersion + '" > "'+pathvariable.pgsqlCode+"\\"+need+'\\logs\install.log""'
-        os.system(installationTask)
+        result = os.system(installationTask)
+        os.system("exit")
+        return result
+
         #print(installationTask)
         #print(installationTaskok)

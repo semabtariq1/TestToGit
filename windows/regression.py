@@ -15,5 +15,7 @@ class Regression:
         # os.system(regressionTask)
 
         regressionTask = pathvariable.windowsCmd + ' /c ' + '""' + pathvariable.vsCommandPrompt64 + '" & cd ' + pathvariable.pgsqlCode + '\\' + need + '\\src\\postgresql-' + need + '\\src\\tools\\msvc  &  ' + pathvariable.regression + ' > "' + pathvariable.pgsqlCode + '\\' + need + '\\logs\\regress.log" 2>&1"'
-        os.system(regressionTask)
+        result = os.system(regressionTask)
+        os.system("exit")
+        return result
         #print(regressionTask)

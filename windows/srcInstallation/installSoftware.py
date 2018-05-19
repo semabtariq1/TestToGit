@@ -18,6 +18,7 @@ class InstallSoftware:
     def installSoftware(self, softwareName, command):
         print("\nInstalling "+softwareName+ " ...")
         os.system(command)
+        os.system("exit")
         print(softwareName+ " Installed successfully ")
 
     # Seperatte function for postgres to unzip

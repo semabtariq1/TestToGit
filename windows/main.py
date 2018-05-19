@@ -9,6 +9,7 @@ import windows.srcDownloads.downloadFile
 import windows.srcInstallation.installSoftware
 
 
+
 import windows.currentDateTime
 
 import windows.build
@@ -88,8 +89,8 @@ if operatingSystem is "Windows":
 
     # Downloading Python
     if configFile.python[0] == "1":
-        downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
-        downloadFile.downloadFile(configFile.python[1], configFile.python[2])
+        # downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
+        # downloadFile.downloadFile(configFile.python[1], configFile.python[2])
         # Installation
         path = pathVariable.windowsCmd + " /c cd " + pathVariable.rootDirectory
         command = ' && python-3.3.0.amd64.msi /qn'
@@ -98,18 +99,19 @@ if operatingSystem is "Windows":
 
     # Downloading Perl
     if configFile.perl[0] == "1":
-        downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
-        downloadFile.downloadFile(configFile.perl[1], configFile.perl[2])
+        # downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
+        # downloadFile.downloadFile(configFile.perl[1], configFile.perl[2])
         # Installation
         path = pathVariable.windowsCmd + " /c cd " + pathVariable.rootDirectory
+        #this is correct command
         command = ' && ActivePerl-5.24.3.2404-MSWin32-x64-404865.exe /qn+ APPDIR="C:\\apps\Perl" ^ /L*v ./install.log'
+        #command = ' && ActivePerl-5.24.3.2404-MSWin32-x64-404865.exe /qn+'
         installSoftware.installSoftware("Perl", path + command)
-
 
     # Downloading Openssl
     if configFile.openssl[0] == "1":
-        downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
-        downloadFile.downloadFile(configFile.openssl[1], configFile.openssl[2])
+        # downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
+        # downloadFile.downloadFile(configFile.openssl[1], configFile.openssl[2])
         # Installation
         path = pathVariable.windowsCmd + " /c cd " + pathVariable.rootDirectory
         command = ' && Win32OpenSSL-1_1_0h.exe /SILENT, /VERYSILENT'
@@ -118,8 +120,8 @@ if operatingSystem is "Windows":
 
     # Downloading Zlib
     if configFile.zlib[0] == "1":
-        downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
-        downloadFile.downloadFile(configFile.zlib[1], configFile.zlib[2])
+        # downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
+        # downloadFile.downloadFile(configFile.zlib[1], configFile.zlib[2])
         # Installation
         path = pathVariable.windowsCmd + " /c cd " + pathVariable.rootDirectory
         command = ' && zlib-1.2.3.exe /SILENT, /VERYSILENT'
@@ -128,8 +130,8 @@ if operatingSystem is "Windows":
 
     # Downloading Diff
     if configFile.diff[0] == "1":
-        downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
-        downloadFile.downloadFile(configFile.diff[1], configFile.diff[2])
+        # downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
+        # downloadFile.downloadFile(configFile.diff[1], configFile.diff[2])
         # Installation
         path = pathVariable.windowsCmd + " /c cd " + pathVariable.rootDirectory
         command = ' && diffutils-2.8.7-1.exe /SILENT, /VERYSILENT'
@@ -142,8 +144,8 @@ if operatingSystem is "Windows":
         for version in configFile.decoded['v']:
             link = "https://ftp.postgresql.org/pub/source/v" + version['fullVersion'] + "/postgresql-" + version[
                 'fullVersion'] + ".tar.gz"
-            downloadFile.downloadFile(link, "postgres-"+version['fullVersion']+".tar.gz")
-            #installPgsql.unzipPgsqlSrc()
+            # downloadFile.downloadFile(link, "postgres-"+version['fullVersion']+".tar.gz")
+
             installSoftware.unzipPostgres(version['fullVersion'])
 
 
@@ -151,37 +153,37 @@ if operatingSystem is "Windows":
 
 
     # Generating envoirnment files
-    # for version in configFile.decoded['v']:
-    #     print("Generating envoirnment file for version ...", version['fullVersion'])
-    #     f = open(os.path.dirname(os.path.abspath(__file__))+"\\workDir\\"+savedDateTime+"\\"+version['fullVersion']+"\\src\\postgresql-"+version['fullVersion']+"\\src\\tools\\msvc\\buildenv.pl", "w+")
-    #     f.write("$ENV{PATH}=$ENV{PATH} . ';C:\Program Files (x86)\GnuWin32\\bin';")
-    #     time.sleep(3)
-    #     f.close()
+    for version in configFile.decoded['v']:
+        print("Generating envoirnment file for version ...", version['fullVersion'])
+        f = open(os.path.dirname(os.path.abspath(__file__))+"\\workDir\\"+savedDateTime+"\\"+version['fullVersion']+"\\src\\postgresql-"+version['fullVersion']+"\\src\\tools\\msvc\\buildenv.pl", "w+")
+        f.write("$ENV{PATH}=$ENV{PATH} . ';C:\Program Files (x86)\GnuWin32\\bin';")
+        time.sleep(3)
+        f.close()
     # Process ends
 
 
     # Build + Regression + installation
-    # for version in configFile.decoded['v']:
-    #     print("Build + Regression + Installation for version ... ", version['fullVersion'])
-    #     print("\n\nRunning build ...")
-    #     time.sleep(3)
-    #     buildProc.startBuildProcess(version['fullVersion'])
-    #
-    #
-    #     print("\n\nRunning regression ...")
-    #     time.sleep(3)
-    #     regressionProc.startRegresstion(version['fullVersion'])
-    #
-    #
-    #     print("\n\nRunning instalation ...")
-    #     time.sleep(3)
-    #     instalationProc.startInstation(version['fullVersion'], version['majorVersion'])
-
-    # Process ends
-
-
-    # Finall message
-    print("\n\nAutomation process is completed ...")
+    for version in configFile.decoded['v']:
+        print("Build + Regression + Installation for version ... ", version['fullVersion'])
+        print("\n\nRunning build ...")
+        time.sleep(3)
+        resultBuild = buildProc.startBuildProcess(version['fullVersion'])
+        if resultBuild == 0:
+            print("\n\nRunning regression ...")
+            time.sleep(3)
+            resultRegression = regressionProc.startRegresstion(version['fullVersion'])
+            if resultRegression == 0:
+                print("\n\nRunning instalation ...")
+                time.sleep(3)
+                resultInstallation = instalationProc.startInstation(version['fullVersion'], version['majorVersion'])
+                if resultInstallation == 0:
+                    print("Automation Process is completed successfully")
+                else:
+                    print("Something went wrong with installation process please refer to install log file to see details")
+            else:
+                print("Something went wrong with regression process please refer to regression log file to see details")
+        else:
+            print("Something went wrong with build process please refer to build log file to see details")
 
 
 elif operatingSystem is "Linux":
