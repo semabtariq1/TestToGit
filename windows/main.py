@@ -1,6 +1,5 @@
 
 
-
 import windows.configFile
 import windows.pathVariables
 
@@ -15,10 +14,15 @@ import windows.currentDateTime
 import windows.build
 import windows.regression
 import windows.install
+import windows.copyFile
 
 import platform
 import os
 import time
+
+
+
+from distutils.dir_util import copy_tree
 
 # Getting system properties
 operatingSystem = platform.system();
@@ -59,6 +63,11 @@ instalationProc = windows.install.Installation()
 
 
 
+# Initializing copyFile
+copyFile = windows.copyFile.CopyFile()
+# Process ends
+
+
 
 if operatingSystem is "Windows":
 
@@ -68,20 +77,26 @@ if operatingSystem is "Windows":
         rootPathSrc = pathVariable.rootDirectory + "\\workDir\\"+savedDateTime+"\\"+version['fullVersion']+"\\src"
         rootPathBuild = pathVariable.rootDirectory + "\\workDir\\" + savedDateTime + "\\" + version['fullVersion']+"\\build\\"+version['majorVersion']
         installationLogs = pathVariable.rootDirectory+ "\\workDir\\"+savedDateTime+"\\"+version['fullVersion']+"\\logs"
+        # shareLibrary = pathVariable.rootDirectory + "\\workDir\\" + savedDateTime + "\\" + version['fullVersion'] + "\\win-share-lib"
         if not os.path.exists(rootPathSrc):
             os.makedirs(rootPathSrc)
             print(rootPathSrc)
-            time.sleep(3)
+            time.sleep(1)
         # Setting build folder
         if not os.path.exists(rootPathBuild):
             os.makedirs(rootPathBuild)
             print(rootPathBuild)
-            time.sleep(3)
+            time.sleep(1)
         # Setting log directory
         if not os.path.exists(installationLogs):
             os.makedirs(installationLogs)
             print(installationLogs)
-            time.sleep(3)
+            time.sleep(1)
+        # Setting share library folder
+        # if not os.path.exists(shareLibrary):
+        #     os.makedirs(shareLibrary)
+        #     print(shareLibrary)
+        #     time.sleep(3)
     # Process endds
 
 
@@ -93,39 +108,33 @@ if operatingSystem is "Windows":
         # downloadFile.downloadFile(configFile.python[1], configFile.python[2])
         # Installation
         path = pathVariable.windowsCmd + " /c cd " + pathVariable.rootDirectory
+        # this s correct command
         command = ' && python-3.3.0.amd64.msi /qn'
+        #command = ' && python-3.3.0.amd64.msi /qn /DIR="'+installationPathPython+'"'
         installSoftware.installSoftware("Python", path+command)
 
-
-    # Downloading Perl
-    if configFile.perl[0] == "1":
-        # downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
-        # downloadFile.downloadFile(configFile.perl[1], configFile.perl[2])
-        # Installation
-        path = pathVariable.windowsCmd + " /c cd " + pathVariable.rootDirectory
-        #this is correct command
-        command = ' && ActivePerl-5.24.3.2404-MSWin32-x64-404865.exe /qn+ APPDIR="C:\\apps\Perl" ^ /L*v ./install.log'
-        #command = ' && ActivePerl-5.24.3.2404-MSWin32-x64-404865.exe /qn+'
-        installSoftware.installSoftware("Perl", path + command)
-
     # Downloading Openssl
-    if configFile.openssl[0] == "1":
-        # downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
-        # downloadFile.downloadFile(configFile.openssl[1], configFile.openssl[2])
-        # Installation
-        path = pathVariable.windowsCmd + " /c cd " + pathVariable.rootDirectory
-        command = ' && Win32OpenSSL-1_1_0h.exe /SILENT, /VERYSILENT'
-        installSoftware.installSoftware("Openssl", path + command)
+    # if configFile.openssl[0] == "1":
+    #     # downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
+    #     # downloadFile.downloadFile(configFile.openssl[1], configFile.openssl[2])
+    #     # Installation
+    #     path = pathVariable.windowsCmd + " /c cd " + pathVariable.rootDirectory
+    #     # This is correct command
+    #     command = ' && Win32OpenSSL-1_1_0h.exe /SILENT, /VERYSILENT'
+    #     #command = ' && Win32OpenSSL-1_1_0h.exe /SILENT, /VERYSILENT /DIR="'+shareLibrary+'"'
+    #     installSoftware.installSoftware("Openssl", path + command)
 
 
     # Downloading Zlib
-    if configFile.zlib[0] == "1":
-        # downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
-        # downloadFile.downloadFile(configFile.zlib[1], configFile.zlib[2])
-        # Installation
-        path = pathVariable.windowsCmd + " /c cd " + pathVariable.rootDirectory
-        command = ' && zlib-1.2.3.exe /SILENT, /VERYSILENT'
-        installSoftware.installSoftware("Zlib", path + command)
+    # if configFile.zlib[0] == "1":
+    #     # downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
+    #     # downloadFile.downloadFile(configFile.zlib[1], configFile.zlib[2])
+    #     # Installation
+    #     path = pathVariable.windowsCmd + " /c cd " + pathVariable.rootDirectory
+    #     # This is correct command
+    #     command = ' && zlib-1.2.3.exe /SILENT, /VERYSILENT'
+    #     #command = ' && zlib-1.2.3.exe /SILENT, /VERYSILENT /DIR="'+shareLibrary+'"'
+    #     installSoftware.installSoftware("Zlib", path + command)
 
 
     # Downloading Diff
@@ -133,23 +142,23 @@ if operatingSystem is "Windows":
         # downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
         # downloadFile.downloadFile(configFile.diff[1], configFile.diff[2])
         # Installation
+
         path = pathVariable.windowsCmd + " /c cd " + pathVariable.rootDirectory
+        # This is correct command
         command = ' && diffutils-2.8.7-1.exe /SILENT, /VERYSILENT'
+        #command = ' && diffutils-2.8.7-1.exe /SILENT, /VERYSILENT /DIR="'+shareLibrary+'"'
         installSoftware.installSoftware("Diff", path + command)
 
 
     # Downloading Pgsql code
     if configFile.pgSql == 1:
-        downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
+        # downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
         for version in configFile.decoded['v']:
-            link = "https://ftp.postgresql.org/pub/source/v" + version['fullVersion'] + "/postgresql-" + version[
-                'fullVersion'] + ".tar.gz"
-            # downloadFile.downloadFile(link, "postgres-"+version['fullVersion']+".tar.gz")
+        #     link = "https://ftp.postgresql.org/pub/source/v" + version['fullVersion'] + "/postgresql-" + version[
+        #         'fullVersion'] + ".tar.gz"
+        #     # downloadFile.downloadFile(link, "postgres-"+version['fullVersion']+".tar.gz")
 
             installSoftware.unzipPostgres(version['fullVersion'])
-
-
-
 
 
     # Generating envoirnment files
@@ -162,6 +171,51 @@ if operatingSystem is "Windows":
     # Process ends
 
 
+    # Adding paths in config_default.pl file
+    print("Updating config_default.pl file")
+    number = 0
+    for version in configFile.decoded['v']:
+        config_default = pathVariable.rootDirectory+"\\workDir\\"+savedDateTime+"\\"+version['fullVersion']+"\\src\\postgresql-"+version['fullVersion']+"\\src\\tools\\msvc\\config_default.pl"
+        file = open(config_default)
+        line = file.read().splitlines()
+        for li in line:
+            if 'python' in li:
+                line[number] = "    python    => 'c:\python33',    # --with-python=<path>"
+                open(config_default, 'w').write('\n'.join(line))
+            elif "openssl" in li:
+                line[number] = "    openssl   => '"+pathVariable.rootDirectory+"\\winShareLib\\openssl',    # --with-openssl=<path>"
+                open(config_default, 'w').write('\n'.join(line))
+            elif "zlib" in li:
+                line[number] = "    zlib      => '"+pathVariable.rootDirectory+"\\winShareLib\\zlib'    # --with-zlib=<path>"
+                open(config_default, 'w').write('\n'.join(line))
+            number += 1;
+        file.close()
+    # Process ends
+
+
+    # Adding quantile support
+    print("copying quantile files ...")
+    for version in configFile.decoded['v']:
+        src = pathVariable.rootDirectory+"\\winShareLib\\quantile"
+        dest = pathVariable.rootDirectory+"\\workDir\\"+savedDateTime+"\\"+version['fullVersion']+"\\src\\postgresql-"+version['fullVersion']+"\\contrib"
+        copyFile.copy(src, dest)
+    time.sleep(3)
+
+    # copying openssl and zlib into installation directory
+    print("copying openssl and zlib files ...")
+    for version in configFile.decoded['v']:
+        # openssl
+        src = pathVariable.rootDirectory + "\\winShareLib\\openssl"
+        dest = pathVariable.rootDirectory + "\\workDir\\" + savedDateTime + "\\" + version['fullVersion'] + "\\build\\"+version['majorVersion']
+        copyFile.copy(src, dest)
+        # zlib
+        src = pathVariable.rootDirectory + "\\winShareLib\\zlib"
+        dest = pathVariable.rootDirectory + "\\workDir\\" + savedDateTime + "\\" + version['fullVersion'] + "\\build\\" + \
+               version['majorVersion']
+        copyFile.copy(src, dest)
+    time.sleep(3)
+
+
     # Build + Regression + installation
     for version in configFile.decoded['v']:
         print("Build + Regression + Installation for version ... ", version['fullVersion'])
@@ -171,7 +225,8 @@ if operatingSystem is "Windows":
         if resultBuild == 0:
             print("\n\nRunning regression ...")
             time.sleep(3)
-            resultRegression = regressionProc.startRegresstion(version['fullVersion'])
+            #resultRegression = regressionProc.startRegresstion(version['fullVersion'])
+            resultRegression = 0
             if resultRegression == 0:
                 print("\n\nRunning instalation ...")
                 time.sleep(3)
@@ -185,8 +240,18 @@ if operatingSystem is "Windows":
         else:
             print("Something went wrong with build process please refer to build log file to see details")
 
+        # copying documentation into installation directory
+        print("copying documentation files ...")
+        for version in configFile.decoded['v']:
+            # documentation
+            src = pathVariable.rootDirectory + "\\workDir\\"+savedDateTime+"\\"+ version["fullVersion"]+ "\\src\\postgresql-"+version["fullVersion"]\
+                  +"\\doc\\src\\sgml\\html"
+            dest = pathVariable.rootDirectory + "\\workDir\\" + savedDateTime + "\\" + version[
+                'fullVersion'] + "\\build\\" + version['majorVersion']+ "\\doc"
+            copyFile.copy(src, dest)
+        time.sleep(3)
 
 elif operatingSystem is "Linux":
-    print("Welcome to Linux");
+    print("downloading postgresql source code ...")
 else:
     print("Undefined platform found = ", os);

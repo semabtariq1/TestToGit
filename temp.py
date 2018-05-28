@@ -1,7 +1,14 @@
-# import subprocess
-#
-# code  = subprocess.call('ls ', shell=True)
-# print(code)
 import os
-def temp():
-    code = os.system("perl --version")
+
+import windows.pathVariables
+#
+
+# Initializing path variable file
+pathvariable = windows.pathVariables.PathVarriables;
+# Process ends
+
+buildTask = pathvariable.windowsCmd + ' /c ' + '""' + pathvariable.temp + '" &&   echo semab"'
+result = os.system(buildTask)
+
+
+

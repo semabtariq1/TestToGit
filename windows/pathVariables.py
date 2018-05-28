@@ -16,8 +16,8 @@ savedDateTime = windows.currentDateTime.savedDateTime
 # Process ends
 
 class PathVarriables:
-
-    vsCommandPrompt64 = (find("VsDevCmd.bat", "C:\\Program Files (x86)\\Microsoft Visual Studio\\"))
+    temp = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat"
+    vsCommandPrompt64 = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat"
     windowsCmd = 'C:\\Windows\\system32\\cmd.exe'
     rootDirectory = os.path.dirname(os.path.abspath(__file__))
     pgSqlMsvc = os.path.dirname(os.path.abspath(__file__))+"\\workDir\\"+savedDateTime+"\\version\\src\\postgresql-10.3\\src\\tools\\msvc"
@@ -26,5 +26,9 @@ class PathVarriables:
     build = "build"
     regression = "vcregress check"
     install = 'install "'+ rootDirectory+'\\workDir\\'+savedDateTime
+
+    postgresContrib = rootDirectory+"\\workDir\\"+savedDateTime+"\\"
+
+
 
 

@@ -25,6 +25,8 @@ class Building:
         buildTask = pathvariable.windowsCmd + ' /c ' + '""' + pathvariable.vsCommandPrompt64 + '" & cd ' + pathvariable.pgsqlCode + '\\' + need + '\\src\\postgresql-' + need + '\\src\\tools\\msvc  &  ' + pathvariable.build + ' > "' + pathvariable.pgsqlCode + '\\' + need + '\\logs\\build.log" 2>&1"'
 
         result = os.system(buildTask)
-        os.system("exit")
+
         return result
-        #print(buildTask)
+
+
+
