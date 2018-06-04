@@ -89,14 +89,25 @@ if configFile.postgresql == 1:
                 binPath = paths.currentProject+"/"+version["fullVersion"]+"/build/"+version["majorVersion"]+"/bin"
                 print("Setting RPATH for bin")
                 for file in os.listdir(binPath):
-                    os.system('cd '+binPath+' && chrpath -r "\${ORIGIN}/../lib/" ./'+file)
+                    os.system('cd '+binPath+' && chrpath -r "\${ORIGIN}/../lib/" ./'+file+" > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/binRpath.log 2>&1")
 
                 libPath = paths.currentProject+"/"+version["fullVersion"]+"/build/"+version["majorVersion"]+"/lib"
                 print("Setting RPATH for lib")
                 for file in os.listdir(libPath):
-                    os.system('cd '+libPath+' && chrpath -r "\${ORIGIN}/../lib/" ./' + file)
+                    os.system('cd '+libPath+' && chrpath -r "\${ORIGIN}/../lib/" ./' + file+ " > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/libRpath.log 2>&1")
 
                 # Copying documentation
+                print("copying documentation files ...")
+                src = paths.root + "/workDir/" + currentDateTime + "/" + version[
+                    "fullVersion"] + "/src/postgresql-" + version["fullVersion"] \
+                    + "/doc/src/sgml/html"
+                dest = paths.root + "/workDir/" + currentDateTime + "/" + version[
+                    'fullVersion'] + "/build/" + version['majorVersion'] + "/doc"
+                copyFile.copy(src, dest)
+
+                # Generating zip file
+                print("Generating zip file ...")
+                os.system("cd "+paths.currentProject+"/"+version["fullVersion"]+" && tar -zcvf postgresql-linux.tar.gz build > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/zip.log 2>&1")
             else:
                 print("Something went wrong with unzipping the postgresql")
         else:
