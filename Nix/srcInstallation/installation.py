@@ -11,3 +11,7 @@ class Install:
     def installdReadline(self, needed):
         result = os.system("sudo apt-get install libreadline6 libreadline6-dev > " + path.currentProject + "/" + needed + "/logs/downloadReadLine.log 2>&1")
         return result
+
+    def installAnyLibrary(self, needed, command):
+        result = os.system(command)
+        return result
