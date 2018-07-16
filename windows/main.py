@@ -1,20 +1,20 @@
 
 
-import windows.configFile
-import windows.pathVariables
+import configFile
+import pathVariables
 
-import windows.srcDownloads.downloadFile
+import srcDownloads.downloadFile
 
-import windows.srcInstallation.installSoftware
+import srcInstallation.installSoftware
 
 
 
-import windows.currentDateTime
+import currentDateTime
 
-import windows.build
-import windows.regression
-import windows.install
-import windows.copyFile
+import build
+import regression
+import install
+import copyFile
 
 import platform
 import os
@@ -30,41 +30,41 @@ operatingSystem = platform.system();
 
 
 # Initializing config file
-configFile = windows.configFile.ConfigFile()
+configFile = configFile.ConfigFile()
 # Process ends
 
 
 # Initializing path variable file
-pathVariable = windows.pathVariables.PathVarriables()
+pathVariable = pathVariables.PathVarriables()
 # Process ends
 
 # Initialize install software
-installSoftware = windows.srcInstallation.installSoftware.InstallSoftware()
+installSoftware = srcInstallation.installSoftware.InstallSoftware()
 # Process done
 
 # Getting saved date time
-savedDateTime = windows.currentDateTime.savedDateTime
+savedDateTime = currentDateTime.savedDateTime
 # Process ends
 
 
 # Initializing build
-buildProc = windows.build.Building()
+buildProc = build.Building()
 # Process ends
 
 
 # Initializing regression
-regressionProc = windows.regression.Regression()
+regressionProc = regression.Regression()
 # Process ends
 
 
 # Initializing regression
-instalationProc = windows.install.Installation()
+instalationProc = install.Installation()
 # Process ends
 
 
 
 # Initializing copyFile
-copyFile = windows.copyFile.CopyFile()
+copyFile = copyFile.CopyFile()
 # Process ends
 
 
@@ -96,7 +96,7 @@ if operatingSystem is "Windows":
 
     # Downloading Python
     if configFile.python[0] == "1":
-        downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
+        downloadFile = srcDownloads.downloadFile.DownloadFile()
         downloadFile.downloadFile(configFile.python[1], configFile.python[2])
         # Installation
         path = pathVariable.windowsCmd + " /c cd " + pathVariable.rootDirectory
@@ -107,7 +107,7 @@ if operatingSystem is "Windows":
 
     # Downloading Diff
     if configFile.diff[0] == "1":
-        downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
+        downloadFile = srcDownloads.downloadFile.DownloadFile()
         downloadFile.downloadFile(configFile.diff[1], configFile.diff[2])
         # Installation
 
@@ -118,11 +118,11 @@ if operatingSystem is "Windows":
 
     # Downloading Pgsql code
     if configFile.pgSql == 1:
-        #downloadFile = windows.srcDownloads.downloadFile.DownloadFile()
+        downloadFile = srcDownloads.downloadFile.DownloadFile()
         for version in configFile.decoded['v']:
-            # link = "https://ftp.postgresql.org/pub/source/v" + version['fullVersion'] + "/postgresql-" + version[
-            #     'fullVersion'] + ".tar.gz"
-            # downloadFile.downloadFile(link, "postgres-"+version['fullVersion']+".tar.gz")
+            link = "https://ftp.postgresql.org/pub/source/v" + version['fullVersion'] + "/postgresql-" + version[
+                 'fullVersion'] + ".tar.gz"
+            downloadFile.downloadFile(link, "postgres-"+version['fullVersion']+".tar.gz")
 
             installSoftware.unzipPostgres(version['fullVersion'])
 

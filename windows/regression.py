@@ -1,11 +1,11 @@
 #Test to upload on github with this file 
 import os
 
-import windows.pathVariables
+import pathVariables
 
 
 # Initializing path variable file
-pathvariable = windows.pathVariables.PathVarriables;
+pathvariable = pathVariables.PathVarriables;
 # Process ends
 
 

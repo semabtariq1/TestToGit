@@ -1,11 +1,11 @@
 # Removing zipped file after unzipping
 import shutil
 import time
-import windows.pathVariables
+import pathVariables
 
 
 # Initializing Path variable file
-pathVariable = windows.pathVariables.PathVarriables()
+pathVariable = pathVariables.PathVarriables()
 # Process ends
 
 

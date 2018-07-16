@@ -1,18 +1,18 @@
 import os
 import tarfile
 
-import windows.pathVariables
+import pathVariables
 
-import windows.currentDateTime
+import currentDateTime
 
 
 # Initializing path variables
-pathVariable = windows.pathVariables.PathVarriables()
+pathVariable = pathVariables.PathVarriables()
 # Process ends
 
 
 # Getting save date and time
-savedDateTime = windows.currentDateTime.savedDateTime
+savedDateTime = currentDateTime.savedDateTime
 # Process ends
 
 
@@ -26,7 +26,7 @@ class InstallSoftware:
     # Seperatte function for unzip rar
     def unzipPostgres(self, version):
         print("\nUnzipping postgres "+ version+ " ...")
-        fname = pathVariable.rootDirectory + "\\postgresql-" + version + ".tar.gz"
+        fname = pathVariable.rootDirectory + "\\postgres-" + version + ".tar.gz"
         tar = tarfile.open(fname, "r:gz")
         tempPathToExtract = pathVariable.rootDirectory + "\\workDir\\" + savedDateTime + "\\" + version + "\\src"
         tar.extractall(path=tempPathToExtract)

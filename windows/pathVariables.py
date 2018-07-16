@@ -1,7 +1,7 @@
 # This class will contain all the hard coded paths
 
 import os
-import windows.currentDateTime
+import currentDateTime
 
 # Find VsCommand Window path
 def find(name, path):
@@ -12,7 +12,7 @@ def find(name, path):
 
 
 # Getting saved date time
-savedDateTime = windows.currentDateTime.savedDateTime
+savedDateTime = currentDateTime.savedDateTime
 # Process ends
 
 class PathVarriables:
