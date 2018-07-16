@@ -73,11 +73,12 @@ if configFile.postgresql == 1:
                     srcInstallation.unzipPostgis(version["fullVersion"], postgis["fullVersion"])
 
                 # Setting paths
+                buildLocation = paths.currentProject+"/"+version["fullVersion"]+"/build/"+version['majorVersion']
                 os.environ['PYTHON_HOME'] = "/Users/2ndquadrant/2UDA/Python-3.4.4/inst"
                 os.environ['OPENSSL_HOME'] = "/Users/2ndquadrant/2UDA/openssl-1.0.2g/inst"
                 os.environ['LD_LIBRARY_PATH'] = os.environ['PYTHON_HOME'] + "/lib:" + os.environ[
                     'OPENSSL_HOME'] + "/lib:/Users/2ndquadrant/pythonAutomation/srcBuild/lib"
-                os.environ['LDFLAGS'] = "-Wl,-rpath," + os.environ['PWD'] + " -L" + os.environ[
+                os.environ['LDFLAGS'] = "-Wl,-rpath," + buildLocation + " -L" + os.environ[
                     'PYTHON_HOME'] + "/lib -L" + os.environ[
                                             'OPENSSL_HOME'] + "/lib -L/Users/2ndquadrant/pythonAutomation/srcBuild/lib"
                 os.environ['CPPFLAGS'] = "-I" + os.environ['PYTHON_HOME'] + "/include/python3.4m" + " -I" + os.environ[
@@ -134,7 +135,26 @@ if configFile.postgresql == 1:
                 src= paths.shareLib + "/lib/"
                 dest = ""+paths.currentProject+"/"+version["fullVersion"]+"/build/"+version["majorVersion"]+"/lib/"
                 copyFile.copy(src, dest)
-                
+ 
+                # Copying share/gdal
+                #print("Copying sharedLib/share/gdal to build")
+                #src = paths.shareLib+ "/share/gdal"
+                #dest = ""+paths.currentProject+"/"+version["fullVersion"]+"/build/"+version["majorVersion"]+"/share"
+                #copyFile.copy(src, dest)  
+                #os.system("cp -r "+src+" "+dest+"")           
+
+                # Copying share/proj
+                #print("Copying sharedLib/share/proj to build")
+                #src = paths.shareLib+ "/share/proj"
+                #dest = ""+paths.currentProject+"/"+version["fullVersion"]+"/build/"+version["majorVersion"]+"/share"
+                #copyFile.copy(src, dest)
+                #os.system("cp -r "+src+" "+dest+"")
+ 
+                print("Copying share into share ...")
+                src= paths.shareLib + "/share/"
+                dest = ""+paths.currentProject+"/"+version["fullVersion"]+"/build/"+version["majorVersion"]+"/share/"
+                copyFile.copy(src, dest)
+
                 # Copying openssl
                 src = "/Users/2ndquadrant/2UDA/openssl-1.0.2g/inst/lib"
                 dest = paths.root+ "/workDir/" + currentDateTime + "/" + version['fullVersion'] + "/build/" + version['majorVersion'] + "/lib"
@@ -147,9 +167,37 @@ if configFile.postgresql == 1:
                     "majorVersion"] + "/bin"
                 print("Setting RPATH for bin ...")
                 for file in os.listdir(binPath):
-                    os.system(
-                        'cd ' + binPath + ' && install_name_tool -add_rpath @executable_path/../lib "./' + file + '" >> ' + paths.currentProject + "/" +
+                   
+                   os.system(
+                        'cd ' + binPath + ' && install_name_tool -delete_rpath '+buildLocation+' -add_rpath @executable_path/../lib "./' + file + '" >> ' + paths.currentProject + "/" +
                         version["fullVersion"] + "/logs/binRpath.log 2>&1")
+                   os.system(
+                        'cd ' + binPath + ' && install_name_tool -change "'+buildLocation+'/lib/libpq.5.dylib" "@executable_path/../lib/libpq.5.dylib" "./' + file + '" >> ' + paths.currentProject + "/" +
+                        version["fullVersion"] + "/logs/binChange.log 2>&1")
+                   os.system(
+                        'cd ' + binPath + ' && install_name_tool -change "'+os.environ['OPENSSL_HOME']+'/lib/libssl.1.0.0.dylib" "@executable_path/../lib/libssl.1.0.0.dylib" "./' + file + '" >> ' + paths.currentProject + "/" +
+                        version["fullVersion"] + "/logs/binChange.log 2>&1")
+                   os.system(
+                        'cd ' + binPath + ' && install_name_tool -change "'+os.environ['OPENSSL_HOME']+'/lib/libcrypto.1.0.0.dylib" "@executable_path/../lib/libcrypto.1.0.0.dylib" "./' + file + '" >> ' + paths.currentProject + "/" +
+                        version["fullVersion"] + "/logs/binChange.log 2>&1")
+
+                   os.system(
+                        'cd ' + binPath + ' && install_name_tool -change "'+paths.shareLib+'/lib/libgeos_c.1.dylib" "@executable_path/../lib/libgeos_c.1.dylib" "./' + file + '" >> ' + paths.currentProject + "/" +
+                        version["fullVersion"] + "/logs/binChange.log 2>&1")
+          
+                   os.system(
+                        'cd ' + binPath + ' && install_name_tool -change "'+paths.shareLib+'/lib/libproj.13.dylib" "@executable_path/../lib/libproj.13.dylib" "./' + file + '" >> ' + paths.currentProject + "/" +
+                        version["fullVersion"] + "/logs/binChange.log 2>&1")
+
+                   os.system(
+                        'cd ' + binPath + ' && install_name_tool -change "'+paths.shareLib+'/lib/libgeos-3.6.2.dylib" "@executable_path/../lib/libgeos-3.6.2.dylib" "./' + file + '" >> ' + paths.currentProject + "/" +
+                        version["fullVersion"] + "/logs/binChange.log 2>&1")
+                
+                   os.system(
+                        'cd ' + binPath + ' && install_name_tool -change "'+paths.shareLib+'/lib/libgdal.20.dylib" "@executable_path/../lib/libgdal.20.dylib" "./' + file + '" >> ' + paths.currentProject + "/" +
+                        version["fullVersion"] + "/logs/binChange.log 2>&1")
+
+
 
                 # Lib
                 libPath = paths.currentProject + "/" + version["fullVersion"] + "/build/" + version[
@@ -157,8 +205,34 @@ if configFile.postgresql == 1:
                 print("Setting RPATH for lib ...")
                 for file in os.listdir(libPath):
                     os.system(
-                        'cd ' + libPath + ' && install_name_tool -add_rpath @executable_path/../lib "./' + file + '" >> ' + paths.currentProject + "/" +
+                        'cd ' + libPath + ' && install_name_tool -delete_rpath '+buildLocation+' -add_rpath @executable_path/../lib "./' + file + '" >> ' + paths.currentProject + "/" +
                         version["fullVersion"] + "/logs/libRpath.log 2>&1")
+                    os.system(
+                        'cd ' + libPath + ' && install_name_tool -change "'+buildLocation+'/lib/libpq.5.dylib" "@executable_path/../lib/libpq.5.dylib" "./' + file + '" >> ' + paths.currentProject + "/" +
+                        version["fullVersion"] + "/logs/libChange.log 2>&1")
+                    os.system(
+                        'cd ' + libPath + ' && install_name_tool -change "'+os.environ['OPENSSL_HOME']+'/lib/libssl.1.0.0.dylib" "@executable_path/../lib/libssl.1.0.0.dylib" "./' + file + '" >> ' + paths.currentProject + "/" +
+                        version["fullVersion"] + "/logs/libChange.log 2>&1")
+                    os.system(
+                        'cd ' + libPath + ' && install_name_tool -change "'+os.environ['OPENSSL_HOME']+'/lib/libcrypto.1.0.0.dylib" "@executable_path/../lib/libcrypto.1.0.0.dylib" "./' + file + '" >> ' + paths.currentProject + "/" +
+                        version["fullVersion"] + "/logs/libChange.log 2>&1")
+                    os.system(
+                        'cd ' + libPath + ' && install_name_tool -change "'+paths.shareLib+'/lib/libgeos_c.1.dylib" "@executable_path/../lib/libgeos_c.1.dylib" "./' + file + '" >> ' + paths.currentProject + "/" +
+                        version["fullVersion"] + "/logs/binChange.log 2>&1")
+
+                    os.system(
+                        'cd ' + libPath + ' && install_name_tool -change "'+paths.shareLib+'/lib/libproj.13.dylib" "@executable_path/../lib/libproj.13.dylib" "./' + file + '" >> ' + paths.currentProject + "/" +
+                        version["fullVersion"] + "/logs/binChange.log 2>&1")
+
+                    os.system(
+                        'cd ' + libPath + ' && install_name_tool -change "'+paths.shareLib+'/lib/libgeos-3.6.2.dylib" "@executable_path/../lib/libgeos-3.6.2.dylib" "./' + file + '" >> ' + paths.currentProject + "/" +
+                        version["fullVersion"] + "/logs/binChange.log 2>&1")
+
+                    os.system(
+                        'cd ' + libPath + ' && install_name_tool -change "'+paths.shareLib+'/lib/libgdal.20.dylib" "@executable_path/../lib/libgdal.20.dylib" "./' + file + '" >> ' + paths.currentProject + "/" +
+                        version["fullVersion"] + "/logs/binChange.log 2>&1")
+ 
+              
 
                 # Lib/postgresql
                 postgresql = paths.currentProject + "/" + version["fullVersion"] + "/build/" + version[
@@ -166,19 +240,33 @@ if configFile.postgresql == 1:
                 print("Setting RPATH for lib/postgresql ...")
                 for file in os.listdir(postgresql):
                     os.system(
-                        'cd ' + postgresql + ' && install_name_tool -add_rpath @executable_path/../../lib "./' + file + '" >> ' + paths.currentProject + "/" +
+                        'cd ' + postgresql + ' && install_name_tool -delete_rpath '+buildLocation+' -add_rpath @executable_path/../../lib "./' + file + '" >> ' + paths.currentProject + "/" +
                         version["fullVersion"] + "/logs/postgresqlRpath.log 2>&1")
+                    os.system(
+                        'cd ' + postgresql + ' && install_name_tool -change "'+buildLocation+'/lib/libpq.5.dylib" "@executable_path/../../lib/libpq.5.dylib" "./' + file + '" >> ' + paths.currentProject + "/" +
+                        version["fullVersion"] + "/logs/postgresqlChange.log 2>&1")
+                    os.system(
+                        'cd ' + postgresql + ' && install_name_tool -change "'+os.environ['OPENSSL_HOME']+'/lib/libssl.1.0.0.dylib" "@executable_path/../../lib/libssl.1.0.0.dylib" "./' + file + '" >> ' + paths.currentProject + "/" +
+                        version["fullVersion"] + "/logs/postgresqlChange.log 2>&1")
+                    os.system(
+                        'cd ' + postgresql + ' && install_name_tool -change "'+os.environ['OPENSSL_HOME']+'/lib/libcrypto.1.0.0.dylib" "@executable_path/../../lib/libcrypto.1.0.0.dylib" "./' + file + '" >> ' + paths.currentProject + "/" +
+                        version["fullVersion"] + "/logs/postgresqlChange.log 2>&1")
+                    os.system(
+                        'cd ' + postgresql + ' && install_name_tool -change "'+paths.shareLib+'/lib/libgeos_c.1.dylib" "@executable_path/../lib/libgeos_c.1.dylib" "./' + file + '" >> ' + paths.currentProject + "/" +
+                        version["fullVersion"] + "/logs/binChange.log 2>&1")
 
+                    os.system(
+                        'cd ' + postgresql + ' && install_name_tool -change "'+paths.shareLib+'/lib/libproj.13.dylib" "@executable_path/../lib/libproj.13.dylib" "./' + file + '" >> ' + paths.currentProject + "/" +
+                        version["fullVersion"] + "/logs/binChange.log 2>&1")
 
+                    os.system(
+                        'cd ' + postgresql + ' && install_name_tool -change "'+paths.shareLib+'/lib/libgeos-3.6.2.dylib" "@executable_path/../lib/libgeos-3.6.2.dylib" "./' + file + '" >> ' + paths.currentProject + "/" +
+                        version["fullVersion"] + "/logs/binChange.log 2>&1")
 
-                # copying documentation files
-                print("copying documentation files ...")
-                src = paths.root + "/workDir/" + currentDateTime + "/" + version[
-                        "fullVersion"] + "/src/postgresql-" + version["fullVersion"] \
-                          + "/doc/src/sgml/html"
-                dest = paths.root + "/workDir/" + currentDateTime + "/" + version[
-                        'fullVersion'] + "/build/" + version['majorVersion'] + "/doc"
-                copyFile.copy(src, dest)
+                    os.system(
+                        'cd ' + postgresql + ' && install_name_tool -change "'+paths.shareLib+'/lib/libgdal.20.dylib" "@executable_path/../lib/libgdal.20.dylib" "./' + file + '" >> ' + paths.currentProject + "/" +
+                        version["fullVersion"] + "/logs/binChange.log 2>&1")
+
 
 
                 # Removing extra files
