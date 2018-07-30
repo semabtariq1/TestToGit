@@ -53,77 +53,125 @@ for version in configFile.decoded['v']:
 if configFile.postgresql == 1:
     print("Downloading postgres ...")
     for version in configFile.decoded['v']:
-        downloadResult = srcDownload.download(version["url"], version["fullVersion"])
+        #downloadResult = srcDownload.download(version["url"], version["fullVersion"])
+        result = os.system("curl -O  "+ version["url"] +" > "+paths.currentProject+ "/"+ version["fullVersion"] +"/logs/PostgresqlDownload.log 2>&1")
 
-        if downloadResult == 0:
+        if result == 0:
             # unzipping the postgresql
             print("Unzipping the postgresql ...")
-            resultUnzip = srcInstallation.unzipPostgresql(version["fullVersion"])
+            #resultUnzip = srcInstallation.unzipPostgresql(version["fullVersion"])
+            result = os.system("tar xzf postgresql-"+ version["fullVersion"] +".tar.gz --directory "+paths.currentProject +"/"+ version["fullVersion"] +"/src")
 
-            if resultUnzip == 0:
+
+            if result == 0:
                 # Downloading postgis
                 print("Downloading postgis ...")
                 postgisVersion = ""
                 for postgis in configFile.decodedPostgis['postgisV']:
-                    srcDownload.download(postgis["url"], version["fullVersion"])
+                    #srcDownload.download(postgis["url"], version["fullVersion"])
+                    result = os.system("curl -O  "+ postgis["url"] +" > "+paths.currentProject+ "/"+ version["fullVersion"] +"/logs/PostgisDownload.log 2>&1")
                     postgisVersion = postgis["fullVersion"]
 
-                    # Unzipping postgis
-                    print("Unzipping postgis ...")
-                    srcInstallation.unzipPostgis(version["fullVersion"], postgis["fullVersion"])
+                    if result == 0:
+                 
 
-                # Setting paths
-                buildLocation = paths.currentProject+"/"+version["fullVersion"]+"/build/"+version['majorVersion']
-                os.environ['PYTHON_HOME'] = "/Users/2ndquadrant/2UDA/Python-3.4.4/inst"
-                os.environ['OPENSSL_HOME'] = "/Users/2ndquadrant/2UDA/openssl-1.0.2g/inst"
-                os.environ['LD_LIBRARY_PATH'] = os.environ['PYTHON_HOME'] + "/lib:" + os.environ[
-                    'OPENSSL_HOME'] + "/lib:/Users/2ndquadrant/pythonAutomation/srcBuild/lib"
-                os.environ['LDFLAGS'] = "-Wl,-rpath," + buildLocation + " -L" + os.environ[
-                    'PYTHON_HOME'] + "/lib -L" + os.environ[
-                                            'OPENSSL_HOME'] + "/lib -L/Users/2ndquadrant/pythonAutomation/srcBuild/lib"
-                os.environ['CPPFLAGS'] = "-I" + os.environ['PYTHON_HOME'] + "/include/python3.4m" + " -I" + os.environ[
-                    'OPENSSL_HOME'] + "/include -I/Users/2ndquadrant/pythonAutomation/srcBuild/include"
-                os.environ['PYTHON'] = "/Users/2ndquadrant/2UDA/Python-3.4.4/inst/bin/python3"
-		
+                        # Unzipping postgis
+                        print("Unzipping postgis ...")
+                        #srcInstallation.unzipPostgis(version["fullVersion"], postgis["fullVersion"])
+                        result = os.system("tar xzf postgis-"+ postgis["fullVersion"] +".tar.gz --directory "+paths.currentProject +"/"+ version["fullVersion"] +"/src")
+                        
+                        if result == 0:
 
-                # Running configure
-                print("Running configure ...")
-                configuration.runConfiguration(version['fullVersion'], version["majorVersion"])
+                            # Setting paths
+                            buildLocation = paths.currentProject+"/"+version["fullVersion"]+"/build/"+version['majorVersion']
+                            os.environ['PATH'] = paths.currentProject + "/" + version["fullVersion"] + "/build/"+ version["majorVersion"] + "/bin:"+ os.environ['PATH']
+                            os.environ['PYTHON_HOME'] = "/Users/2ndquadrant/2UDA/Python-3.4.4/inst"
+                            os.environ['OPENSSL_HOME'] = "/Users/2ndquadrant/2UDA/openssl-1.0.2g/inst"
+                            os.environ['LD_LIBRARY_PATH'] = os.environ['PYTHON_HOME'] + "/lib:" + os.environ['OPENSSL_HOME'] + "/lib:/Users/2ndquadrant/pythonAutomation/srcBuild/lib"
+                            os.environ['LDFLAGS'] = "-Wl,-rpath," + buildLocation + " -L" + os.environ['PYTHON_HOME'] + "/lib -L" + os.environ['OPENSSL_HOME'] + "/lib -L/Users/2ndquadrant/pythonAutomation/srcBuild/lib"
+                            os.environ['CPPFLAGS'] = "-I" + os.environ['PYTHON_HOME'] + "/include/python3.4m" + " -I" + os.environ['OPENSSL_HOME'] + "/include -I/Users/2ndquadrant/pythonAutomation/srcBuild/include"
+                            os.environ['PYTHON'] = "/Users/2ndquadrant/2UDA/Python-3.4.4/inst/bin/python3"
+                            
+                            # Running configure
+                            print("Running configure ...")
+                           
+                            configPath = paths.currentProject+"/"+ version["fullVersion"] +"/src/postgresql-"+version["fullVersion"]
+                            configCommand = "./configure  --with-openssl --with-python --with-zlib --prefix="+paths.currentProject+"/"+ version["fullVersion"] +"/build/"+ version["majorVersion"] +" > "+paths.currentProject+"/"+ version["fullVersion"] +"/logs/PostgresqlConfigure.log 2>&1"
+                            result = os.system("cd "+configPath+" && "+configCommand+"")
+                          
+                            if result == 0:
+                                # Running build
+                                print("Running build ...")
+                                buildPath = paths.currentProject + "/" + version["fullVersion"] + "/src/postgresql-" + version["fullVersion"]
+                                command = " make world > "+paths.currentProject+"/"+ version["fullVersion"] +"/logs/PostgresqlBuild.log 2>&1"
+                                result = os.system("cd "+buildPath+" && "+command+"")
 
-                # Running build
-                print("Running build ...")
-                build.runBuild(version["fullVersion"])
+                                if result == 0:
+                                    # Running install
+                                    print("Running install ...")
+                                    buildPath = paths.currentProject + "/" + version["fullVersion"] + "/src/postgresql-" + version["fullVersion"]
+                                    command = " make install-world > "+paths.currentProject+"/"+ version["fullVersion"] +"/logs/PostgresqlInstall.log 2>&1"
+                                    result = os.system("cd "+buildPath+" && "+command+"")
+ 
+                                    if result == 0:
+                                        print("\n*********************************************************************\n")
+                                        print("\n                       Adding Postgis feature                        \n")
+                                        print("\n*********************************************************************\n")
+                                        time.sleep(3)
 
+                                        # Running configure on postgis
+                                        print("Running configure ...")
+                                        result = os.system("cd "+paths.currentProject+"/"+ version["fullVersion"] +"/src/postgis-"+postgisVersion +" && ./configure --prefix="+ paths.shareLib +" --with-pgconfig="+paths.currentProject+"/"+ version["fullVersion"] +"/build/"+version["majorVersion"]+"/bin/pg_config --with-gdalconfig="+ paths.shareLib +"/bin/gdal-config  --with-geosconfig="+ paths.shareLib +"/bin/geos-config --with-projdir="+ paths.shareLib +" > "+paths.currentProject+"/"+version["fullVersion"] +"/logs/PostgisConfigure.log 2>&1")
 
-                # Running install
-                print("Running install ...")
-                install.runInstall(version["fullVersion"])
+                                        if result == 0:
+                                            
+                                            # Running build
+                                            print("Running make ...")
+                                            result = os.system("cd "+paths.currentProject+"/"+version["fullVersion"]+"/src/postgis-"+postgisVersion+" && make > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/PostgisBuild.log 2>&1")
 
+                                            if result == 0:
+                    
+                                                # Starting postgresql server
+                                                result = os.system("cd "+paths.currentProject + "/"+ version["fullVersion"] + "/build/" +version["majorVersion"]+ "/bin && ./initdb -D data > "+ paths.currentProject + "/" + version["fullVersion"] + "/logs/PostgresqlInit.log 2>&1")
+                                                if result == 0:
+                                           	         
+                                                    result = os.system("cd "+paths.currentProject + "/"+ version["fullVersion"] + "/build/" +version["majorVersion"]+ "/bin && ./pg_ctl -D data start > "+ paths.currentProject + "/" + version["fullVersion"] + "/logs/PostgresStart.log 2>&1")
+                                                    if result == 0:
+                                                        # Running regression
+                                                        print("Running regression ...")
+                                                        result = os.system("cd " + paths.currentProject + "/" + version["fullVersion"] + "/src/postgis-" + postgisVersion + " && make check > " + paths.currentProject + "/" + version["fullVersion"] + "/logs/PostgisRegression.log 2>&1")
+                                                
+                                                        os.system("cd "+paths.currentProject + "/"+ version["fullVersion"] + "/build/" +version["majorVersion"]+ "/bin && rm -rf data ")
 
+                                                        if result == 0:
+                                                            # Running install
+                                                            print("Running make install ...")
+                                                            result = os.system("cd "+paths.currentProject+"/"+version["fullVersion"]+"/src/postgis-"+postgisVersion+" && make install > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/PostgisInstallation.log 2>&1")
 
-                print("\n*********************************************************************\n")
-                print("\n                       Adding Postgis feature                        \n")
-                print("\n*********************************************************************\n")
-                time.sleep(3)
-
-
-                # Running configure on postgis
-                print("Running configure ...")
-                os.system("cd "+paths.currentProject+"/"+version["fullVersion"]+"/src/postgis-"+postgisVersion+" && ./configure --prefix=/Users/2ndquadrant/pythonAutomation/srcBuild --with-pgconfig="+paths.currentProject+"/"+version["fullVersion"]+"/build/"+version["majorVersion"]+"/bin/pg_config --with-gdalconfig=/Users/2ndquadrant/pythonAutomation/srcBuild/bin/gdal-config  --with-geosconfig=/Users/2ndquadrant/pythonAutomation/srcBuild/bin/geos-config --with-projdir=/Users/2ndquadrant/pythonAutomation/srcBuild > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/postgisConfigure.log 2>&1")
-
-                # Running build
-                print("Running make ...")
-                os.system("cd "+paths.currentProject+"/"+version["fullVersion"]+"/src/postgis-"+postgisVersion+" && make > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/postgisBuild.log 2>&1")
-
-                # Running regression
-                print("Running regression ...")
-                os.system("cd " + paths.currentProject + "/" + version[
-                    "fullVersion"] + "/src/postgis-" + postgisVersion + " && make check> " + paths.currentProject + "/" +
-                          version["fullVersion"] + "/logs/postgisRegression.log 2>&1")
-
-                # Running install
-                print("Running make install ...")
-                os.system("cd "+paths.currentProject+"/"+version["fullVersion"]+"/src/postgis-"+postgisVersion+" && make install > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/postgisInstall.log 2>&1")
+                                                            if result == 0:
+                                                                print("All ok ...")
+                                                            else:
+                                                                print("Something went wrong with postgis installation ...")
+                                                        else:
+                                                            print("Something went wrong with postgis regression ...")
+                                                    else:
+                                                        print("Something went wrong with starting postgresql server ...")
+                                                else:
+                                                     print("Something went wrong with initializing postgresql server ...")
+                                            else:
+                                                print("Something went wrong with postgis build ...")
+                                        else:
+                                            print("Something went wrong with postgis configure ...")
+                                    else:
+                                        print("Something went wrong with postgresql installation ...")
+                                else:
+                                    print("Something went wrong with postgresql build ...")
+                            else:
+                                print("Something went wrong with postgresql configure ...")
+                        else:
+                            print("Something went wrong with Postgis unzipping ...")
+                    else:
+                        print("Something went wrong with Postgis downloading ...")
 
                 print("\n*********************************************************************\n")
                 print("\n                      Finalizing the automation                      \n")
