@@ -10,7 +10,7 @@ import configuration
 import regression
 import build
 import install
-
+import smtplib
 
 install = install.Install()
 build = build.Build()
@@ -232,6 +232,18 @@ if configFile.postgresql == 1:
                                                                 # Final message
                                                                 print("All binaries are placed at : "+ dirBuild)
                                                             
+ 
+                                                                # Generating an email
+                                                                print("Generating an email ...")
+                                                                content = "Build completed successfully against "+ version["fullVersion"]
+                                                                mail = smtplib.SMTP('smtp.gmail.com', 587)
+                                                                mail.ehlo()
+                                                                mail.starttls()
+                                                                mail.login('semab.tariq@2ndquadrant.com', 'FDSA016016semab')
+                                                                mail.sendmail('semab.tariq@2ndquadrant.com', 'semab.tariq@2ndquadrant.com', content )
+                                                                mail.close()
+                                                                print("Email sended to semab.tariq@2ndquadrant.com ..." )
+                                                               
                                                             else:
                                                                 print("Something went wrong with postgis installation ...")
                                                         else:
