@@ -96,7 +96,7 @@ if configFile.postgresql == 1:
                             print("Running configure ...")
                            
                             configPath = paths.currentProject+"/"+ version["fullVersion"] +"/src/postgresql-"+version["fullVersion"]
-                            configCommand = "./configure  --with-openssl --with-python --with-zlib --prefix="+paths.currentProject+"/"+ version["fullVersion"] +"/build/"+ version["majorVersion"] +" > "+paths.currentProject+"/"+ version["fullVersion"] +"/logs/PostgresqlConfigure.log 2>&1"
+                            configCommand = "./configure --with-gssapi --with-ldap  --with-openssl --with-python --with-zlib --prefix="+paths.currentProject+"/"+ version["fullVersion"] +"/build/"+ version["majorVersion"] +" > "+paths.currentProject+"/"+ version["fullVersion"] +"/logs/PostgresqlConfigure.log 2>&1"
                             result = os.system("cd "+configPath+" && "+configCommand+"")
                           
                             if result == 0:
