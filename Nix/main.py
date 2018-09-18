@@ -28,18 +28,6 @@ configFile = configFile.ConfigFile()
 paths = paths.Path()
 
 
-
-os.environ['PYTHON_HOME']="/opt/Python-3.4.4/inst"
-os.environ['OPENSSL_HOME']="/opt/openssl-1.0.2g/inst"
-os.environ['PATH']=os.environ['PYTHON_HOME'] +"/bin:" + os.environ['OPENSSL_HOME'] + "/bin:" + paths.shareLib + "/bin:"+ os.environ['PATH']
-os.environ['LD_LIBRARY_PATH']=os.environ['PYTHON_HOME'] +"/lib:" + os.environ['OPENSSL_HOME'] + "/lib:" + paths.shareLib + "/lib:"
-os.environ['LDFLAGS']="-Wl,-rpath," + os.environ['PWD'] + " -L" + os.environ['PYTHON_HOME'] + "/lib -L" + os.environ['OPENSSL_HOME'] + "/lib" + " -L" + paths.shareLib + "/lib"
-os.environ['CPPFLAGS']="-I"+os.environ['PYTHON_HOME'] + "inlclude/python3.4m" + " -I"+ os.environ['OPENSSL_HOME'] + "/include" + " -I" + paths.shareLib + "/include"
-os.environ['PYTHON']=os.environ['PYTHON_HOME']+"/bin/python3"
-
-
-
-
 #Setting up folder structure
 print("Setting up folder structure")
 for version in configFile.decoded['v']:
@@ -66,35 +54,6 @@ if configFile.postgresql == 1:
       
     for version in configFile.decoded['v']:
 
-        if configFile.addKrb == 1: 
-            print("\n--------------Building KRB-------------\n")
-            print("Building GSSAPI ...")
-            print("Downloading KRB ...")
-            krbFullVersion = ""
-            for krb in configFile.decodedKrb["krbVersion"]:
-                downloadKrb = os.system("wget "+krb["url"]+" > "+paths.currentProject+"/"+ version["fullVersion"] +"/logs/KrbDownload.log 2>&1")
-                krbFullVersion = krb["fullVersion"]
-            
-            #Unzipping KRB
-            print("Unzipping KRB ...")
-            resultUnzipKrb = os.system("tar xzf krb5-"+ krb["fullVersion"] +".tar.gz" +" --directory " + paths.currentProject +"/"+ version["fullVersion"] +"/src")
- 
-            if resultUnzipKrb == 0:
-                # Running configure
-                print("Running configure ...")  
-                resultKrbConfig = os.system('cd '+ paths.currentProject +'/'+ version["fullVersion"] +'/src/krb5-'+ krbFullVersion + '/src && ./configure  LDFLAGS="-L'+ os.environ['OPENSSL_HOME']  +'/lib" CPPFLAGS="-I'+ os.environ['OPENSSL_HOME']+'/include" --prefix='+ paths.shareLib +' --enable-shared=yes --enable-static=no > '+ paths.currentProject +'/'+ version["fullVersion"] +'/logs/KrbConfigure.log 2>&1')
-            
-                if resultKrbConfig == 0:
-                    # Running make
-                    print("Running make ...")
-                    resultKrbMake = os.system("cd "+ paths.currentProject +"/"+ version["fullVersion"] +"/src/krb5-"+ krbFullVersion +"/src && make > "+ paths.currentProject +"/"+ version["fullVersion"] +"/logs/KrbBuild.log 2>&1")
-   
-                    if resultKrbMake == 0:
-                        # Running make install
-                        print("Running make install ...")
-                        resultKrbMakeInstall = os.system("cd "+ paths.currentProject +"/"+ version["fullVersion"] +"/src/krb5-"+ krbFullVersion +"/src && make install > "+ paths.currentProject +"/"+ version["fullVersion"] +"/logs/KrbInstall.log 2>&1")
-
-                        if resultKrbMakeInstall == 0:
                             print("\n--------------Building PostgreSQL-------------\n")
                             print("Downloading PostgreSQL ...")     
                             resultDownloadPostgres = os.system("wget "+ version["url"] +" > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/PostgresqlDownload.log 2>&1")
@@ -121,19 +80,28 @@ if configFile.postgresql == 1:
                                     resultUnzipPostgis = os.system("tar xzf postgis-"+ postgis["fullVersion"] +".tar.gz" +" --directory " +paths.currentProject+"/"+ version["fullVersion"] +"/src")
                         
                                     if resultUnzipPostgis == 0:
+                                        # Setting paths
+                                        os.environ['PYTHON_HOME']="/opt/Python-3.4.4/inst"
+                                        os.environ['OPENSSL_HOME']="/opt/openssl-1.0.2g/inst"
+                                        os.environ['PATH']= paths.currentProject + "/" + version["fullVersion"] + "/build/"+ version["majorVersion"] + "/bin:" + os.environ['PYTHON_HOME'] + "/bin:" + os.environ['OPENSSL_HOME'] + "/bin:" + paths.shareLib + "/bin:" + os.environ['PATH']
+                                        os.environ['LD_LIBRARY_PATH']=os.environ['PYTHON_HOME'] +"/lib:" + os.environ['OPENSSL_HOME'] + "/lib:" + paths.shareLib + "/lib:"
+                                        os.environ['LDFLAGS']="-Wl,-rpath," + os.environ['PWD'] + " -L" + os.environ['PYTHON_HOME'] + "/lib -L" + os.environ['OPENSSL_HOME'] + "/lib" + " -L" + paths.shareLib + "/lib"
+                                        os.environ['CPPFLAGS']="-I"+os.environ['PYTHON_HOME'] + "inlclude/python3.4m" + " -I"+ os.environ['OPENSSL_HOME'] + "/include" + " -I" + paths.shareLib + "/include"
+                                        os.environ['PYTHON']=os.environ['PYTHON_HOME']+"/bin/python3"
+                                        
                                         # Removing extra files
                                         os.system("rm -rf postgresql-"+version["fullVersion"]+".tar.gz postgis-"+postgisVersion+".tar.gz")
                                         # Configure on Postgresql
                                         print("Running configure ...")
                                         configPath = paths.currentProject+"/"+ version["fullVersion"] +"/src/postgresql-"+version["fullVersion"]
-                                        configCommand = "./configure --with-ldap --with-gssapi --with-openssl --with-python --with-zlib --prefix="+ paths.currentProject+"/"+version["fullVersion"]+"/build/"+ version["majorVersion"] +" > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/PostgresqlConfigure.log 2>&1"
+                                        configCommand = "./configure --with-icu ICU_CFLAGS='-I"+ paths.shareLib +"/include' ICU_LIBS='-L"+ paths.shareLib +"/lib -licui18n -licuuc -licudata' --with-ldap --with-gssapi --with-openssl --with-python --with-zlib --prefix="+ paths.currentProject+"/"+version["fullVersion"]+"/build/"+ version["majorVersion"] +" > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/PostgresqlConfigure.log 2>&1"
                                         resultPostgresConfig = os.system("cd "+configPath+" && "+configCommand+"")
                                     
                                         if resultPostgresConfig == 0:
                                             # Running build
                                             print("Running build ...")
                                             buildPath = paths.currentProject + "/" + version["fullVersion"] + "/src/postgresql-" + version["fullVersion"]
-                                            command = " make world > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/PostgresqlBuild.log 2>&1"
+                                            command = " m	ake world > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/PostgresqlBuild.log 2>&1"
                                             resultPgsqlBuild = os.system("cd "+buildPath+" && "+command+"")
                                 
                                             if resultPgsqlBuild == 0:
@@ -153,39 +121,48 @@ if configFile.postgresql == 1:
                                                         print("\n--------------Building POSTGIS-------------\n")
                                                         # Running configure on postgis
                                                         print("Running configure on postgis ...")
-                                                        resultPostgisConfigure = os.system("cd "+ paths.currentProject +"/"+ version["fullVersion"] +"/src/postgis-"+ postgisVersion +" && ./configure --prefix="+ paths.shareLib +" --with-pgconfig="+paths.currentProject+"/"+version["fullVersion"]+"/build/"+version["majorVersion"]+"/bin/pg_config --with-gdalconfig="+ paths.shareLib +"/bin/gdal-config  --with-geosconfig="+ paths.shareLib +"/bin/geos-config --with-projdir="+ paths.shareLib +" --with-xml2config="+ paths.shareLib +"/bin/xml2-config > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/PostgisConfigure.log 2>&1")
+                                                        #resultPostgisConfigure = os.system("cd "+ paths.currentProject +"/"+ version["fullVersion"] +"/src/postgis-"+ postgisVersion +" && ./configure --prefix="+ paths.shareLib +" --with-pgconfig="+paths.currentProject+"/"+version["fullVersion"]+"/build/"+version["majorVersion"]+"/bin/pg_config --with-gdalconfig="+ paths.shareLib +"/bin/gdal-config  --with-geosconfig="+ paths.shareLib +"/bin/geos-config --with-projdir="+ paths.shareLib +" --with-xml2config="+ paths.shareLib +"/bin/xml2-config > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/PostgisConfigure.log 2>&1")
                                             
-                                                        if resultPostgisConfigure == 0:
+                                                        if 0 == 0:
                                                             # Running build
                                                             print("Running make ...")
-                                                            resultPostgisBuild = os.system("cd "+paths.currentProject+"/"+version["fullVersion"]+"/src/postgis-"+postgisVersion+" && make > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/PostgisBuild.log 2>&1")
+                                                            #resultPostgisBuild = os.system("cd "+paths.currentProject+"/"+version["fullVersion"]+"/src/postgis-"+postgisVersion+" && make > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/PostgisBuild.log 2>&1")
 
-                                                            if resultPostgisBuild == 0:
+                                                            if 0 == 0:
                                                                 print("Starting Postgresql server ...")
                                                                 resultInitDB = 0
                                                                 #resultInitDB = os.system("cd "+paths.currentProject+"/"+version["fullVersion"]+"/build/"+version["majorVersion"]+"/bin && ./initdb -D data  > "+ paths.currentProject + "/" + version["fullVersion"] + "/logs/PostgresqlInit.log 2>&1")
                                                                 if resultInitDB == 0:
                                                                     resulPostgresStart = 0
                                                                     #resulPostgresStart = os.system("cd "+paths.currentProject+"/"+version["fullVersion"]+"/build/"+version["majorVersion"]+"/bin && ./pg_ctl -D data start  > "+ paths.currentProject + "/" + version["fullVersion"] + "/logs/PostgresqlStart.log 2>&1")
-                                                    
-                                                                    if resulPostgresStart == 0:
+                                                     
+                                                                    if 0 == 0:
                                                                         print("Runing regression ...")
-                                                                        resultPostgisRegression = 0 
+                                                                        
                                                                         #resultPostgisRegression = os.system("cd " + paths.currentProject + "/" + version["fullVersion"] + "/src/postgis-" + postgisVersion + " && make check > " + paths.currentProject + "/" + version["fullVersion"] + "/logs/PostgisRegression.log 2>&1")
 
-                                                                        if resultPostgisRegression == 0:
-                                                                            os.system("cd "+paths.currentProject + "/"+ version["fullVersion"] + "/build/" +version["majorVersion"]+ "/bin && rm -rf data ")
+                                                                        if 0 == 0:
+                                                                            #os.system("cd "+paths.currentProject + "/"+ version["fullVersion"] + "/build/" +version["majorVersion"]+ "/bin && rm -rf data ")
                                                                             # Running install
                                                                             print("Running make install ...")
-                                                                            resultPostgisInstall = os.system("cd "+paths.currentProject+"/"+version["fullVersion"]+"/src/postgis-"+ postgisVersion +" && make install > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/PostgisInstall.log 2>&1")
-
-                                                                            if resultPostgisInstall == 0:
-                                                                                # Copying required libraries to build
+                                                                      
+                                                                            #resultPostgisInstall = os.system("cd "+paths.currentProject+"/"+version["fullVersion"]+"/src/postgis-"+ postgisVersion +" && make install > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/PostgisInstall.log 2>&1")
+                                                                            if 0 == 0:
+ 
+                                                                                print("----Adding ICU support----")
+                                                                                os.system("wget http://api.pgxn.org/dist/icu_ext/1.3.0/icu_ext-1.3.0.zip > "+ paths.currentProject +"/"+ version["fullVersion"] +"/logs/icu_ext_download.log 2>&1")
+                                                                                os.system("unzip icu_ext-1.3.0.zip -d " + paths.currentProject +"/"+ version["fullVersion"] +"/src")
+                                                                                resultPgxs = os.system("cd "+ paths.currentProject +"/"+ version["fullVersion"] +"/src/icu_ext-1.3.0 && make USE_PGXS=1 > "+ paths.currentProject +"/"+ version["fullVersion"] +"/logs/icu_ext.log 2>&1")
+                                                                                if resultPgxs == 0:
+                                                                                    resultPgxs = os.system("cd "+ paths.currentProject +"/"+ version["fullVersion"] +"/src/icu_ext-1.3.0 && make USE_PGXS=1 install > "+ paths.currentProject +"/"+ version["fullVersion"] +"/logs/icu_ext.log 2>&1")
+                                                                                    if resultPgxs == 0:
+                                                                                        print("Icu added")                                                                              
+                                                                                        # Copying required libraries to build
                                                                                 print("Copying required libraries to build ...")
                                                                                 src = paths.shareLib + "/lib/*"
                                                                                 dest = ""+paths.currentProject+"/"+version["fullVersion"]+"/build/"+version["majorVersion"]+"/lib/"
                                                                                 resultCPLibSf = os.system("cp -rv " + src + " " + dest + " > " + paths.currentProject+"/"+version["fullVersion"]+"/logs/SharedLibCopy.log 2>&1")
-                               
+                                                                                
                                                                                 if resultCPLibSf == 0:
 									            # Copying share/gdal
                                                                                     print("Copying sharedLib/share/gdal to build")
@@ -290,11 +267,3 @@ if configFile.postgresql == 1:
                     	            print("Something went wrong with Postgres unzip ...")
                             else:
                                 print("Something went wrong with postgres downloading ...")
-                        else:
-                            print("Something went wrong with KRB installation ...")
-                    else:
-                        print("Error in KRB build ...")       
-                else:
-                    print("Error in KRB configure ...")
-            else:
-                print("Error in KRB unzipping ...") 
