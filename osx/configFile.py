@@ -5,8 +5,8 @@ class ConfigFile:
 
     postgresql = 1
     # change v to something understandable
-    pgVersions = '{"v": [{"fullVersion": "10.4", "majorVersion": "10", "minerVersion" : "4",' \
-                 ' "url" : "https://ftp.postgresql.org/pub/source/v10.4/postgresql-10.4.tar.gz"} ] }'
+    pgVersions = '{"v": [{"fullVersion": "11beta4", "majorVersion": "11", "minerVersion" : "beta4",' \
+                 ' "url" : "https://borka.postgresql.org/staging/c45d6bda7b8a165a9b7de5a1d9a5ba5b11f7cea9/postgresql-11beta4.tar.gz"} ] }'
     decoded = json.loads(pgVersions)
 
 

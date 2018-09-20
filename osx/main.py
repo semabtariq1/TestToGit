@@ -2,27 +2,19 @@ import os
 import time
 import configFile
 import paths
-import currentDateTime
-import srcDownload.download
-import srcInstallation.installation
-import copyFile
-import configuration
-import regression
-import build
-import install
 import smtplib
+import currentDateTime
+from distutils.dir_util import copy_tree
 
-install = install.Install()
-build = build.Build()
-regression = regression.Regression()
-configuration = configuration.Configuration()
-copyFile = copyFile.CopyFile()
-srcInstallation = srcInstallation.installation.Install()
-srcDownload = srcDownload.download.Download()
+
 currentDateTime = currentDateTime.savedDateTime
 configFile = configFile.ConfigFile()
 paths = paths.Path()
 
+
+# Functions
+def copy( src, dest):
+    copy_tree(src, dest)
 
 
 print("\n*********************************************************************\n")
@@ -96,7 +88,7 @@ if configFile.postgresql == 1:
                             print("Running configure ...")
                            
                             configPath = paths.currentProject+"/"+ version["fullVersion"] +"/src/postgresql-"+version["fullVersion"]
-                            configCommand = "./configure --with-gssapi --with-ldap  --with-openssl --with-python --with-zlib --prefix="+paths.currentProject+"/"+ version["fullVersion"] +"/build/"+ version["majorVersion"] +" > "+paths.currentProject+"/"+ version["fullVersion"] +"/logs/PostgresqlConfigure.log 2>&1"
+                            configCommand = "./configure --with-icu ICU_CFLAGS='-I"+ paths.shareLib +"/include' ICU_LIBS='-L"+ paths.shareLib +"/lib -licui18n -licuuc -licudata' --with-gssapi --with-ldap  --with-openssl --with-python --with-zlib --prefix="+paths.currentProject+"/"+ version["fullVersion"] +"/build/"+ version["majorVersion"] +" > "+paths.currentProject+"/"+ version["fullVersion"] +"/logs/PostgresqlConfigure.log 2>&1"
                             result = os.system("cd "+configPath+" && "+configCommand+"")
                           
                             if result == 0:
@@ -105,6 +97,13 @@ if configFile.postgresql == 1:
                                 buildPath = paths.currentProject + "/" + version["fullVersion"] + "/src/postgresql-" + version["fullVersion"]
                                 command = " make world > "+paths.currentProject+"/"+ version["fullVersion"] +"/logs/PostgresqlBuild.log 2>&1"
                                 result = os.system("cd "+buildPath+" && "+command+"")
+                                if result == 0:
+                                    print("Running regression ...")	
+                                    regressionPath = paths.currentProject + "/" + version["fullVersion"] + "/src/postgresql-" + version["fullVersion"]
+                                    command = " make check > "+ paths.currentProject +"/"+version["fullVersion"]+"/logs/PostgresqlRegression.log 2>&1"
+                                    resultPgsqlRegression = os.system("cd "+regressionPath+" && "+command+"")
+                                    if resultPgsqlRegression == 0:
+                                        print("Regression passed...")
 
                                 if result == 0:
                                     # Running install
@@ -121,54 +120,54 @@ if configFile.postgresql == 1:
 
                                         # Running configure on postgis
                                         print("Running configure ...")
-                                        result = os.system("cd "+paths.currentProject+"/"+ version["fullVersion"] +"/src/postgis-"+postgisVersion +" && ./configure --prefix="+ paths.shareLib +" --with-pgconfig="+paths.currentProject+"/"+ version["fullVersion"] +"/build/"+version["majorVersion"]+"/bin/pg_config --with-gdalconfig="+ paths.shareLib +"/bin/gdal-config  --with-geosconfig="+ paths.shareLib +"/bin/geos-config --with-projdir="+ paths.shareLib +" > "+paths.currentProject+"/"+version["fullVersion"] +"/logs/PostgisConfigure.log 2>&1")
+                                        #result = os.system("cd "+paths.currentProject+"/"+ version["fullVersion"] +"/src/postgis-"+postgisVersion +" && ./configure --prefix="+ paths.shareLib +" --with-pgconfig="+paths.currentProject+"/"+ version["fullVersion"] +"/build/"+version["majorVersion"]+"/bin/pg_config --with-gdalconfig="+ paths.shareLib +"/bin/gdal-config  --with-geosconfig="+ paths.shareLib +"/bin/geos-config --with-projdir="+ paths.shareLib +" > "+paths.currentProject+"/"+version["fullVersion"] +"/logs/PostgisConfigure.log 2>&1")
 
-                                        if result == 0:
+                                        if 0 == 0:
                                             
                                             # Running build
                                             print("Running make ...")
-                                            result = os.system("cd "+paths.currentProject+"/"+version["fullVersion"]+"/src/postgis-"+postgisVersion+" && make > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/PostgisBuild.log 2>&1")
+                                            #result = os.system("cd "+paths.currentProject+"/"+version["fullVersion"]+"/src/postgis-"+postgisVersion+" && make > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/PostgisBuild.log 2>&1")
 
-                                            if result == 0:
-                    
+                                            if 0 == 0:
+                                                print("init")
                                                 # Starting postgresql server
-                                                result = os.system("cd "+paths.currentProject + "/"+ version["fullVersion"] + "/build/" +version["majorVersion"]+ "/bin && ./initdb -D data > "+ paths.currentProject + "/" + version["fullVersion"] + "/logs/PostgresqlInit.log 2>&1")
-                                                if result == 0:
-                                           	         
-                                                    result = os.system("cd "+paths.currentProject + "/"+ version["fullVersion"] + "/build/" +version["majorVersion"]+ "/bin && ./pg_ctl -D data start > "+ paths.currentProject + "/" + version["fullVersion"] + "/logs/PostgresStart.log 2>&1")
-                                                    if result == 0:
+                                                #result = os.system("cd "+paths.currentProject + "/"+ version["fullVersion"] + "/build/" +version["majorVersion"]+ "/bin && ./initdb -D data > "+ paths.currentProject + "/" + version["fullVersion"] + "/logs/PostgresqlInit.log 2>&1")
+                                                if 0 == 0:
+                                                    print("start")
+                                                    #result = os.system("cd "+paths.currentProject + "/"+ version["fullVersion"] + "/build/" +version["majorVersion"]+ "/bin && ./pg_ctl -D data start > "+ paths.currentProject + "/" + version["fullVersion"] + "/logs/PostgresStart.log 2>&1")
+                                                    if 0 == 0:
                                                         # Running regression
                                                         print("Running regression ...")
-                                                        result = os.system("cd " + paths.currentProject + "/" + version["fullVersion"] + "/src/postgis-" + postgisVersion + " && make check > " + paths.currentProject + "/" + version["fullVersion"] + "/logs/PostgisRegression.log 2>&1")
+                                                        #result = os.system("cd " + paths.currentProject + "/" + version["fullVersion"] + "/src/postgis-" + postgisVersion + " && make check > " + paths.currentProject + "/" + version["fullVersion"] + "/logs/PostgisRegression.log 2>&1")
                                                 
-                                                        os.system("cd "+paths.currentProject + "/"+ version["fullVersion"] + "/build/" +version["majorVersion"]+ "/bin && rm -rf data ")
+                                                        #os.system("cd "+paths.currentProject + "/"+ version["fullVersion"] + "/build/" +version["majorVersion"]+ "/bin && rm -rf data ")
 
-                                                        if result == 0:
+                                                        if 0 == 0:
                                                             # Running install
                                                             print("Running make install ...")
-                                                            result = os.system("cd "+paths.currentProject+"/"+version["fullVersion"]+"/src/postgis-"+postgisVersion+" && make install > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/PostgisInstallation.log 2>&1")
+                                                            #result = os.system("cd "+paths.currentProject+"/"+version["fullVersion"]+"/src/postgis-"+postgisVersion+" && make install > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/PostgisInstallation.log 2>&1")
 
-                                                            if result == 0:
+                                                            if 0 == 0:
                                                                 print("\n*********************************************************************\n")
                                                                 print("\n                      Finalizing the automation                      \n")
                                                                 print("\n*********************************************************************\n")
                                                                 time.sleep(3)
-
+                                                                                                                                
                                                                 # Copying required libraries to build
                                                                 print("Copying required libraries to build ...")
                                                                 src= paths.shareLib + "/lib/"
                                                                 dest = ""+paths.currentProject+"/"+version["fullVersion"]+"/build/"+version["majorVersion"]+"/lib/"
-                                                                copyFile.copy(src, dest)
+                                                                copy(src, dest)
  
                                                                 print("Copying share into share ...")
                                                                 src= paths.shareLib + "/share/"
                                                                 dest = ""+paths.currentProject+"/"+version["fullVersion"]+"/build/"+version["majorVersion"]+"/share/"
-                                                                copyFile.copy(src, dest)                
+                                                                copy(src, dest)                
 
                                                                 # Copying openssl
                                                                 src = "/Users/2ndquadrant/2UDA/openssl-1.0.2g/inst/lib"
                                                                 dest = paths.root+ "/workDir/" + currentDateTime + "/" + version['fullVersion'] + "/build/" + version['majorVersion'] + "/lib"
-                                                                copyFile.copy(src, dest)
+                                                                copy(src, dest)
                                                                 time.sleep(2) 
 
                                                                 # Setting RunTime path
@@ -185,8 +184,11 @@ if configFile.postgresql == 1:
                                                                     os.system('cd ' + binPath + ' && install_name_tool -change "'+paths.shareLib+'/lib/libproj.13.dylib" "@executable_path/../lib/libproj.13.dylib" "./' + file + '" >> ' + paths.currentProject + "/" + version["fullVersion"] + "/logs/binChange.log 2>&1")
                                                                     os.system('cd ' + binPath + ' && install_name_tool -change "'+paths.shareLib+'/lib/libgeos-3.6.2.dylib" "@executable_path/../lib/libgeos-3.6.2.dylib" "./' + file + '" >> ' + paths.currentProject + "/" + version["fullVersion"] + "/logs/binChange.log 2>&1")
                                                                     os.system('cd ' + binPath + ' && install_name_tool -change "'+paths.shareLib+'/lib/libgdal.20.dylib" "@executable_path/../lib/libgdal.20.dylib" "./' + file + '" >> ' + paths.currentProject + "/" + version["fullVersion"] + "/logs/binChange.log 2>&1")
+                                                                    os.system('cd ' + binPath + ' && install_name_tool -change "'+paths.shareLib+'/lib/libicui18n.62.dylib" "@executable_path/../lib/libicui18n.62.dylib" "./' + file + '" >> ' + paths.currentProject + "/" + version["fullVersion"] + "/logs/binChange.log 2>&1")
+                                                                    os.system('cd ' + binPath + ' && install_name_tool -change "'+paths.shareLib+'/lib/libicuuc.62.dylib" "@executable_path/../lib/libicuuc.62.dylib" "./' + file + '" >> ' + paths.currentProject + "/" + version["fullVersion"] + "/logs/binChange.log 2>&1")
+                                                                    os.system('cd ' + binPath + ' && install_name_tool -change "'+paths.shareLib+'/lib/libicudata.62.dylib" "@executable_path/../lib/libicudata.62.dylib" "./' + file + '" >> ' + paths.currentProject + "/" + version["fullVersion"] + "/logs/binChange.log 2>&1")
 
-                                 
+
 
                                                                 # Lib
                                                                 libPath = paths.currentProject + "/" + version["fullVersion"] + "/build/" + version["majorVersion"] + "/lib"
@@ -200,8 +202,9 @@ if configFile.postgresql == 1:
                                                                     os.system('cd ' + libPath + ' && install_name_tool -change "'+paths.shareLib+'/lib/libproj.13.dylib" "@executable_path/../lib/libproj.13.dylib" "./' + file + '" >> ' + paths.currentProject + "/" + version["fullVersion"] + "/logs/binChange.log 2>&1")
                                                                     os.system('cd ' + libPath + ' && install_name_tool -change "'+paths.shareLib+'/lib/libgeos-3.6.2.dylib" "@executable_path/../lib/libgeos-3.6.2.dylib" "./' + file + '" >> ' + paths.currentProject + "/" +version["fullVersion"] + "/logs/binChange.log 2>&1")
                                                                     os.system('cd ' + libPath + ' && install_name_tool -change "'+paths.shareLib+'/lib/libgdal.20.dylib" "@executable_path/../lib/libgdal.20.dylib" "./' + file + '" >> ' + paths.currentProject + "/" + version["fullVersion"] + "/logs/binChange.log 2>&1")
-
-
+                                                                    os.system('cd ' + libPath + ' && install_name_tool -change "'+paths.shareLib+'/lib/libicui18n.62.dylib" "@executable_path/../lib/libicui18n.62.dylib" "./' + file + '" >> ' + paths.currentProject + "/" + version["fullVersion"] + "/logs/libChange.log 2>&1")
+                                                                    os.system('cd ' + libPath + ' && install_name_tool -change "'+paths.shareLib+'/lib/libicuuc.62.dylib" "@executable_path/../lib/libicuuc.62.dylib" "./' + file + '" >> ' + paths.currentProject + "/" + version["fullVersion"] + "/logs/libChange.log 2>&1")
+                                                                    os.system('cd ' + libPath + ' && install_name_tool -change "'+paths.shareLib+'/lib/libicudata.62.dylib" "@executable_path/../lib/libicudata.62.dylib" "./' + file + '" >> ' + paths.currentProject + "/" + version["fullVersion"] + "/logs/libChange.log 2>&1")
 
                                                                 # Lib/postgresql
                                                                 postgresql = paths.currentProject + "/" + version["fullVersion"] + "/build/" + version["majorVersion"] + "/lib/postgresql"
@@ -215,8 +218,9 @@ if configFile.postgresql == 1:
                                                                     os.system('cd ' + postgresql + ' && install_name_tool -change "'+paths.shareLib+'/lib/libproj.13.dylib" "@executable_path/../lib/libproj.13.dylib" "./' + file + '" >> ' + paths.currentProject + "/" + version["fullVersion"] + "/logs/binChange.log 2>&1")
                                                                     os.system('cd ' + postgresql + ' && install_name_tool -change "'+paths.shareLib+'/lib/libgeos-3.6.2.dylib" "@executable_path/../lib/libgeos-3.6.2.dylib" "./' + file + '" >> ' + paths.currentProject + "/" + version["fullVersion"] + "/logs/binChange.log 2>&1")
                                                                     os.system('cd ' + postgresql + ' && install_name_tool -change "'+paths.shareLib+'/lib/libgdal.20.dylib" "@executable_path/../lib/libgdal.20.dylib" "./' + file + '" >> ' + paths.currentProject + "/" + version["fullVersion"] + "/logs/binChange.log 2>&1")       
-
-
+                                                                    os.system('cd ' + postgresql + ' && install_name_tool -change "'+paths.shareLib+'/lib/libicui18n.62.dylib" "@executable_path/../lib/libicui18n.62.dylib" "./' + file + '" >> ' + paths.currentProject + "/" + version["fullVersion"] + "/logs/postgresqlChange.log 2>&1")
+                                                                    os.system('cd ' + postgresql + ' && install_name_tool -change "'+paths.shareLib+'/lib/libicuuc.62.dylib" "@executable_path/../lib/libicuuc.62.dylib" "./' + file + '" >> ' + paths.currentProject + "/" + version["fullVersion"] + "/logs/postgresqlChange.log 2>&1")
+                                                                    os.system('cd ' + postgresql + ' && install_name_tool -change "'+paths.shareLib+'/lib/libicudata.62.dylib" "@executable_path/../lib/libicudata.62.dylib" "./' + file + '" >> ' + paths.currentProject + "/" + version["fullVersion"] + "/logs/postgresqlChange.log 2>&1")
                                                                 # Removing extra files
                                                                 os.system("rm -rf postgresql-" + version["fullVersion"] + ".tar.gz postgis-" + postgisVersion + ".tar.gz")
 
