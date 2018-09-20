@@ -101,7 +101,7 @@ if configFile.postgresql == 1:
                                             # Running build
                                             print("Running build ...")
                                             buildPath = paths.currentProject + "/" + version["fullVersion"] + "/src/postgresql-" + version["fullVersion"]
-                                            command = " m	ake world > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/PostgresqlBuild.log 2>&1"
+                                            command = " make world > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/PostgresqlBuild.log 2>&1"
                                             resultPgsqlBuild = os.system("cd "+buildPath+" && "+command+"")
                                 
                                             if resultPgsqlBuild == 0:
@@ -147,17 +147,8 @@ if configFile.postgresql == 1:
                                                                             print("Running make install ...")
                                                                       
                                                                             #resultPostgisInstall = os.system("cd "+paths.currentProject+"/"+version["fullVersion"]+"/src/postgis-"+ postgisVersion +" && make install > "+paths.currentProject+"/"+version["fullVersion"]+"/logs/PostgisInstall.log 2>&1")
-                                                                            if 0 == 0:
- 
-                                                                                print("----Adding ICU support----")
-                                                                                os.system("wget http://api.pgxn.org/dist/icu_ext/1.3.0/icu_ext-1.3.0.zip > "+ paths.currentProject +"/"+ version["fullVersion"] +"/logs/icu_ext_download.log 2>&1")
-                                                                                os.system("unzip icu_ext-1.3.0.zip -d " + paths.currentProject +"/"+ version["fullVersion"] +"/src")
-                                                                                resultPgxs = os.system("cd "+ paths.currentProject +"/"+ version["fullVersion"] +"/src/icu_ext-1.3.0 && make USE_PGXS=1 > "+ paths.currentProject +"/"+ version["fullVersion"] +"/logs/icu_ext.log 2>&1")
-                                                                                if resultPgxs == 0:
-                                                                                    resultPgxs = os.system("cd "+ paths.currentProject +"/"+ version["fullVersion"] +"/src/icu_ext-1.3.0 && make USE_PGXS=1 install > "+ paths.currentProject +"/"+ version["fullVersion"] +"/logs/icu_ext.log 2>&1")
-                                                                                    if resultPgxs == 0:
-                                                                                        print("Icu added")                                                                              
-                                                                                        # Copying required libraries to build
+                                                                            if 0 == 0:                                                                     
+                                                                                # Copying required libraries to build
                                                                                 print("Copying required libraries to build ...")
                                                                                 src = paths.shareLib + "/lib/*"
                                                                                 dest = ""+paths.currentProject+"/"+version["fullVersion"]+"/build/"+version["majorVersion"]+"/lib/"
