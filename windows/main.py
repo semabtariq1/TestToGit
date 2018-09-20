@@ -122,7 +122,7 @@ if operatingSystem is "Windows":
         for version in configFile.decoded['v']:
             link = "https://ftp.postgresql.org/pub/source/v" + version['fullVersion'] + "/postgresql-" + version[
                  'fullVersion'] + ".tar.gz"
-            downloadFile.downloadFile(link, "postgres-"+version['fullVersion']+".tar.gz")
+            #downloadFile.downloadFile(link, "postgres-"+version['fullVersion']+".tar.gz")
 
             installSoftware.unzipPostgres(version['fullVersion'])
 
@@ -152,6 +152,9 @@ if operatingSystem is "Windows":
             elif "openssl" in li:
                 line[number] = "    openssl   => '"+pathVariable.rootDirectory+"\\winShareLib\\openssl',    # --with-openssl=<path>"
                 open(config_default, 'w').write('\n'.join(line))
+            elif "icu" in li:
+                line[number] = "    icu       => '"+pathVariable.rootDirectory+"\\winShareLib\\icu\\binaries',    # --with-openssl=<path>"
+                open(config_default, 'w').write('\n'.join(line))
             elif "zlib" in li:
                 line[number] = "    zlib      => '"+pathVariable.rootDirectory+"\\winShareLib\\zlib'    # --with-zlib=<path>"
                 open(config_default, 'w').write('\n'.join(line))
@@ -172,6 +175,11 @@ if operatingSystem is "Windows":
         dest = pathVariable.rootDirectory + "\\workDir\\" + savedDateTime + "\\" + version['fullVersion'] + "\\build\\" + \
                version['majorVersion']
         copyFile.copy(src, dest)
+		# icu
+        src = pathVariable.rootDirectory + "\\winShareLib\\icu\\binaries\\bin64\\"
+        dest = pathVariable.rootDirectory + "\\workDir\\" + savedDateTime + "\\" + version['fullVersion'] + "\\build\\" + \
+               version['majorVersion']+ "\\bin"
+        copyFile.copy(src, dest)
     time.sleep(3)
 
 
@@ -185,7 +193,7 @@ if operatingSystem is "Windows":
 
             print("\n\nRunning regression ...")
             time.sleep(3)
-            #resultRegression = regressionProc.startRegresstion(version['fullVersion'])
+            # resultRegression = regressionProc.startRegresstion(version['fullVersion'])
             resultRegression = 0
             if resultRegression == 0:
 
@@ -200,8 +208,9 @@ if operatingSystem is "Windows":
                     src = pathVariable.rootDirectory + "\\winShareLib\\postgis"
                     dest = pathVariable.rootDirectory + "\\workDir\\" + savedDateTime + "\\" + version[
                         'fullVersion'] + "\\build\\" + version['majorVersion']
-                    copyFile.copy(src, dest)
-
+                    #copyFile.copy(src, dest)
+					
+					
                     # copying documentation into installation directory
                     print("copying documentation files ...")
                     for version in configFile.decoded['v']:
