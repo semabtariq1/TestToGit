@@ -4,7 +4,9 @@ import json
 class config_file:
 
     # Setting variables 
-    share_lib = "/opt/PGInstaller/Python-automation-code/linux_share_lib1"
+    vs_command_prompt_x64 = "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC"
+    windows_cmd = 'C:\\Windows\\system32\\cmd.exe'
+    share_lib = "C:\\build-python\\PGInstaller\\windows\\winShareLib"
     python_home = "c:\\python33"
     # External lib path please add space after each path
     external_path = "C:\\Program Files (x86)\\GnuWin32\\bin"
