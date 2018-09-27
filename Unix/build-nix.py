@@ -1,41 +1,82 @@
-import threading
 import time
 import platform
 import os
 import config
+import smtplib
+import email
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email import encoders
 
 # File which store all the output messages
 output_file = open("output.txt", "a")
 
+os.system("clear")
+
+
+output_file.write("\n\n----- Running pre build steps -----\n\n")
+
+time.sleep(3)
+
+# Initializing classes
+output_file.write("Initializing classes ...\n")
+config_file = config.config_file()
+
+# Detecting operating system
+os_name = platform.system();
+output_file.write("Detected operating system is ... "+ os_name +"\n")
+# setting and Modifying variables according to detected OS
+download_keyword = "curl -O"
+if os_name == "Linux":
+    download_keyword = "wget"
+ 
+# Getting values from system
+output_file.write("Getting required values from system ...\n")
+current_date_time = time.strftime("%Y%m%d%H%M%S")
+root = os.path.dirname(os.path.abspath(__file__))
+
+time.sleep(2)
+
+# Global variables
+build_result = "null"
+
+# Custom functions
+# Generate an attached email
+def send__email_with_output_file(build_result):
+    
+    for email in config_file.email_info_decoded['email']:
+        
+          msg = MIMEMultipart()
+          msg['From'] = email['from']
+          msg['To'] = email['to']
+
+          if build_result == 0:
+              msg['Subject'] = "Build process completed successfully for "+ os_name
+              body = "see following attached file for more details ..."
+          else:
+              msg['Subject'] = "Build process failed for " +os_name
+              body = "See following attached output file for more error details ..."
+
+          msg.attach(MIMEText(body, 'plain'))
+          filename = "output.txt"
+          attachment = open( root +"/output.txt", "rb")
+          part = MIMEBase('application', 'octet-stream')
+          part.set_payload((attachment).read())
+          encoders.encode_base64(part)
+          part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+          msg.attach(part)
+
+          server = smtplib.SMTP('smtp.gmail.com', 587)
+          server.starttls()
+          server.login(email['from'], email['sender_password'])
+          text = msg.as_string()
+          server.sendmail(email['from'], email['to'], text)
+          server.quit()
+
+time.sleep(2)
+
 try:
-
-    os.system("clear")
-
-
-    output_file.write("\n\n----- Running pre build steps -----\n\n")
-
-    time.sleep(3)
-
-    # Initializing classes
-    output_file.write("Initializing classes ...\n")
-    config_file = config.config_file()
-
-    time.sleep(2)
-
-    # Detecting operating system
-    os_name = platform.system();
-    output_file.write("Detected operating system is ... "+ os_name +"\n")
-    # setting and Modifying variables according to detected OS
-    download_keyword = "curl -O"
-    if os_name == "Linux":
-        download_keyword = "wget"
-
-    time.sleep(2)
-
-    # Getting values from system
-    output_file.write("Getting required values from system ...\n")
-    current_date_time = time.strftime("%Y%m%d%H%M%S")
-    root = os.path.dirname(os.path.abspath(__file__))
 
     time.sleep(2)
 
@@ -340,46 +381,64 @@ postgreSQL_version["full_version"] +"/logs/postgis_configure.log 2>&1")
                                                                                     time.sleep(2)
  
                                                                                     output_file.write("\n\nBuild is completed successfully\n\n")
+                                                                                    build_result = 0
                                                                                 else:
                                                                                     output_file.write("Copying openssl/lib to build fails see copy_openssl_share_lib.log for more details ...\n")
+                                                                                    build_result = 1
                                                                             else:
                                                                                 output_file.write("Copying share/proj to build fails see copy_proj_share_lib.log for more details ...\n")
+                                                                                build_result = 1
                                                                         else:
                                                                             output_file.wite("Copying share/gdal to build fails see copy_gdal_share_lib.log for more details ...\n")
+                                                                            build_result = 1
                                                                     else:
                                                                         output_file.write("Copying lib from share library to build fails see copy_share_lib.log for more details ...\n")
+                                                                        build_result = 1
                                                                 else:
                                                                     output_file.write("Postgis installation fails see postgis_install.log for more details ...\n")
+                                                                    build_result = 1
                                                             else:
                                                                 output_file.write("Postgis regression fails see postgis_regression.log for more details ...\n")
+                                                                build_result = 1
                                                         else:
                                                             output_file.write("Could not start postgreSQL service see postgreSQL_start.log for more details ...\n")
+                                                            build_result = 1
                                                     else:
                                                         output_file.write("PostgreSQL initdb fails see postgreSQL_init.log for more details ...\n")
+                                                        build_result = 1
                                                 else:
                                                     output_file.write("Postgis build fails see postgis_build.log for more details ...\n")
+                                                    build_result = 1
                                             else:
                                                 output_file.write("Postgis configure fails see postgis_configure.log for more details ...\n")
+                                                build_result = 1
                                         else:
                                             output_file.write("postgis unzipping fails ...\n")
+                                            build_result = 1
                                     else:
                                         output_file.write("Postgis downloading fails see postgis_download.log for more detals ...\n")
+                                        build_result = 1
                             else:
                                 output_file.write("PostgreSQL installations fails see postgreSQL_install.log for more details ...\n")
+                                build_result = 1
                         else:
                             output_file.write("PostgreSQL regression fails see postgreSQL_regression.log for more details ...\n")
+                            build_result = 1
                     else:
                         output_file.write("PostgreSQL build fails see postgreSQL_build.log for more details ...\n")
+                        build_result = 1
                 else:
                     output_file.write("PostgreSQL configure fails see postgreSQL_configure.log for more details ...\n")
+                    build_result = 1
             else:
                 output_file.write("PostgreSQL unzipping failed ...\n")
+                build_result = 1
         else:
             output_file.write("PostgreSQL source code downloading is failed ...\n")
+            build_result = 1
 
 except Exception as e:
     print(e)
-
-
-
-
+finally:
+    output_file.close()
+    send__email_with_output_file(build_result)

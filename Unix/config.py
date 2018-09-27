@@ -25,3 +25,6 @@ class config_file:
     postgis_required = 1
     postgis_download_url = "https://download.osgeo.org/postgis/source/postgis-2.4.4.tar.gz"
     postgis_full_version = "2.4.4"
+
+    email_info = '{"email": [{"from" : "semab.tariq@2ndquadrant.com", "to" : "muhammad.haroon@2ndquadrant.com ", "sender_password": "Your password"} ] }'
+    email_info_decoded = json.loads(email_info)
