@@ -1,3 +1,4 @@
+import threading
 import time
 import platform
 import os
@@ -9,11 +10,11 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 
+
 # File which store all the output messages
 output_file = open("output.txt", "a")
 
 os.system("clear")
-
 
 output_file.write("\n\n----- Running pre build steps -----\n\n")
 
@@ -30,7 +31,15 @@ output_file.write("Detected operating system is ... "+ os_name +"\n")
 download_keyword = "curl -O"
 if os_name == "Linux":
     download_keyword = "wget"
- 
+else:
+    # Thread class
+    class thread(threading.Thread):
+        def run(self):
+            os.system('ssh '+ config_file.linux_box +' "cd '+ config_file.build_code_linux +' && python3 build-nix.py"')
+    thread_to_call_linux_machine = thread()
+    thread_to_call_linux_machine.start()
+
+
 # Getting values from system
 output_file.write("Getting required values from system ...\n")
 current_date_time = time.strftime("%Y%m%d%H%M%S")

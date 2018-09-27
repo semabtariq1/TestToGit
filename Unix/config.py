@@ -4,6 +4,8 @@ import json
 class config_file:
 
     # Setting variables 
+    linux_box = "build@54.169.212.98"
+    build_code_linux = "/opt/semabHome/build-unix/PGInstaller/Unix"
     python_home = "/opt/Python-3.4.4/inst"
     openssl_home = "/opt/openssl-1.0.2g/inst"
     share_lib = "/opt/PGInstaller/Python-automation-code/linux_share_lib1"
@@ -26,5 +28,5 @@ class config_file:
     postgis_download_url = "https://download.osgeo.org/postgis/source/postgis-2.4.4.tar.gz"
     postgis_full_version = "2.4.4"
 
-    email_info = '{"email": [{"from" : "semab.tariq@2ndquadrant.com", "to" : "muhammad.haroon@2ndquadrant.com ", "sender_password": "Your password"} ] }'
+    email_info = '{"email": [{"from" : "semab.tariq@2ndquadrant.com", "to" : "semab.tariq@2ndquadrant.com", "sender_password": "youe password"} ] }'
     email_info_decoded = json.loads(email_info)
