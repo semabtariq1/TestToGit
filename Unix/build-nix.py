@@ -1,7 +1,7 @@
 import time
 import platform
 import os
-import Config_file
+import config
 
 try:
 
@@ -15,7 +15,7 @@ try:
 
     # Initializing classes
     print("Initializing classes ...")
-    config_file = Config_file.config_file()
+    config_file = config.config_file()
 
     time.sleep(2)
 
