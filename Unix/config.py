@@ -69,12 +69,12 @@ class config_file:
     1 = enable
     0 = disable """
 
-    with_openssl = 1
-    with_gssapi = 1
-    with_python = 1
-    with_ldap = 1
-    with_zlib = 1
-    with_icu = 1
+    openssl = 1
+    gssapi = 1
+    python = 1
+    ldap = 1
+    zlib = 1
+    icu = 1
 
 
     """ postgreSQL_info is a json array which will hold

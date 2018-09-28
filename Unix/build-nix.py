@@ -365,17 +365,17 @@ try:
                 output_file.write("Checking for required configure options for postgreSQL ...\n")
                 output_file.close()
                 configure_with = ""
-                if config_file.with_openssl == 1:
+                if config_file.openssl == 1:
                     configure_with = configure_with +" --with-openssl "
-                if config_file.with_gssapi == 1:
+                if config_file.gssapi == 1:
                     configure_with = configure_with +" --with-gssapi "
-                if config_file.with_python == 1:
+                if config_file.python == 1:
                     configure_with = configure_with +" --with-python "
-                if config_file.with_ldap == 1:
+                if config_file.ldap == 1:
                     configure_with = configure_with +" --with-ldap "
-                if config_file.with_zlib == 1:
+                if config_file.zlib == 1:
                     configure_with = configure_with +" --with-zlib "
-                if config_file.with_icu == 1:
+                if config_file.icu == 1:
                     configure_with = configure_with +" --with-icu "
                 time.sleep(2)
                 output_file = open("output.txt", "a")
