@@ -92,6 +92,14 @@ def send__email_with_output_file():
 
 time.sleep(2)
 
+# Sending build to mac 
+def send_build_to_mac(tar_file_path, log_file_path):
+    if os_name == "Linux":
+        os.system('scp '+ tar_file_path +' '+ config_file.mac_address +':'+ config_file.mac_build_path +' > '+ log_file_path +'/copy_binary_to_osx.log 2>&1')
+
+def copy_build(tar_file_path, log_file_path):
+    os.system('cp '+ tar_file_path +' '+ config_file.mac_build_path +' > '+ log_file_path +'/copy_osx_build.log 2>&1')
+
 try:
 
     output_file = open("output.txt", "a")
@@ -130,7 +138,7 @@ try:
         postgreSQL_bin_path = current_project + "/" + postgreSQL_version["full_version"] +"/build/"+ postgreSQL_version["major_version"] +"/bin"
         postgreSQL_lib_path = current_project + "/" + postgreSQL_version["full_version"] +"/build/"+ postgreSQL_version["major_version"] +"/lib"    
         postgreSQL_share_path = current_project + "/" + postgreSQL_version["full_version"] +"/build/"+ postgreSQL_version["major_version"] +"/share"    
- 
+        tar_file_path = current_project + "/" + postgreSQL_version["full_version"] +"/build/Postgresql-"+ os_name +"-"+ postgreSQL_version['full_version'] +".tar.gz"       
         time.sleep(2)
       
         # Saving system paths variable value to reset it again 
@@ -285,7 +293,7 @@ try:
                             output_file = open("output.txt", "a")
                             output_file.write("Generating zip file ...\n")
                             output_file.close()
-                            os.system("cd "+ current_project +"/"+ postgreSQL_version["full_version"] +" && tar -zcvf Postgresql"+ postgreSQL_version["full_version"] +"-linux-"+ postgreSQL_version['full_version'] +".tar.gz build > "+ current_project +"/"+ postgreSQL_version["full_version"] +"/logs/postgreSQL_build_zip.log 2>&1")
+                            os.system("cd "+ current_project +"/"+ postgreSQL_version["full_version"] +"/build && tar -zcvf Postgresql-"+ os_name +"-"+ postgreSQL_version['full_version'] +".tar.gz "+ postgreSQL_version["major_version"] +" > "+ current_project +"/"+ postgreSQL_version["full_version"] +"/logs/postgreSQL_build_zip.log 2>&1")
 
                             # Final message
                             output_file = open("output.txt", "a")
@@ -494,6 +502,7 @@ postgreSQL_version["full_version"] +"/logs/postgis_configure.log 2>&1")
                                                                     output_file.close()
                                                                     if post_build_steps():
                                                                         build_result = 0
+                                                                        
                                                                 else:
                                                                     output_file = open("output.txt", "a")
                                                                     output_file.write("Postgis installation fails see postgis_install.log for more details ...\n")
@@ -577,4 +586,11 @@ except Exception as e:
 finally:
     output_file.close()
     send__email_with_output_file()
+    if build_result == 0:
+     
+        if os_name == "Linux":
+            
+            send_build_to_mac(tar_file_path, dir_logs)
+        else:
+            copy_build(tar_file_path, dir_logs)        
     os.system("cd "+ root +" && rm -rf output.txt")

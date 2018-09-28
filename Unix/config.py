@@ -9,7 +9,9 @@ class config_file:
     python_home = "/opt/Python-3.4.4/inst"
     openssl_home = "/opt/openssl-1.0.2g/inst"
     share_lib = "/opt/PGInstaller/Python-automation-code/linux_share_lib1"
-    
+    mac_address = "2ndquadrant@208.52.185.118"
+    mac_build_path = "/Users/2ndquadrant/semabHome/releaseBuilds/test_dir"
+
     # PostgreSQL configure options (1 for build 0 for do not build)
     with_openssl = 1
     with_gssapi = 1
@@ -28,5 +30,5 @@ class config_file:
     postgis_download_url = "https://download.osgeo.org/postgis/source/postgis-2.4.4.tar.gz"
     postgis_full_version = "2.4.4"
 
-    email_info = '{"email": [{"from" : "semab.tariq@2ndquadrant.com", "to" : "semab.tariq@2ndquadrant.com", "sender_password": "youe password"} ] }'
+    email_info = '{"email": [{"from" : "semab.tariq@2ndquadrant.com", "to" : "semab.tariq@2ndquadrant.com", "sender_password": "your password"} ] }'
     email_info_decoded = json.loads(email_info)
