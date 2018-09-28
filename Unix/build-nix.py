@@ -577,3 +577,4 @@ except Exception as e:
 finally:
     output_file.close()
     send__email_with_output_file()
+    os.system("cd "+ root +" && rm -rf output.txt")
