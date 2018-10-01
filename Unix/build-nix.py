@@ -18,7 +18,19 @@ output_file = open("output.txt", "a")
 output_file.write("\n\n----- Running pre build steps -----\n\n")
 output_file.close()
 
-time.sleep(3)
+# Getting values from system
+output_file = open("output.txt", "a")
+output_file.write("Getting required values from system ...\n")
+output_file.close()
+current_date_time = time.strftime("%Y%m%d%H%M%S")
+root = os.path.dirname(os.path.abspath(__file__))
+
+try:
+    time.sleep(3)
+except:
+    print("User cancle the execution ...")
+    os.system("cd "+ root +" && rm -rf output.txt")
+    quit()
 
 # Initializing classes
 output_file = open("output.txt", "a")
@@ -45,15 +57,12 @@ else:
     thread_to_call_linux_machine = thread()
     thread_to_call_linux_machine.start()
 
-
-# Getting values from system
-output_file = open("output.txt", "a")
-output_file.write("Getting required values from system ...\n")
-output_file.close()
-current_date_time = time.strftime("%Y%m%d%H%M%S")
-root = os.path.dirname(os.path.abspath(__file__))
-
-time.sleep(2)
+try:
+    time.sleep(2)
+except:
+    print("User cancle the execution ...")
+    os.system("cd "+ root +" && rm -rf output.txt")
+    quit()
 
 # Global variables
 build_result = "null"
@@ -90,7 +99,6 @@ def send__email_with_output_file():
           server.sendmail(email['from'], email['to'], text)
           server.quit()
 
-time.sleep(2)
 
 # Sending build to mac 
 def send_build_to_mac(tar_file_path, log_file_path):
