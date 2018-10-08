@@ -11,6 +11,7 @@ supported features list bellow
 . Ldap
 . Zlib
 . Icu 
+. Perl
 
 Note:
 This build code only handles those features which are 
@@ -39,10 +40,10 @@ class config_file:
     different paths according to your system """
     
     """ Paths that you must change """
-
-    python_home = "path to inst directory"
-    openssl_home = "path to inst directory"
-    share_lib = "path to where ypu have all the prebuild binaries"
+    pl_languages = "/opt/2ndQuadrant/pl-languages"
+    python_home = "/opt/Python-3.4.4/inst"
+    openssl_home = "/opt/openssl-1.0.2g/inst"
+    share_lib = "/opt/PGInstaller/Python-automation-code/linux_share_lib1"
 
 
     """ In addition if you want to controll 2 different 
@@ -69,6 +70,7 @@ class config_file:
     1 = enable
     0 = disable """
 
+    pl_perl = 1
     openssl = 1
     gssapi = 1
     python = 1
@@ -99,7 +101,7 @@ class config_file:
     Postgis will be only available for stable releases 
     of postgreSQL """
 
-    postgis_required = 1
+    postgis_required = 0
     postgis_download_url = "https://download.osgeo.org/postgis/source/postgis-2.4.4.tar.gz"
     postgis_full_version = "2.4.4"
 
@@ -116,5 +118,5 @@ class config_file:
     Visit this link to get more details
     https://support.google.com/a/answer/6260879?hl=en """
 
-    email_info = '{"email": [{"from" : "your email", "to" : "to whom you want to send", "sender_password": "your password"} ] }'
+    email_info = '{"email": [{"from" : "semab.tariq@2ndquadrant.com", "to" : "semab.tariq@2ndquadrant.com", "sender_password": "FDSA016016semab"} ] }'
     email_info_decoded = json.loads(email_info)
