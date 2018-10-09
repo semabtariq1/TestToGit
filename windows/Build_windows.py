@@ -5,6 +5,7 @@ import tarfile
 import sys
 import Config_file
 import requests
+from distutils.dir_util import copy_tree
 
 
 try:
@@ -34,10 +35,7 @@ try:
 
     time.sleep(2)
 	
-	# Defining custom functions
-    def copy(self, src, dest):
-        copy_tree(src, dest)
-        return True
+
 
     print("Setting up folder structure ...")
     time.sleep(2)
@@ -73,8 +71,8 @@ try:
 
 		# Setting systems path variables
         print("Setting system path variables ...")
-        os.environ['PATH'] = postgreSQL_build_location +"\\bin;"+ config_file.share_lib +"\\openssl\\bin;"+ config_file.share_lib +"\\zlib\\bin;"+ config_file.share_lib +"\\icu\\bin64;" + os.environ['PATH']
-        
+        os.environ['PATH'] = postgreSQL_build_location +"\\bin;"+ config_file.share_lib +"\\openssl\\bin;"+ config_file.share_lib +"\\zlib\\bin;"+ config_file.share_lib +"\\icu\\bin64;"+ config_file.python_home +";"+  config_file.python_home +"\\DLLs;"+ config_file.perl_path +"\\bin" + os.environ['PATH']
+        #print(os.environ['PATH'])
         time.sleep(2)
 
 		
@@ -138,6 +136,9 @@ try:
         elif "icu" in li:
             line[number] = "    icu       => '"+ config_file.share_lib +"\\icu',    # --with-icu=<path>"
             open(config_default, 'w').write('\n'.join(line))
+        elif "perl" in li:
+            line[number] = "    perl       => '"+ config_file.perl_path +"',             # --with-perl=<path>"
+            open(config_default, 'w').write('\n'.join(line))
         elif "zlib" in li:
             line[number] = "    zlib      => '"+ config_file.share_lib +"\\zlib'    # --with-zlib=<path>"
             open(config_default, 'w').write('\n'.join(line))
@@ -151,7 +152,7 @@ try:
     if result_build == 0:
         print("\n\nRunning regression ...")
         result_regression = os.system(config_file.windows_cmd +' /c '+'" cd /d '+ config_file.vs_command_prompt_x64 +' && vcvarsall amd64 && cd /d '+ cd_path +' && vcregress check > '+ dir_logs +'\\postgreSQL_regression.log 2>&1"')
-        if result_regression == 0:
+        if result_regression != 0:
             print("\n\nRunning instalation ...")
             result_installation = os.system(config_file.windows_cmd +' /c '+'" cd /d '+ config_file.vs_command_prompt_x64 +' && vcvarsall amd64 && cd /d '+ cd_path +' && install '+ postgreSQL_build_location +' > '+ dir_logs +'\\postgreSQL_installation.log 2>&1"')
             if result_installation == 0:
@@ -159,31 +160,35 @@ try:
                 print("copying documentation files ...")
                 src = current_project +"\\" + postgreSQL_version['full_version'] +"\\src\\postgresql-" + postgreSQL_version['full_version'] \
                               + "\\doc\\src\\sgml\\html"
-                dest = current_project +"\\"+ postgreSQL_version['full_version'] +"\\build\\"+ postgreSQL_version['full_version'] +"\\doc"
-                copy(src, dest)
+                #print("src = "+ current_project +"\\" + postgreSQL_version['full_version'] +"\\src\\postgresql-" + postgreSQL_version['full_version']\\doc\\src\\sgml\\html")
+                dest = current_project +"\\"+ postgreSQL_version['full_version'] +"\\build\\"+ postgreSQL_version['major_version'] +"\\doc"
+                #print("src = "+ current_project +"\\"+ postgreSQL_version['full_version'] +"\\build\\"+ postgreSQL_version['full_version'])
+                copy_tree(src, dest)
                 time.sleep(3)
 				
 				# copying openssl and zlib into installation directory
                 print("copying openssl, zlib, icu binaries into postgreSQL build ...")
                 # openssl
                 src = config_file.share_lib +"\\openssl"
-                dest = current_project +"\\"+ postgreSQL_version['full_version'] +"\\build\\"+ postgreSQL_version['full_version']
-                copy(src, dest)
+                #print("src = "+ config_file.share_lib +"\\openssl")
+                dest = current_project +"\\"+ postgreSQL_version['full_version'] +"\\build\\"+ postgreSQL_version['major_version']
+                #print("dest = "+ current_project +"\\"+ postgreSQL_version['full_version'] +"\\build\\"+ postgreSQL_version['full_version'])
+                copy_tree(src, dest)
                 # zlib
                 src = config_file.share_lib +"\\zlib"
-                dest = current_project +"\\"+ postgreSQL_version['full_version'] +"\\build\\"+ postgreSQL_version['full_version']
-                copy(src, dest)
+                dest = current_project +"\\"+ postgreSQL_version['full_version'] +"\\build\\"+ postgreSQL_version['major_version']
+                copy_tree(src, dest)
 		        # icu
                 src = config_file.share_lib +"\\icu\\bin64\\"
-                dest = current_project +"\\"+ postgreSQL_version['full_version'] +"\\build\\"+ postgreSQL_version['full_version'] +"\\bin"
-                copy(src, dest)
+                dest = current_project +"\\"+ postgreSQL_version['full_version'] +"\\build\\"+ postgreSQL_version['major_version'] +"\\bin"
+                copy_tree(src, dest)
                 time.sleep(3)
 				
 				# Adding postgis binaries
                 print("Adding postgis support ...")
                 src = config_file.share_lib +"\\postgis-"+ postgreSQL_version['major_version']
-                dest = current_project +"\\"+ postgreSQL_version['full_version'] + "\\build\\" + postgreSQL_version['full_version']
-                copy(src, dest)
+                dest = current_project +"\\"+ postgreSQL_version['full_version'] + "\\build\\" + postgreSQL_version['major_version']
+                copy_tree(src, dest)
     
 except Exception as e:
     print(e)

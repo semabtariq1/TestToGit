@@ -6,10 +6,11 @@ class config_file:
     # Setting variables 
     vs_command_prompt_x64 = "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC"
     windows_cmd = 'C:\\Windows\\system32\\cmd.exe'
-    share_lib = "C:\\build-python\\PGInstaller\\windows\\winShareLib"
-    python_home = "c:\\python33"
+    share_lib = "C:\\semabHome\\PGInstaller\\windows\\winShareLib"
+    python_home = "C:\\semabHome\\PGInstaller\\windows\\winShareLib\\extra_utils\\python33\\Python33"
     # External lib path please add space after each path
-    external_path = "C:\\Program Files (x86)\\GnuWin32\\bin"
+    external_path = "C:\\semabHome\\PGInstaller\\windows\\winShareLib\\extra_utils\\bin"
+    perl_path = "c:\\perl"
     
     # PostgreSQL configure options (1 for build 0 for do not build)
     with_openssl = 1
