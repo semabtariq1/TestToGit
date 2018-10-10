@@ -17,7 +17,7 @@ class config_file:
     python = 1
     zlib = 1
     icu = 1
-    pl_perl = 1
+    perl = 1
 
     # PostgreSQL source code info
     postgreSQL_info = '{"postgreSQL_version": [{"full_version": "10.4", "major_version": "10", "miner_version" : "4",' \
@@ -30,3 +30,5 @@ class config_file:
     postgis_full_version = "2.4.4"
 	
 	
+    email_info = '{"email": [{"from" : "semab.tariq@2ndquadrant.com", "to" : "semab.tariq@2ndquadrant.com", "sender_password": "FDSA016016semab"} ] }'
+    email_info_decoded = json.loads(email_info)
