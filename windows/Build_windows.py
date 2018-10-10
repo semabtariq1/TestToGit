@@ -137,10 +137,22 @@ try:
                 line[number] = "    openssl   => '"+ config_file.share_lib +"\\openssl',    # --with-openssl=<path>"
                 open(config_default, 'w').write('\n'.join(line))
 				
+                # Copying Openssl binaries in build
+                src = config_file.share_lib +"\\openssl"
+                dest = current_project +"\\"+ postgreSQL_version['full_version'] +"\\build\\"+ postgreSQL_version['major_version']
+                #print("dest = "+ current_project +"\\"+ postgreSQL_version['full_version'] +"\\build\\"+ postgreSQL_version['full_version'])
+                copy_tree(src, dest)
+				
         elif "icu" in li:
             if config_file.icu == 1:
                 line[number] = "    icu       => '"+ config_file.share_lib +"\\icu',    # --with-icu=<path>"
                 open(config_default, 'w').write('\n'.join(line))
+				
+                # Copying icu binaries in build
+                src = config_file.share_lib +"\\icu\\bin64\\"
+                dest = current_project +"\\"+ postgreSQL_version['full_version'] +"\\build\\"+ postgreSQL_version['major_version'] +"\\bin"
+                copy_tree(src, dest)
+                time.sleep(3)
 				
         elif "perl" in li:
             if config_file.perl == 1:
@@ -151,6 +163,11 @@ try:
             if config_file.zlib == 1:
                 line[number] = "    zlib      => '"+ config_file.share_lib +"\\zlib'    # --with-zlib=<path>"
                 open(config_default, 'w').write('\n'.join(line))
+				
+                # Copying Zlib binaries in build
+                src = config_file.share_lib +"\\zlib"
+                dest = current_project +"\\"+ postgreSQL_version['full_version'] +"\\build\\"+ postgreSQL_version['major_version']
+                copy_tree(src, dest)
 				
         number += 1;postgreSQL_version['full_version']
     file.close()
@@ -166,33 +183,16 @@ try:
             print("\n\nRunning instalation ...")
             result_installation = os.system(config_file.windows_cmd +' /c '+'" cd /d '+ config_file.vs_command_prompt_x64 +' && vcvarsall amd64 && cd /d '+ cd_path +' && install '+ postgreSQL_build_location +' > '+ dir_logs +'\\postgreSQL_installation.log 2>&1"')
             if result_installation == 0:
+			
+			
 			    # copying documentation into installation directory
                 print("copying documentation files ...")
                 src = current_project +"\\" + postgreSQL_version['full_version'] +"\\src\\postgresql-" + postgreSQL_version['full_version'] \
                               + "\\doc\\src\\sgml\\html"
-                #print("src = "+ current_project +"\\" + postgreSQL_version['full_version'] +"\\src\\postgresql-" + postgreSQL_version['full_version']\\doc\\src\\sgml\\html")
                 dest = current_project +"\\"+ postgreSQL_version['full_version'] +"\\build\\"+ postgreSQL_version['major_version'] +"\\doc"
-                #print("src = "+ current_project +"\\"+ postgreSQL_version['full_version'] +"\\build\\"+ postgreSQL_version['full_version'])
                 copy_tree(src, dest)
                 time.sleep(3)
 				
-				# copying openssl and zlib into installation directory
-                print("copying openssl, zlib, icu binaries into postgreSQL build ...")
-                # openssl
-                src = config_file.share_lib +"\\openssl"
-                #print("src = "+ config_file.share_lib +"\\openssl")
-                dest = current_project +"\\"+ postgreSQL_version['full_version'] +"\\build\\"+ postgreSQL_version['major_version']
-                #print("dest = "+ current_project +"\\"+ postgreSQL_version['full_version'] +"\\build\\"+ postgreSQL_version['full_version'])
-                copy_tree(src, dest)
-                # zlib
-                src = config_file.share_lib +"\\zlib"
-                dest = current_project +"\\"+ postgreSQL_version['full_version'] +"\\build\\"+ postgreSQL_version['major_version']
-                copy_tree(src, dest)
-		        # icu
-                src = config_file.share_lib +"\\icu\\bin64\\"
-                dest = current_project +"\\"+ postgreSQL_version['full_version'] +"\\build\\"+ postgreSQL_version['major_version'] +"\\bin"
-                copy_tree(src, dest)
-                time.sleep(3)
 				
 				# Adding postgis binaries
 				if config_file.postgis_required == 1:
@@ -200,6 +200,8 @@ try:
                     src = config_file.share_lib +"\\postgis-"+ postgreSQL_version['major_version']
                     dest = current_project +"\\"+ postgreSQL_version['full_version'] + "\\build\\" + postgreSQL_version['major_version']
                     copy_tree(src, dest)
+					
+					
     
 except Exception as e:
     print(e)
