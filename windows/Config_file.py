@@ -13,12 +13,11 @@ class config_file:
     perl_path = "c:\\perl"
     
     # PostgreSQL configure options (1 for build 0 for do not build)
-    with_openssl = 1
-    with_gssapi = 1
-    with_python = 0
-    with_ldap = 1
-    with_zlib = 1
-    with_icu = 1
+    openssl = 1
+    python = 1
+    zlib = 1
+    icu = 1
+    pl_perl = 1
 
     # PostgreSQL source code info
     postgreSQL_info = '{"postgreSQL_version": [{"full_version": "10.4", "major_version": "10", "miner_version" : "4",' \

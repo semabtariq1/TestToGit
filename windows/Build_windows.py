@@ -128,20 +128,30 @@ try:
     line = file.read().splitlines()
     for li in line:
         if 'python' in li:
-            line[number] = "    python    => '"+ config_file.python_home +"',    # --with-python=<path>"
-            open(config_default, 'w').write('\n'.join(line))
+            if config_file.python == 1:
+                line[number] = "    python    => '"+ config_file.python_home +"',    # --with-python=<path>"
+                open(config_default, 'w').write('\n'.join(line))
+				
         elif "openssl" in li:
-            line[number] = "    openssl   => '"+ config_file.share_lib +"\\openssl',    # --with-openssl=<path>"
-            open(config_default, 'w').write('\n'.join(line))
+            if config_file.openssl == 1:
+                line[number] = "    openssl   => '"+ config_file.share_lib +"\\openssl',    # --with-openssl=<path>"
+                open(config_default, 'w').write('\n'.join(line))
+				
         elif "icu" in li:
-            line[number] = "    icu       => '"+ config_file.share_lib +"\\icu',    # --with-icu=<path>"
-            open(config_default, 'w').write('\n'.join(line))
+            if config_file.icu == 1:
+                line[number] = "    icu       => '"+ config_file.share_lib +"\\icu',    # --with-icu=<path>"
+                open(config_default, 'w').write('\n'.join(line))
+				
         elif "perl" in li:
-            line[number] = "    perl       => '"+ config_file.perl_path +"',             # --with-perl=<path>"
-            open(config_default, 'w').write('\n'.join(line))
+            if config_file.perl == 1:
+                line[number] = "    perl       => '"+ config_file.perl_path +"',             # --with-perl=<path>"
+                open(config_default, 'w').write('\n'.join(line))
+				
         elif "zlib" in li:
-            line[number] = "    zlib      => '"+ config_file.share_lib +"\\zlib'    # --with-zlib=<path>"
-            open(config_default, 'w').write('\n'.join(line))
+            if config_file.zlib == 1:
+                line[number] = "    zlib      => '"+ config_file.share_lib +"\\zlib'    # --with-zlib=<path>"
+                open(config_default, 'w').write('\n'.join(line))
+				
         number += 1;postgreSQL_version['full_version']
     file.close()
 	
@@ -185,10 +195,11 @@ try:
                 time.sleep(3)
 				
 				# Adding postgis binaries
-                print("Adding postgis support ...")
-                src = config_file.share_lib +"\\postgis-"+ postgreSQL_version['major_version']
-                dest = current_project +"\\"+ postgreSQL_version['full_version'] + "\\build\\" + postgreSQL_version['major_version']
-                copy_tree(src, dest)
+				if config_file.postgis_required == 1:
+                    print("Adding postgis support ...")
+                    src = config_file.share_lib +"\\postgis-"+ postgreSQL_version['major_version']
+                    dest = current_project +"\\"+ postgreSQL_version['full_version'] + "\\build\\" + postgreSQL_version['major_version']
+                    copy_tree(src, dest)
     
 except Exception as e:
     print(e)
