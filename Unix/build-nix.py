@@ -371,26 +371,35 @@ try:
                 output_file.write("Checking for required configure options for postgreSQL ...\n")
                 output_file.close()
                 configure_with = ""
+                configure_flags = ""
                 if config_file.openssl == 1:
                     configure_with = configure_with +" --with-openssl "
+
                 if config_file.gssapi == 1:
                     configure_with = configure_with +" --with-gssapi "
+            
                 if config_file.python == 1:
                     configure_with = configure_with +" --with-python "
+
                 if config_file.ldap == 1:
                     configure_with = configure_with +" --with-ldap "
+
                 if config_file.zlib == 1:
                     configure_with = configure_with +" --with-zlib "
+
                 if config_file.icu == 1:
                     configure_with = configure_with +" --with-icu "
+                    configure_flags = configure_flags +" ICU_CFLAGS='-I"+ config_file.share_lib +"/include' ICU_LIBS='-L"+ config_file.share_lib +"/lib -licui18n -licuuc -licudata' "
+
                 if config_file.pl_perl == 1:
                     configure_with = configure_with +" --with-perl "
+
                 time.sleep(2)
                 output_file = open("output.txt", "a")
                 output_file.write("Running configure on postgreSQL ...\n")
                 output_file.close()
                 cd_path = dir_src +"/postgresql-"+ postgreSQL_version["full_version"]
-                result_postgreSQL_configure = os.system("cd "+ cd_path +" && ./configure "+ configure_with +" ICU_CFLAGS='-I"+ config_file.share_lib +"/include' ICU_LIBS='-L"+ config_file.share_lib +"/lib -licui18n -licuuc -licudata' --prefix="+ current_project +"/"+ postgreSQL_version["full_version"] +"/build/"+ postgreSQL_version['major_version'] +" > "+ dir_logs +"/postgreSQL_configure.log 2>&1") 
+                result_postgreSQL_configure = os.system("cd "+ cd_path +" && ./configure "+ configure_with + configure_flags +" --prefix="+ current_project +"/"+ postgreSQL_version["full_version"] +"/build/"+ postgreSQL_version['major_version'] +" > "+ dir_logs +"/postgreSQL_configure.log 2>&1") 
             
                 if result_postgreSQL_configure == 0:
                 
