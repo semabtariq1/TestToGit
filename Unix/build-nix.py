@@ -160,10 +160,8 @@ try:
         os.environ['PYTHON_HOME'] = config_file.python_home
         os.environ['OPENSSL_HOME'] = config_file.openssl_home
         os.environ['PATH'] = dir_build +"/bin:"+ os.environ['PYTHON_HOME'] +"/bin:"+ os.environ['OPENSSL_HOME'] +"/bin:"+ config_file.share_lib +"/bin:"+ config_file.pl_languages +"/perl-5.26/bin:"+ os.environ['PATH']
-        print(os.environ['PATH'])
         
         os.environ['LD_LIBRARY_PATH'] = os.environ['PYTHON_HOME'] +"/lib:"+ os.environ['OPENSSL_HOME'] +"/lib:"+ config_file.share_lib +"/lib:"+ config_file.pl_languages +"/perl-5.26/lib"
-        print("LD = " +os.environ['LD_LIBRARY_PATH'])
         os.environ['LDFLAGS'] = "-Wl,-rpath,"+ dir_build +" -L"+ os.environ['PYTHON_HOME'] +"/lib -L"+ os.environ['OPENSSL_HOME'] +"/lib -L"+ config_file.share_lib +"/lib -L"+ config_file.pl_languages +"/perl-5.26/lib "
         os.environ['CPPFLAGS'] = "-I"+ os.environ['PYTHON_HOME'] +"inlclude/python3.4m -I"+ os.environ['OPENSSL_HOME'] +"/include -I"+ config_file.share_lib +"/include"
         os.environ['PYTHON'] = os.environ['PYTHON_HOME'] +"/bin/python3"
@@ -316,6 +314,7 @@ try:
                             output_file = open("output.txt", "a")
                             output_file.write("\n\nBuild is completed successfully\n\n")
                             output_file.close()
+         
                             return True
                 
                         else:
@@ -600,5 +599,17 @@ finally:
             
             send_build_to_mac(tar_file_path, dir_logs)
         else:
-            copy_build(tar_file_path, dir_logs)        
+            copy_build(tar_file_path, dir_logs)       
+            if thread_to_call_linux_machine.is_alive():
+                thread_to_call_linux_machine.join()
+
+            os.system("mkdir "+ config_file.mac_oldbk +"")
+            os.system("cp -a "+ config_file.mac_build_path +"/  "+ config_file.mac_oldbk +"")
+            for file in os.listdir(config_file.mac_oldbk):
+                if file.find("Windows") != -1:
+                    os.system("cd "+ config_file.mac_oldbk +" && cp "+ file +" "+ config_file.installer_build +"/Windows")
+                if file.find("Linux") != -1:
+                    os.system("cd "+ config_file.mac_oldbk +" && cp "+ file +" "+ config_file.installer_build +"/Linux")
+                if file.find("Darwin") != -1:
+                    os.system("cd "+ config_file.mac_oldbk +" && cp "+ file +" "+ config_file.installer_build +"/OSX") 
     os.system("cd "+ root +" && rm -rf output.txt")

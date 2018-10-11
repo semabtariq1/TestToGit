@@ -40,10 +40,10 @@ class config_file:
     different paths according to your system """
     
     """ Paths that you must change """
-    pl_languages = "/opt/2ndQuadrant/pl-languages"
-    python_home = "/opt/Python-3.4.4/inst"
-    openssl_home = "/opt/openssl-1.0.2g/inst"
-    share_lib = "/opt/PGInstaller/Python-automation-code/linux_share_lib1"
+    pl_languages = "/Users/2ndQuadrant/pl-languages"
+    python_home = "/Users/2ndquadrant/2UDA/Python-3.4.4/inst"
+    openssl_home = "/Users/2ndquadrant/2UDA/openssl-1.0.2g/inst"
+    share_lib = "/Users/2ndquadrant/pythonAutomation/srcBuild"
 
 
     """ In addition if you want to controll 2 different 
@@ -57,14 +57,15 @@ class config_file:
 
     """ credential of Linux machine """
 
-    linux_box = "username@ip" 
-    build_code_linux = "path to Unix where you clone build code"
+    linux_box = "build@54.169.212.98" 
+    build_code_linux = "/opt/semabHome/build-unix-dev/PGInstaller/Unix"
 
     """ credential of MacOS machine """
 
-    mac_address = "username@ip"
-    mac_build_path = "Path where you want to place builds"
-
+    mac_address = "2ndquadrant@208.52.185.118"
+    mac_build_path = "/Users/2ndquadrant/semabHome/main"
+    installer_build = "/Users/2ndquadrant/semabHome/Builds"
+    mac_oldbk = "/Users/2ndquadrant/semabHome/oldbk/wed11sept2018"
 
     """ PostgreSQL configure options 
     1 = enable
