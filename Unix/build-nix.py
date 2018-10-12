@@ -5,6 +5,7 @@ import os
 import config
 import smtplib
 import email
+from local_env import *
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
@@ -53,7 +54,7 @@ else:
     # Thread class
     class thread(threading.Thread):
         def run(self):
-            os.system('ssh '+ config_file.linux_box +' "cd '+ config_file.build_code_linux +' && python3 build-nix.py"')
+            os.system('ssh '+ linux_box +' "cd '+ build_code_linux +' && python3 build-nix.py"')
     thread_to_call_linux_machine = thread()
     thread_to_call_linux_machine.start()
 
@@ -103,10 +104,10 @@ def send__email_with_output_file():
 # Sending build to mac 
 def send_build_to_mac(tar_file_path, log_file_path):
     if os_name == "Linux":
-        os.system('scp '+ tar_file_path +' '+ config_file.mac_address +':'+ config_file.mac_build_path +' > '+ log_file_path +'/copy_binary_to_osx.log 2>&1')
+        os.system('scp '+ tar_file_path +' '+ mac_address +':'+ mac_build_path +' > '+ log_file_path +'/copy_binary_to_osx.log 2>&1')
 
 def copy_build(tar_file_path, log_file_path):
-    os.system('cp '+ tar_file_path +' '+ config_file.mac_build_path +' > '+ log_file_path +'/copy_osx_build.log 2>&1')
+    os.system('cp '+ tar_file_path +' '+ mac_build_path +' > '+ log_file_path +'/copy_osx_build.log 2>&1')
 
 try:
 
@@ -157,13 +158,12 @@ try:
         output_file = open("output.txt", "a")
         output_file.write("Setting system path variables ...\n")
         output_file.close()
-        os.environ['PYTHON_HOME'] = config_file.python_home
-        os.environ['OPENSSL_HOME'] = config_file.openssl_home
-        os.environ['PATH'] = dir_build +"/bin:"+ os.environ['PYTHON_HOME'] +"/bin:"+ os.environ['OPENSSL_HOME'] +"/bin:"+ config_file.share_lib +"/bin:"+ config_file.pl_languages +"/perl-5.26/bin:"+ os.environ['PATH']
-        
-        os.environ['LD_LIBRARY_PATH'] = os.environ['PYTHON_HOME'] +"/lib:"+ os.environ['OPENSSL_HOME'] +"/lib:"+ config_file.share_lib +"/lib:"+ config_file.pl_languages +"/perl-5.26/lib"
-        os.environ['LDFLAGS'] = "-Wl,-rpath,"+ dir_build +" -L"+ os.environ['PYTHON_HOME'] +"/lib -L"+ os.environ['OPENSSL_HOME'] +"/lib -L"+ config_file.share_lib +"/lib -L"+ config_file.pl_languages +"/perl-5.26/lib "
-        os.environ['CPPFLAGS'] = "-I"+ os.environ['PYTHON_HOME'] +"inlclude/python3.4m -I"+ os.environ['OPENSSL_HOME'] +"/include -I"+ config_file.share_lib +"/include"
+        os.environ['PYTHON_HOME'] = python_home
+        os.environ['OPENSSL_HOME'] = openssl_home
+        os.environ['PATH'] = dir_build +"/bin:"+ os.environ['PYTHON_HOME'] +"/bin:"+ os.environ['OPENSSL_HOME'] +"/bin:"+ share_lib +"/bin:"+ pl_languages +"/perl-5.26/bin:"+ os.environ['PATH']  
+        os.environ['LD_LIBRARY_PATH'] = os.environ['PYTHON_HOME'] +"/lib:"+ os.environ['OPENSSL_HOME'] +"/lib:"+ share_lib +"/lib:"+ pl_languages +"/perl-5.26/lib"
+        os.environ['LDFLAGS'] = "-Wl,-rpath,"+ dir_build +" -L"+ os.environ['PYTHON_HOME'] +"/lib -L"+ os.environ['OPENSSL_HOME'] +"/lib -L"+ share_lib +"/lib -L"+ pl_languages +"/perl-5.26/lib "
+        os.environ['CPPFLAGS'] = "-I"+ os.environ['PYTHON_HOME'] +"inlclude/python3.4m -I"+ os.environ['OPENSSL_HOME'] +"/include -I"+ share_lib +"/include"
         os.environ['PYTHON'] = os.environ['PYTHON_HOME'] +"/bin/python3"
 
         time.sleep(2)
@@ -185,7 +185,7 @@ try:
             output_file = open("output.txt", "a")
             output_file.write("Copying libraries from share_lib in build ...\n")
             output_file.close()
-            source = config_file.share_lib +"/lib/*"
+            source = share_lib +"/lib/*"
             result_copy = os.system("cp -rv "+ source +" "+ dir_build +"/lib/ > "+ dir_logs +"/copy_share_lib.log 2>&1")
             if result_copy == 0:
                                                                    
@@ -193,7 +193,7 @@ try:
                 output_file = open("output.txt", "a")
                 output_file.write("Copying share/gdal from share_lib into build ...\n")
                 output_file.close()
-                source = config_file.share_lib +"/share/gdal"
+                source = share_lib +"/share/gdal"
                 result_copy = os.system("cp -rv "+ source +" "+ dir_build +"/share/ > "+ dir_logs +"/copy_gdal_share_lib.log 2>&1")
 
                 if result_copy == 0:
@@ -202,7 +202,7 @@ try:
                     output_file = open("output.txt", "a")
                     output_file.write("Copying share/proj from share_lib into build ...\n")
                     output_file.close()
-                    source = config_file.share_lib +"/share/proj"
+                    source = share_lib +"/share/proj"
                     result_copy = os.system("cp -rv "+ source +" "+ dir_build +"/share/ > "+ dir_logs + "/copy_proj_share_lib.log 2>&1")
  
                     if result_copy == 0:
@@ -211,7 +211,7 @@ try:
                         output_file = open("output.txt", "a")
                         output_file.write("Copying openssl libraries into build ...\n")
                         output_file.close()
-                        source = config_file.openssl_home +"/lib/*"
+                        source = openssl_home +"/lib/*"
                         result_copy = os.system("cp -rv "+ source +" "+ dir_build +"/lib/ > "+ dir_logs +"/copy_openssl_share_lib.log 2>&1")
 
                         if result_copy == 0:
@@ -252,13 +252,13 @@ try:
                                     os.system('cd '+ dir_build +'/bin && install_name_tool -change "'+ dir_build +'/lib/libpq.5.dylib" "@executable_path/../lib/libpq.5.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_bin_rpath.log 2>&1")
                                     os.system('cd '+ dir_build +'/bin && install_name_tool -change "'+ os.environ['OPENSSL_HOME'] +'/lib/libssl.1.0.0.dylib" "@executable_path/../lib/libssl.1.0.0.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_bin_rpath.log 2>&1")
                                     os.system('cd '+ dir_build +'/bin && install_name_tool -change "'+ os.environ['OPENSSL_HOME'] +'/lib/libcrypto.1.0.0.dylib" "@executable_path/../lib/libcrypto.1.0.0.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_bin_rpath.log 2>&1")
-                                    os.system('cd '+ dir_build +'/bin && install_name_tool -change "'+ config_file.share_lib +'/lib/libgeos_c.1.dylib" "@executable_path/../lib/libgeos_c.1.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_bin_rpath.log 2>&1")
-                                    os.system('cd '+ dir_build +'/bin && install_name_tool -change "'+ config_file.share_lib +'/lib/libproj.13.dylib" "@executable_path/../lib/libproj.13.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_bin_rpath.log 2>&1")
-                                    os.system('cd '+ dir_build +'/bin && install_name_tool -change "'+ config_file.share_lib +'/lib/libgeos-3.6.2.dylib" "@executable_path/../lib/libgeos-3.6.2.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_bin_rpath.log 2>&1")
-                                    os.system('cd '+ dir_build +'/bin && install_name_tool -change "'+ config_file.share_lib +'/lib/libgdal.20.dylib" "@executable_path/../lib/libgdal.20.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_bin_rpath.log 2>&1")
-                                    os.system('cd '+ dir_build +'/bin && install_name_tool -change "'+ config_file.share_lib +'/lib/libicui18n.62.dylib" "@executable_path/../lib/libicui18n.62.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_bin_rpath.log 2>&1")
-                                    os.system('cd '+ dir_build +'/bin && install_name_tool -change "'+ config_file.share_lib +'/lib/libicuuc.62.dylib" "@executable_path/../lib/libicuuc.62.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_bin_rpath.log 2>&1")
-                                    os.system('cd '+ dir_build +'/bin && install_name_tool -change "'+ config_file.share_lib +'/lib/libicudata.62.dylib" "@executable_path/../lib/libicudata.62.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_bin_rpath.log 2>&1")
+                                    os.system('cd '+ dir_build +'/bin && install_name_tool -change "'+ share_lib +'/lib/libgeos_c.1.dylib" "@executable_path/../lib/libgeos_c.1.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_bin_rpath.log 2>&1")
+                                    os.system('cd '+ dir_build +'/bin && install_name_tool -change "'+ share_lib +'/lib/libproj.13.dylib" "@executable_path/../lib/libproj.13.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_bin_rpath.log 2>&1")
+                                    os.system('cd '+ dir_build +'/bin && install_name_tool -change "'+ share_lib +'/lib/libgeos-3.6.2.dylib" "@executable_path/../lib/libgeos-3.6.2.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_bin_rpath.log 2>&1")
+                                    os.system('cd '+ dir_build +'/bin && install_name_tool -change "'+ share_lib +'/lib/libgdal.20.dylib" "@executable_path/../lib/libgdal.20.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_bin_rpath.log 2>&1")
+                                    os.system('cd '+ dir_build +'/bin && install_name_tool -change "'+ share_lib +'/lib/libicui18n.62.dylib" "@executable_path/../lib/libicui18n.62.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_bin_rpath.log 2>&1")
+                                    os.system('cd '+ dir_build +'/bin && install_name_tool -change "'+ share_lib +'/lib/libicuuc.62.dylib" "@executable_path/../lib/libicuuc.62.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_bin_rpath.log 2>&1")
+                                    os.system('cd '+ dir_build +'/bin && install_name_tool -change "'+ share_lib +'/lib/libicudata.62.dylib" "@executable_path/../lib/libicudata.62.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_bin_rpath.log 2>&1")
 
                                 # Lib
                                 output_file = open("output.txt", "a")
@@ -269,13 +269,13 @@ try:
                                     os.system('cd '+ dir_build +'/lib && install_name_tool -change "'+ dir_build +'/lib/libpq.5.dylib" "@executable_path/../lib/libpq.5.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_lib_rpath.log 2>&1")
                                     os.system('cd '+ dir_build +'/lib && install_name_tool -change "'+ os.environ['OPENSSL_HOME'] +'/lib/libssl.1.0.0.dylib" "@executable_path/../lib/libssl.1.0.0.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_lib_rpath.log 2>&1")
                                     os.system('cd '+ dir_build +'/lib && install_name_tool -change "'+ os.environ['OPENSSL_HOME'] +'/lib/libcrypto.1.0.0.dylib" "@executable_path/../lib/libcrypto.1.0.0.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_lib_rpath.log 2>&1")
-                                    os.system('cd '+ dir_build +'/lib && install_name_tool -change "'+ config_file.share_lib +'/lib/libgeos_c.1.dylib" "@executable_path/../lib/libgeos_c.1.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_lib_rpath.log 2>&1")
-                                    os.system('cd '+ dir_build +'/lib && install_name_tool -change "'+ config_file.share_lib +'/lib/libproj.13.dylib" "@executable_path/../lib/libproj.13.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_lib_rpath.log 2>&1")
-                                    os.system('cd '+ dir_build +'/lib && install_name_tool -change "'+ config_file.share_lib +'/lib/libgeos-3.6.2.dylib" "@executable_path/../lib/libgeos-3.6.2.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_lib_rpath.log 2>&1")
-                                    os.system('cd '+ dir_build +'/lib && install_name_tool -change "'+ config_file.share_lib +'/lib/libgdal.20.dylib" "@executable_path/../lib/libgdal.20.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_lib_rpath.log 2>&1")
-                                    os.system('cd '+ dir_build +'/lib && install_name_tool -change "'+ config_file.share_lib +'/lib/libicui18n.62.dylib" "@executable_path/../lib/libicui18n.62.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_lib_rpath.log 2>&1")
-                                    os.system('cd '+ dir_build +'/lib && install_name_tool -change "'+ config_file.share_lib +'/lib/libicuuc.62.dylib" "@executable_path/../lib/libicuuc.62.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_lib_rpath.log 2>&1")
-                                    os.system('cd '+ dir_build +'/lib && install_name_tool -change "'+ config_file.share_lib +'/lib/libicudata.62.dylib" "@executable_path/../lib/libicudata.62.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_lib_rpath.log 2>&1")
+                                    os.system('cd '+ dir_build +'/lib && install_name_tool -change "'+ share_lib +'/lib/libgeos_c.1.dylib" "@executable_path/../lib/libgeos_c.1.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_lib_rpath.log 2>&1")
+                                    os.system('cd '+ dir_build +'/lib && install_name_tool -change "'+ share_lib +'/lib/libproj.13.dylib" "@executable_path/../lib/libproj.13.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_lib_rpath.log 2>&1")
+                                    os.system('cd '+ dir_build +'/lib && install_name_tool -change "'+ share_lib +'/lib/libgeos-3.6.2.dylib" "@executable_path/../lib/libgeos-3.6.2.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_lib_rpath.log 2>&1")
+                                    os.system('cd '+ dir_build +'/lib && install_name_tool -change "'+ share_lib +'/lib/libgdal.20.dylib" "@executable_path/../lib/libgdal.20.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_lib_rpath.log 2>&1")
+                                    os.system('cd '+ dir_build +'/lib && install_name_tool -change "'+ share_lib +'/lib/libicui18n.62.dylib" "@executable_path/../lib/libicui18n.62.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_lib_rpath.log 2>&1")
+                                    os.system('cd '+ dir_build +'/lib && install_name_tool -change "'+ share_lib +'/lib/libicuuc.62.dylib" "@executable_path/../lib/libicuuc.62.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_lib_rpath.log 2>&1")
+                                    os.system('cd '+ dir_build +'/lib && install_name_tool -change "'+ share_lib +'/lib/libicudata.62.dylib" "@executable_path/../lib/libicudata.62.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_lib_rpath.log 2>&1")
 
                                 # Lib/postgresql
                                 output_file = open("output.txt", "a")
@@ -286,13 +286,13 @@ try:
                                     os.system('cd '+ dir_build +'/lib/postgresql && install_name_tool -change "'+ dir_build +'/lib/libpq.5.dylib" "@executable_path/../../lib/libpq.5.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_postgresql_rpath.log 2>&1")
                                     os.system('cd '+ dir_build +'/lib/postgresql && install_name_tool -change "'+ os.environ['OPENSSL_HOME'] +'/lib/libssl.1.0.0.dylib" "@executable_path/../../lib/libssl.1.0.0.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_postgresql_rpath.log 2>&1")
                                     os.system('cd '+ dir_build +'/lib/postgresql && install_name_tool -change "'+ os.environ['OPENSSL_HOME'] +'/lib/libcrypto.1.0.0.dylib" "@executable_path/../../lib/libcrypto.1.0.0.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_postgresql_rpath.log 2>&1")
-                                    os.system('cd '+ dir_build +'/lib/postgresql && install_name_tool -change "'+ config_file.share_lib +'/lib/libgeos_c.1.dylib" "@executable_path/../../lib/libgeos_c.1.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_postgresql_rpath.log 2>&1")
-                                    os.system('cd '+ dir_build +'/lib/postgresql && install_name_tool -change "'+ config_file.share_lib +'/lib/libproj.13.dylib" "@executable_path/../../lib/libproj.13.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_postgresql_rpath.log 2>&1")
-                                    os.system('cd '+ dir_build +'/lib/postgresql && install_name_tool -change "'+ config_file.share_lib +'/lib/libgeos-3.6.2.dylib" "@executable_path/../../lib/libgeos-3.6.2.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_postgresql_rpath.log 2>&1")
-                                    os.system('cd '+ dir_build +'/lib/postgresql && install_name_tool -change "'+ config_file.share_lib +'/lib/libgdal.20.dylib" "@executable_path/../../lib/libgdal.20.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_postgresql_rpath.log 2>&1")
-                                    os.system('cd '+ dir_build +'/lib/postgresql && install_name_tool -change "'+ config_file.share_lib +'/lib/libicui18n.62.dylib" "@executable_path/../../lib/libicui18n.62.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_postgresql_rpath.log 2>&1")
-                                    os.system('cd '+ dir_build +'/lib/postgresql && install_name_tool -change "'+ config_file.share_lib +'/lib/libicuuc.62.dylib" "@executable_path/../../lib/libicuuc.62.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_postgresql_rpath.log 2>&1")
-                                    os.system('cd '+ dir_build +'/lib/postgresql && install_name_tool -change "'+ config_file.share_lib +'/lib/libicudata.62.dylib" "@executable_path/../../lib/libicudata.62.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_postgresql_rpath.log 2>&1")
+                                    os.system('cd '+ dir_build +'/lib/postgresql && install_name_tool -change "'+ share_lib +'/lib/libgeos_c.1.dylib" "@executable_path/../../lib/libgeos_c.1.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_postgresql_rpath.log 2>&1")
+                                    os.system('cd '+ dir_build +'/lib/postgresql && install_name_tool -change "'+ share_lib +'/lib/libproj.13.dylib" "@executable_path/../../lib/libproj.13.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_postgresql_rpath.log 2>&1")
+                                    os.system('cd '+ dir_build +'/lib/postgresql && install_name_tool -change "'+ share_lib +'/lib/libgeos-3.6.2.dylib" "@executable_path/../../lib/libgeos-3.6.2.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_postgresql_rpath.log 2>&1")
+                                    os.system('cd '+ dir_build +'/lib/postgresql && install_name_tool -change "'+ share_lib +'/lib/libgdal.20.dylib" "@executable_path/../../lib/libgdal.20.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_postgresql_rpath.log 2>&1")
+                                    os.system('cd '+ dir_build +'/lib/postgresql && install_name_tool -change "'+ share_lib +'/lib/libicui18n.62.dylib" "@executable_path/../../lib/libicui18n.62.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_postgresql_rpath.log 2>&1")
+                                    os.system('cd '+ dir_build +'/lib/postgresql && install_name_tool -change "'+ share_lib +'/lib/libicuuc.62.dylib" "@executable_path/../../lib/libicuuc.62.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_postgresql_rpath.log 2>&1")
+                                    os.system('cd '+ dir_build +'/lib/postgresql && install_name_tool -change "'+ share_lib +'/lib/libicudata.62.dylib" "@executable_path/../../lib/libicudata.62.dylib" "./'+ file +'" >> '+ dir_logs +"/postgreSQL_postgresql_rpath.log 2>&1")
 
                             # Generating zip file
                             output_file = open("output.txt", "a")
@@ -389,7 +389,7 @@ try:
 
                 if config_file.icu == 1:
                     configure_with = configure_with +" --with-icu "
-                    configure_flags = configure_flags +" ICU_CFLAGS='-I"+ config_file.share_lib +"/include' ICU_LIBS='-L"+ config_file.share_lib +"/lib -licui18n -licuuc -licudata' "
+                    configure_flags = configure_flags +" ICU_CFLAGS='-I"+ share_lib +"/include' ICU_LIBS='-L"+ share_lib +"/lib -licui18n -licuuc -licudata' "
 
                 if config_file.pl_perl == 1:
                     configure_with = configure_with +" --with-perl "
@@ -465,7 +465,7 @@ try:
                                             output_file.write("Running configure on postgis ...\n")
                                             output_file.close()
                                             cd_path = dir_src +"/postgis-"+ config_file.postgis_full_version
-                                            result_postgis_Configure = os.system("cd "+ cd_path +" && ./configure --prefix="+ config_file.share_lib +" --with-pgconfig="+ dir_build +"/bin/pg_config --with-gdalconfig=" + config_file.share_lib + "/bin/gdal-config  --with-geosconfig="+ config_file.share_lib +"/bin/geos-config --with-projdir="+ config_file.share_lib +" --with-xml2config="+ config_file.share_lib +"/bin/xml2-config > "+ dir_logs +"/postgis_configure.log 2>&1")
+                                            result_postgis_Configure = os.system("cd "+ cd_path +" && ./configure --prefix="+ share_lib +" --with-pgconfig="+ dir_build +"/bin/pg_config --with-gdalconfig=" + share_lib + "/bin/gdal-config  --with-geosconfig="+ share_lib +"/bin/geos-config --with-projdir="+ share_lib +" --with-xml2config="+ share_lib +"/bin/xml2-config > "+ dir_logs +"/postgis_configure.log 2>&1")
                                       
                                             if result_postgis_Configure == 0:
                                                 output_file = open("output.txt", "a")
@@ -612,18 +612,18 @@ finally:
             if thread_to_call_linux_machine.is_alive():
                 thread_to_call_linux_machine.join()
 
-            os.system("mkdir "+ config_file.mac_oldbk +"")
-            os.system("cp -a "+ config_file.mac_build_path +"/  "+ config_file.mac_oldbk +"")
-            for file in os.listdir(config_file.mac_oldbk):
+            os.system("mkdir "+ mac_oldbk +"")
+            os.system("cp -a "+ mac_build_path +"/  "+ mac_oldbk +"")
+            for file in os.listdir(mac_oldbk):
                 if file.find("Windows") != -1:
-                    os.system("cd "+ config_file.mac_oldbk +" && cp "+ file +" "+ config_file.installer_build +"/Windows")
+                    os.system("cd "+ mac_oldbk +" && cp "+ file +" "+ installer_build +"/Windows")
                 if file.find("Linux") != -1:
-                    os.system("cd "+ config_file.mac_oldbk +" && cp "+ file +" "+ config_file.installer_build +"/Linux")
+                    os.system("cd "+ mac_oldbk +" && cp "+ file +" "+ installer_build +"/Linux")
                 if file.find("Darwin") != -1:
-                    os.system("cd "+ config_file.mac_oldbk +" && cp "+ file +" "+ config_file.installer_build +"/OSX") 
+                    os.system("cd "+ mac_oldbk +" && cp "+ file +" "+ installer_build +"/OSX") 
             
             # Regenerating installer properties file
-            f = open(""+ config_file.installer_code +"/installer-properties.sh","w+")
+            f = open(""+ installer_code +"/installer-properties.sh","w+")
             f.write("__PG_MAJOR_VERSION__="+ postgreSQL_version["major_version"] +"\n")
             f.write("__FULL_VERSION__="+ postgreSQL_version["full_version"] +"\n")
             if config_file.__RELEASE__ == 1:

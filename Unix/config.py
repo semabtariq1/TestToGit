@@ -35,37 +35,6 @@ the configuration related properties """
 class config_file:
 
 
-    """ This is the most important step for anyone who wants
-    to build postgresQL. All you need to do is to provide
-    different paths according to your system """
-    
-    """ Paths that you must change """
-    pl_languages = "/Users/2ndQuadrant/pl-languages"
-    python_home = "/Users/2ndquadrant/2UDA/Python-3.4.4/inst"
-    openssl_home = "/Users/2ndquadrant/2UDA/openssl-1.0.2g/inst"
-    share_lib = "/Users/2ndquadrant/pythonAutomation/srcBuild"
-
-
-    """ In addition if you want to controll 2 different 
-    machines at the same time then you need to set
-    these paths as well 
-   
-    Note:
-    We are using Linux and MacOS plateforms to run build 
-    at the same time """
-
-
-    """ credential of Linux machine """
-
-    linux_box = "build@54.169.212.98" 
-    build_code_linux = "/opt/semabHome/build-unix-dev/PGInstaller/Unix"
-
-    """ credential of MacOS machine """
-
-    mac_address = "2ndquadrant@208.52.185.118"
-    mac_build_path = "/Users/2ndquadrant/semabHome/main"
-    installer_build = "/Users/2ndquadrant/semabHome/temp-installer-code/Builds"
-    mac_oldbk = "/Users/2ndquadrant/semabHome/oldbk/thurs12sept2018"
 
     """ PostgreSQL configure options 
     1 = enable
@@ -90,7 +59,6 @@ class config_file:
 
 
     # Installer properties
-    installer_code = "/Users/2ndquadrant/semabHome/temp-installer-code"
     __RELEASE__ = 0
     __BUILD_NUMBER__ = 1
     __DEV_TEST__ = "release"
