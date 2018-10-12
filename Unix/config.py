@@ -64,8 +64,8 @@ class config_file:
 
     mac_address = "2ndquadrant@208.52.185.118"
     mac_build_path = "/Users/2ndquadrant/semabHome/main"
-    installer_build = "/Users/2ndquadrant/semabHome/Builds"
-    mac_oldbk = "/Users/2ndquadrant/semabHome/oldbk/wed11sept2018"
+    installer_build = "/Users/2ndquadrant/semabHome/temp-installer-code/Builds"
+    mac_oldbk = "/Users/2ndquadrant/semabHome/oldbk/thurs12sept2018"
 
     """ PostgreSQL configure options 
     1 = enable
@@ -87,6 +87,14 @@ class config_file:
     postgreSQL_info = '{"postgreSQL_version": [{"full_version": "10.4", "major_version": "10", "miner_version" : "4",' \
                  ' "url" : "https://ftp.postgresql.org/pub/source/v10.4/postgresql-10.4.tar.gz"} ] }'
     postgreSQL_info_decoded = json.loads(postgreSQL_info)
+
+
+    # Installer properties
+    installer_code = "/Users/2ndquadrant/semabHome/temp-installer-code"
+    __RELEASE__ = 0
+    __BUILD_NUMBER__ = 1
+    __DEV_TEST__ = "release"
+    __DEBUG__ = 0
 
 
     """ PostGIS is a spatial database extender for 

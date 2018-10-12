@@ -621,4 +621,19 @@ finally:
                     os.system("cd "+ config_file.mac_oldbk +" && cp "+ file +" "+ config_file.installer_build +"/Linux")
                 if file.find("Darwin") != -1:
                     os.system("cd "+ config_file.mac_oldbk +" && cp "+ file +" "+ config_file.installer_build +"/OSX") 
+            
+            # Regenerating installer properties file
+            f = open(""+ config_file.installer_code +"/installer-properties.sh","w+")
+            f.write("__PG_MAJOR_VERSION__="+ postgreSQL_version["major_version"] +"\n")
+            f.write("__FULL_VERSION__="+ postgreSQL_version["full_version"] +"\n")
+            if config_file.__RELEASE__ == 1:
+                f.write("__EXTRA_VERSION_STRING__=undef\n")
+            else:
+                f.write("__EXTRA_VERSION_STRING__=internal\n")
+            f.write("__RELEASE__="+ str(config_file.__RELEASE__) +"\n")
+            f.write("__BUILD_NUMBER__="+ str(config_file.__BUILD_NUMBER__) +"\n")
+            f.write("__DEV_TEST__="+ config_file.__DEV_TEST__ +"\n")
+            f.write("__DEBUG__="+ str(config_file.__DEBUG__) +"\n")
+            f.close()
+           
     os.system("cd "+ root +" && rm -rf output.txt")
