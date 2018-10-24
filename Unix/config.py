@@ -12,6 +12,7 @@ supported features list bellow
 . Zlib
 . Icu 
 . Perl
+. Tcl
 
 Note:
 This build code only handles those features which are 
@@ -40,6 +41,7 @@ class config_file:
     1 = enable
     0 = disable """
 
+    pl_tcl = 1
     pl_perl = 1
     openssl = 1
     gssapi = 1

@@ -373,6 +373,10 @@ try:
                 output_file.close()
                 configure_with = ""
                 configure_flags = ""
+                if config_file.pl_tcl == 1:
+                   configure_with = " --with-tcl --with-tclconfig="+ pl_languages +"/Tcl-8.6/lib "
+                   os.environ['TCLSH'] = pl_languages +"/Tcl-8.6/lib"               
+ 
                 if config_file.openssl == 1:
                     configure_with = configure_with +" --with-openssl "
 
