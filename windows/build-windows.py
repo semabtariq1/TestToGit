@@ -134,8 +134,9 @@ try:
         output_file = open("output.txt", "a")
         output_file.write("Setting system path variables ...\n")
         output_file.close()
-        os.environ['PATH'] = postgreSQL_build_location +"\\bin;"+ config_file.share_lib +"\\openssl\\bin;"+ config_file.share_lib +"\\zlib\\bin;"+ config_file.share_lib +"\\icu\\bin64;"+ config_file.python_home +";"+  config_file.python_home +"\\DLLs;"+ config_file.perl_path +"\\bin" + os.environ['PATH']
-        #print(os.environ['PATH'])
+        os.environ['PATH'] = postgreSQL_build_location +"\\bin;"+ config_file.share_lib +"\\openssl\\bin;"+ config_file.share_lib +"\\zlib\\bin;"+ config_file.share_lib +"\\icu\\bin64;"+ config_file.pl_languages +"\\perl-5.26\\bin;" + os.environ['PATH']
+        os.environ['PERL5LIB'] = dir_src +"\\postgresql-"+ postgreSQL_version['full_version'] +"\\src\\tools\\msvc"
+        print(os.environ['PERL5LIB'])
         time.sleep(2)
 
 		
@@ -209,7 +210,12 @@ try:
 				
             elif "perl" in li:
                 if config_file.perl == 1:
-                    line[number] = "    perl       => '"+ config_file.perl_path +"',             # --with-perl=<path>"
+                    line[number] = "    perl       => '"+ config_file.pl_languages +"\\perl-5.26',             # --with-perl=<path>"
+                    open(config_default, 'w').write('\n'.join(line))
+			
+            elif "tcl" in li:
+                if config_file.tcl == 1:
+                    line[number] = "    tcl       => '"+ config_file.pl_languages +"\\Tcl-8.6',             # --with-tcl=<path>"
                     open(config_default, 'w').write('\n'.join(line))
 				
             elif "zlib" in li:
