@@ -280,7 +280,13 @@ try:
                         copy_tree(src, dest)
                         time.sleep(3)
 				
-				        
+                        output_file = open("output.txt", "a")
+                        output_file.write("copying scripts into build ...\n") 						
+                        output_file.close()      				        
+                        src = config_file.share_lib +"\\scripts"
+                        dest = current_project +"\\" + postgreSQL_version['full_version'] +"\\build\\" + postgreSQL_version['major_version']
+                        copy_tree(src, dest)
+ 
 						# Generating final zip
                         shutil.make_archive(current_project +"\\Windows-"+ postgreSQL_version["full_version"], 'zip', current_project + "\\" + postgreSQL_version["full_version"] +"\\build")
 						
