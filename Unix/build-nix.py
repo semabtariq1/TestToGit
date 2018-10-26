@@ -239,7 +239,8 @@ try:
                                 output_file.close()
                                 for file in os.listdir(dir_build +"/lib/postgresql"):
                                     os.system('cd '+ dir_build +'/lib/postgresql && chrpath -r "\${ORIGIN}/../../lib/" ./'+ file + " >> "+ dir_logs +"/postgreSQL_postgress_rpaths.log 2>&1")
-
+                                # Uncommit it if we have build a new version of TCL 
+                                # os.system('cd /opt/2ndQuadrant/pl-languages/Tcl-8.6/bin && chrpath -r "\${ORIGIN}/../lib/" ./tclsh8.6' " >> "+ dir_logs +"/postgreSQL_postgress_rpaths.log 2>&1")
 
                             else:
                                 # Setting run time parhs for MacOS 
