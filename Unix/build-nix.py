@@ -215,7 +215,14 @@ try:
                         result_copy = os.system("cp -rv "+ source +" "+ dir_build +"/lib/ > "+ dir_logs +"/copy_openssl_share_lib.log 2>&1")
 
                         if result_copy == 0:
-                                                    
+ 
+                            # Copying script files
+                            output_file = open("output.txt", "a")
+                            output_file.write("Copying scripts into build ...\n")
+                            output_file.close()
+                            source = share_lib +"/scripts/*"
+                            os.system("cp -rv "+ source +" "+ dir_build +"/ > "+ dir_logs +"/copy_scripts.log 2>&1")                                                    
+
                             if os_name == "Linux":
                                                                                         
                                 # Setting runtime paths for linux
@@ -241,7 +248,7 @@ try:
                                     os.system('cd '+ dir_build +'/lib/postgresql && chrpath -r "\${ORIGIN}/../../lib/" ./'+ file + " >> "+ dir_logs +"/postgreSQL_postgress_rpaths.log 2>&1")
                                 # Uncommit it if we have build a new version of TCL 
                                 # os.system('cd /opt/2ndQuadrant/pl-languages/Tcl-8.6/bin && chrpath -r "\${ORIGIN}/../lib/" ./tclsh8.6' " >> "+ dir_logs +"/postgreSQL_postgress_rpaths.log 2>&1")
-
+      
                             else:
                                 # Setting run time parhs for MacOS 
                                 # Bin
