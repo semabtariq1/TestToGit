@@ -134,7 +134,7 @@ try:
         output_file = open("output.txt", "a")
         output_file.write("Setting system path variables ...\n")
         output_file.close()
-        os.environ['PATH'] = postgreSQL_build_location +"\\bin;"+ config_file.share_lib +"\\openssl\\bin;"+ config_file.share_lib +"\\zlib\\bin;"+ config_file.share_lib +"\\icu\\bin64;"+ config_file.pl_languages +"\\perl-5.26\\bin;" + os.environ['PATH']
+        os.environ['PATH'] = postgreSQL_build_location +"\\bin;"+ config_file.share_lib +"\\openssl\\bin;"+ config_file.share_lib +"\\zlib\\bin;"+ config_file.share_lib +"\\icu\\bin64;"+ config_file.pl_languages +"\\perl-5.26\\bin;"+ config_file.external_path +";" + os.environ['PATH']
         os.environ['PERL5LIB'] = dir_src +"\\postgresql-"+ postgreSQL_version['full_version'] +"\\src\\tools\\msvc"
         time.sleep(2)
 
