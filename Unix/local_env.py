@@ -11,7 +11,7 @@ mac_build_path = "/Users/2ndquadrant/semabHome/main"
 
 
 if os_name == "Linux":
-    pl_languages = "/opt/2ndQuadrant/pl-languages"
+    pl_languages = "/opt/2ndQuadrant/PostgreSQL/pl-languages"
     python_home = "/opt/Python-3.4.4/inst"
     openssl_home = "/opt/openssl-1.0.2g/inst"
     share_lib = "/opt/PGInstaller/Python-automation-code/linux_share_lib1"

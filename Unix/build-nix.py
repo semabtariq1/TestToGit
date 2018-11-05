@@ -160,9 +160,9 @@ try:
         output_file.close()
         os.environ['PYTHON_HOME'] = python_home
         os.environ['OPENSSL_HOME'] = openssl_home
-        os.environ['PATH'] = dir_build +"/bin:"+ os.environ['PYTHON_HOME'] +"/bin:"+ os.environ['OPENSSL_HOME'] +"/bin:"+ share_lib +"/bin:"+ pl_languages +"/perl-5.26/bin:"+ os.environ['PATH']  
-        os.environ['LD_LIBRARY_PATH'] = os.environ['PYTHON_HOME'] +"/lib:"+ os.environ['OPENSSL_HOME'] +"/lib:"+ share_lib +"/lib:"+ pl_languages +"/perl-5.26/lib"
-        os.environ['LDFLAGS'] = "-Wl,-rpath,"+ dir_build +" -L"+ os.environ['PYTHON_HOME'] +"/lib -L"+ os.environ['OPENSSL_HOME'] +"/lib -L"+ share_lib +"/lib -L"+ pl_languages +"/perl-5.26/lib "
+        os.environ['PATH'] = dir_build +"/bin:"+ os.environ['PYTHON_HOME'] +"/bin:"+ os.environ['OPENSSL_HOME'] +"/bin:"+ share_lib +"/bin:"+ pl_languages +"/Perl-5.26/bin:"+ os.environ['PATH']  
+        os.environ['LD_LIBRARY_PATH'] = os.environ['PYTHON_HOME'] +"/lib:"+ os.environ['OPENSSL_HOME'] +"/lib:"+ share_lib +"/lib:"+ pl_languages +"/Perl-5.26/lib"
+        os.environ['LDFLAGS'] = "-Wl,-rpath,"+ dir_build +" -L"+ os.environ['PYTHON_HOME'] +"/lib -L"+ os.environ['OPENSSL_HOME'] +"/lib -L"+ share_lib +"/lib -L"+ pl_languages +"/Perl-5.26/lib "
         os.environ['CPPFLAGS'] = "-I"+ os.environ['PYTHON_HOME'] +"inlclude/python3.4m -I"+ os.environ['OPENSSL_HOME'] +"/include -I"+ share_lib +"/include"
         os.environ['PYTHON'] = os.environ['PYTHON_HOME'] +"/bin/python3"
 
