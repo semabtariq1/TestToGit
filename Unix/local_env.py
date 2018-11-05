@@ -3,7 +3,7 @@ import platform
 os_name = platform.system()
 
 
-pl_languages = "/Users/2ndQuadrant/pl-languages"
+pl_languages = "/Applications/2ndQuadrant/PostgreSQL/pl-languages"
 python_home = "/Users/2ndquadrant/2UDA/Python-3.4.4/inst"
 openssl_home = "/Users/2ndquadrant/2UDA/openssl-1.0.2g/inst"
 share_lib = "/Users/2ndquadrant/pythonAutomation/srcBuild"
