@@ -134,8 +134,7 @@ try:
         output_file = open("output.txt", "a")
         output_file.write("Setting system path variables ...\n")
         output_file.close()
-        os.environ['PATH'] = postgreSQL_build_location +"\\bin;"+ config_file.share_lib +"\\openssl\\bin;"+ config_file.share_lib +"\\zlib\\bin;"+ config_file.share_lib +"\\icu\\bin64;"+ config_file.pl_languages +"\\perl-5.26\\bin;"+ config_file.external_path +";" + os.environ['PATH']
-        os.environ['PERL5LIB'] = dir_src +"\\postgresql-"+ postgreSQL_version['full_version'] +"\\src\\tools\\msvc"
+        os.environ['PATH'] = postgreSQL_build_location +"\\bin;"+ config_file.share_lib +"\\openssl\\bin;"+ config_file.share_lib +"\\zlib\\bin;"+ config_file.share_lib +"\\icu\\bin64;"+ config_file.external_path +";" + os.environ['PATH']
         time.sleep(2)
 
 		
@@ -245,7 +244,7 @@ try:
             result_regression = os.system(config_file.windows_cmd +' /c '+'" cd /d '+ config_file.vs_command_prompt_x64 +' && vcvarsall amd64 && cd /d '+ cd_path +' && vcregress check > '+ dir_logs +'\\postgreSQL_regression.log 2>&1"')
         
 		
-            if result_regression != 0:
+            if result_regression == 0:
                 output_file = open("output.txt", "a")
                 output_file.write("Running make install on PostgreSQL ...\n")
                 output_file.close()
