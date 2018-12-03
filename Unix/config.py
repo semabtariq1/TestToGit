@@ -28,7 +28,7 @@ PGInstaller/config.py
 ------------------------------------------------------------ """
 
 import json
-
+from local_env import *
 
 """ Class called config_file will be responsible of holding all 
 the configuration related properties """
@@ -87,7 +87,9 @@ class config_file:
 
     """ email_info is an json array if you want build result 
     in your email then you need to provide your 
-    credential accordingly 
+    credential accordingly.
+    For email password you need to place an file in share library root named emailPassword.txt
+    and type your password in that file.
 
     Note:
     If you wish to use Gmail then To use this facility 
@@ -96,6 +98,6 @@ class config_file:
     
     Visit this link to get more details
     https://support.google.com/a/answer/6260879?hl=en """
-
-    email_info = '{"email": [{"from" : "semab.tariq@2ndquadrant.com", "to" : "semab.tariq@2ndquadrant.com", "sender_password": "FDSA016016semab"} ] }'
+    print("pass = "+ password )
+    email_info = '{"email": [{"from" : "semab.tariq@2ndquadrant.com", "to" : "semab.tariq@2ndquadrant.com", "sender_password" : "'+ password +'" }]}'
     email_info_decoded = json.loads(email_info)

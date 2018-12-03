@@ -23,3 +23,7 @@ else:
     installer_build = "/Users/2ndquadrant/semabHome/temp-installer-code/Builds"
     mac_oldbk = "/Users/2ndquadrant/semabHome/oldbk/thurs12sept2018"
     installer_code = "/Users/2ndquadrant/semabHome/temp-installer-code"
+
+password = ""
+with open(share_lib +"/emailPassword.txt") as file:
+    password = file.readline().replace('\n', "")
