@@ -221,7 +221,14 @@ try:
                             output_file.write("Copying scripts into build ...\n")
                             output_file.close()
                             source = share_lib +"/scripts/*"
-                            os.system("cp -rv "+ source +" "+ dir_build +"/ > "+ dir_logs +"/copy_scripts.log 2>&1")                                                    
+                            os.system("cp -rv "+ source +" "+ dir_build +"/ > "+ dir_logs +"/copy_scripts.log 2>&1")
+
+                            # Copying icons folder
+                            output_file = open("output.txt", "a")
+                            output_file.write("Copying icons into build ...\n")
+                            output_file.close()
+                            source = share_lib +"/icons"
+                            os.system("cp -rv "+ source +" "+ dir_build +"/ > "+ dir_logs +"/copy_icons.log 2>&1")
 
                             if os_name == "Linux":
                                                                                         
@@ -312,7 +319,6 @@ try:
                             output_file.write("Generating zip file ...\n")
                             output_file.close()
                             os.system("cd "+ current_project +"/"+ postgreSQL_version["full_version"] +"/build && tar -zcvf Postgresql-"+ os_name +"-"+ postgreSQL_version['full_version'] +".tar.gz "+ postgreSQL_version["major_version"] +" > "+ dir_logs +"/postgreSQL_build_zip.log 2>&1")
-
                             # Final message
                             output_file = open("output.txt", "a")
                             output_file.write("\n\nAll binaries are placed at : "+ dir_build +"\n")
