@@ -220,7 +220,7 @@ try:
                             output_file = open("output.txt", "a")
                             output_file.write("Copying scripts into build ...\n")
                             output_file.close()
-                            source = share_lib +"/scripts/*"
+                            source = share_lib +"/scripts"
                             os.system("cp -rv "+ source +" "+ dir_build +"/ > "+ dir_logs +"/copy_scripts.log 2>&1")
 
                             # Copying icons folder
