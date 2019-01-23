@@ -230,6 +230,13 @@ try:
                             source = share_lib +"/icons"
                             os.system("cp -rv "+ source +" "+ dir_build +"/ > "+ dir_logs +"/copy_icons.log 2>&1")
 
+                            # Copying script file from shareLib/bin
+                            output_file = open("output.txt", "a")
+                            output_file.write("Copying bin/start-psql.sh into build ...\n")
+                            output_file.close()
+                            source = share_lib +"/bin/start-psql.sh"
+                            os.system("cp -rv "+ source +" "+ dir_build +"/bin > "+ dir_logs +"/copy_icons.log 2>&1")
+
                             if os_name == "Linux":
                                                                                         
                                 # Setting runtime paths for linux
