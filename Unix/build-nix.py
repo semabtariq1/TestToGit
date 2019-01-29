@@ -238,7 +238,14 @@ try:
                             os.system("cp -rv "+ source +" "+ dir_build +"/bin > "+ dir_logs +"/copy_icons.log 2>&1")
 
                             if os_name == "Linux":
-                                                                                        
+ 
+                                # Copying shortcut-files in build
+                                output_file = open("output.txt", "a")
+                                output_file.write("Copying shareLib/shortcut-files into build ...\n")
+                                output_file.close()
+                                source = share_lib +"/shortuct-files/*"
+                                os.system("cp -rv "+ source +" "+ dir_build +" > "+ dir_logs +"/copy_shortcut-files.log 2>&1")
+
                                 # Setting runtime paths for linux
                                 # PostgreSQL_bin
                                 output_file = open("output.txt", "a")
