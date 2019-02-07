@@ -242,7 +242,6 @@ try:
             output_file.write("Running make check on PostgreSQL ...\n")
             output_file.close()
             result_regression = os.system(config_file.windows_cmd +' /c '+'" cd /d '+ config_file.vs_command_prompt_x64 +' && vcvarsall amd64 && cd /d '+ cd_path +' && vcregress check > '+ dir_logs +'\\postgreSQL_regression.log 2>&1"')
-        
 		
             if result_regression == 0:
                 output_file = open("output.txt", "a")
@@ -281,7 +280,7 @@ try:
                         output_file = open("output.txt", "a")
                         output_file.write("copying scripts into build ...\n") 						
                         output_file.close()      				        
-                        src = config_file.share_lib +"\\scripts"
+                        src = config_file.share_lib +"\\shortcut-files"
                         dest = current_project +"\\" + postgreSQL_version['full_version'] +"\\build\\" + postgreSQL_version['major_version']
                         copy_tree(src, dest)
  
