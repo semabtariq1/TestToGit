@@ -1,0 +1,14 @@
+[
+        {
+                "postgresFullVersion": "10.7",
+                "postgrespgMajorVersion": "10",
+                "postgrespgMinerVersion": "7",
+                "tarball": "https://ftp.postgresql.org/pub/source/v10.7/postgresql-10.7.tar.gz"
+        },
+        {
+                "postgrespgFullVersion": "11.2",
+                "postgrespgMajorVersion": "11",
+                "postgrespgMinerVersion": "2",
+                "tarball": "https://ftp.postgresql.org/pub/source/v11.2/postgresql-11.2.tar.gz"
+        }
+]
