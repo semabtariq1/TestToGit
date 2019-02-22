@@ -2,6 +2,9 @@ import json
 import os
 
 
+""" Call Linux build machine to generate builds """
+
+	os.system('ssh '+ ipAddr +'@'+ userName +' "cd '+ buildCode +' && python3 build-nix.py"')
 """ Pre build checks """
 
 
