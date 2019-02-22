@@ -1,10 +1,14 @@
 import json
 import os
+from local_env import *
 
 
 """ Call Linux build machine to generate builds """
 
-	os.system('ssh '+ ipAddr +'@'+ userName +' "cd '+ buildCode +' && python3 build-nix.py"')
+if platform.system() == 'Darwin':
+	os.system('ssh '+ userName +'@'+ ipAddr +' "cd '+ buildCode +' && python3 build-nix.py"')
+
+
 """ Pre build checks """
 
 
