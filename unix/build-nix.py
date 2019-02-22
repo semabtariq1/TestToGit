@@ -11,7 +11,6 @@ if platform.system() == 'Darwin':
 
 """ Pre build checks """
 
-
 """ Check file exists, Check if not empty, Read version file(postgresVersions.json) """
 
 try:
@@ -26,6 +25,5 @@ try:
 	with open('postgresVersions.json', 'r') as componentsInfo:
 		componentsInfo = json.load(componentsInfo)
 
-	print('all ok ...')
 except:
 	print('Please use proper formatting for postgresVersions.json file ...')
