@@ -27,3 +27,13 @@ try:
 
 except:
 	print('Please use proper formatting for postgresVersions.json file ...')
+
+""" Check share lib folder available or not on give path """
+
+if os.path.exists(shareLib) and os.path.isdir(shareLib):
+	if not os.listdir(shareLib):
+		print('Provided share lib is empty ...')
+		exit()
+else:
+	print('provided share lib don"t exists ...')
+	exit()

@@ -8,7 +8,7 @@ os_name = platform.system()
 pl_languages = ""
 python_home = ""
 openssl_home = ""
-share_lib = ""
+shareLib = ""
 mac_build_path = ""
 
 
@@ -16,7 +16,7 @@ if os_name == "Linux":
     pl_languages = ""
     python_home = ""
     openssl_home = ""
-    share_lib = ""
+    shareLib = ""
     mac_address = ""
 
 else:
