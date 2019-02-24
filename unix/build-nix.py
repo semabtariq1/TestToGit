@@ -39,3 +39,8 @@ else:
 	exit()
 
 print('Pre build checks are executed successfully ...')
+
+
+""" Generate build """
+
+print('Preparing to generate builds now ...')
