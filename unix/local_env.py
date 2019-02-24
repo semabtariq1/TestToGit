@@ -28,7 +28,3 @@ else:
     installer_build = ""
     mac_oldbk = ""
     installer_code = ""
-
-password = ""
-with open(share_lib +"/emailPassword.txt") as file:
-    password = file.readline().replace('\n', "")
