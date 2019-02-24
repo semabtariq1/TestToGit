@@ -37,3 +37,5 @@ if os.path.exists(shareLib) and os.path.isdir(shareLib):
 else:
 	print('provided share lib don"t exists ...')
 	exit()
+
+print('Pre build checks are executed successfully ...')
