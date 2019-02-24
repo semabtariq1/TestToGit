@@ -44,3 +44,11 @@ print('Pre build checks are executed successfully ...')
 """ Generate build """
 
 print('Preparing to generate builds now ...')
+
+""" Reading postgreSQ versions from postgresVersions.json """
+
+with open('postgresVersions.json', 'r') as postgresVersion:
+	postgresVersion = json.load(postgresVersion)
+
+for version in postgresVersion:
+	print('full version = '+ version['postgresFullVersion'])
