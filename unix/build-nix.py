@@ -94,14 +94,12 @@ for postgresVersion in postgresVersions:
 		print('\nCould not able to create proper work dir exit code 1 ...')
 		exit()
 
-	print('')
 	time.sleep(1)
 
-
-	os.environ['LDFLAGS']           = "-Wl,-rpath,"+ buildDir +" -L"+ os.environ['PYTHON_HOME'] +"/lib -L"+ os.environ['OPENSSL_HOME'] +"/lib -L"+ shareLib +"/lib -L"+ pl_languages +"/Perl-5.26/lib "
-
-	""" Setting system PATH to its default state first then set it to current build this is because if we have to built more than 1 postgreSQL versions then PATH will contain project dir PATH or each build which is why we need to remove the PATH of old builds first """
+	""" Setting system PATH to its default state first then set it to current build this is because if we have to built more than 1 postgreSQL versions then PATH will contain project dir PATH or each build which is why we need to remove the PATH of old builds first same case is true of build dir as we need to add current build dir path in LDfLAGS """
 
 	os.environ['PATH']              = PATH
+
+	os.environ['LDFLAGS']           = "-Wl,-rpath,"+ buildDir +" -L"+ os.environ['PYTHON_HOME'] +"/lib -L"+ os.environ['OPENSSL_HOME'] +"/lib -L"+ shareLib +"/lib -L"+ pl_languages +"/Perl-5.26/lib "
 
 	os.environ['PATH']              = buildDir +"/bin:"+ os.environ['PYTHON_HOME'] +"/bin:"+ os.environ['OPENSSL_HOME'] +"/bin:"+ shareLib +"/bin:"+ pl_languages +"/Perl-5.26/bin:"+ os.environ['PATH']
