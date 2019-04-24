@@ -1,6 +1,7 @@
 import json
 import os
 import time
+import platform
 from config import *
 from local_env import *
 
@@ -40,6 +41,13 @@ else:
 	exit()
 
 print('Pre build checks are executed successfully ...')
+
+
+""" Checking operating system and setting platform related commands """
+DOWNLOAD_KEY = 'curl -O'
+osType = platform.system();
+if osType == 'Linux':
+	DOWNLOAD_KEY = 'wget'
 
 
 """ Generate build """
