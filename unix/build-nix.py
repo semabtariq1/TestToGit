@@ -51,6 +51,28 @@ print('Preparing to generate builds now ...')
 with open('postgres_versions.json', 'r') as postgresVersions:
 	postgresVersions = json.load(postgresVersions)
 
+
+""" Setting up system PATH variables
+	This section will hold/set/modify all the build related PATHS """
+
+""" Saving current state of PATH """
+
+PATH = os.environ['PATH']
+
+""" Setting new PATHS """
+print('Setting up proper system PATH variables ...')
+
+os.environ['PYTHON_HOME']       = python_home
+
+os.environ['OPENSSL_HOME']      = openssl_home
+
+os.environ['LD_LIBRARY_PATH']   = os.environ['PYTHON_HOME'] +"/lib:"+ os.environ['OPENSSL_HOME'] +"/lib:"+ shareLib +"/lib:"+ pl_languages +"/Perl-5.26/lib"
+
+os.environ['CPPFLAGS']          = "-I"+ os.environ['PYTHON_HOME'] +"inlclude/python3.4m -I"+ os.environ['OPENSSL_HOME'] +"/include -I"+ shareLib +"/include"
+
+os.environ['PYTHON']            = os.environ['PYTHON_HOME'] +"/bin/python3"
+
+
 for postgresVersion in postgresVersions:
 	dateTime = time.strftime("%Y%m%d%H%M%S")
 
@@ -74,3 +96,12 @@ for postgresVersion in postgresVersions:
 
 	print('')
 	time.sleep(1)
+
+
+	os.environ['LDFLAGS']           = "-Wl,-rpath,"+ buildDir +" -L"+ os.environ['PYTHON_HOME'] +"/lib -L"+ os.environ['OPENSSL_HOME'] +"/lib -L"+ shareLib +"/lib -L"+ pl_languages +"/Perl-5.26/lib "
+
+	""" Setting system PATH to its default state first then set it to current build this is because if we have to built more than 1 postgreSQL versions then PATH will contain project dir PATH or each build which is why we need to remove the PATH of old builds first """
+
+	os.environ['PATH']              = PATH
+
+	os.environ['PATH']              = buildDir +"/bin:"+ os.environ['PYTHON_HOME'] +"/bin:"+ os.environ['OPENSSL_HOME'] +"/bin:"+ shareLib +"/bin:"+ pl_languages +"/Perl-5.26/bin:"+ os.environ['PATH']
