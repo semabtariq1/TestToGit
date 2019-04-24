@@ -1,7 +1,7 @@
 import json
 import os
 from config import *
-from local_env_pvt import *
+from local_env import *
 
 
 """ Call Linux build machine to generate builds """
@@ -47,8 +47,8 @@ print('Preparing to generate builds now ...')
 
 """ Reading postgreSQ versions from postgres_versions.json """
 
-with open('postgres_versions.json', 'r') as postgresVersion:
-	postgresVersion = json.load(postgresVersion)
+with open('postgres_versions.json', 'r') as postgresVersions:
+	postgresVersions = json.load(postgresVersions)
 
-for version in postgresVersion:
-	print('full version = '+ version['postgresFullVersion'])
+for postgresVersion in postgresVersions:
+	print('full version = '+ postgresVersion['postgresFullVersion'])
