@@ -1,5 +1,6 @@
 import json
 import os
+import time
 from config import *
 from local_env import *
 
@@ -51,4 +52,25 @@ with open('postgres_versions.json', 'r') as postgresVersions:
 	postgresVersions = json.load(postgresVersions)
 
 for postgresVersion in postgresVersions:
-	print('full version = '+ postgresVersion['postgresFullVersion'])
+	dateTime = time.strftime("%Y%m%d%H%M%S")
+
+	print('\nStarting build process for '+ postgresVersion['postgresFullVersion'])
+
+	print('\n\nSetting up work dir structure ...')
+
+	currentProjectDir = root +'/workDir/'+ projectName
+	currentBuild = currentProjectDir +'/'+ dateTime +'/'+ postgresVersion['postgresFullVersion']
+
+	sourceDir = currentBuild +'/'+ 'source'
+	logsDir = currentBuild +'/'+ 'logs'
+	buildDir = currentBuild +'/'+ 'build' +'/'+ postgresVersion['postgresMajorVersion']
+
+	res = os.system('mkdir -p '+ sourceDir +' && echo '+ sourceDir)
+	res = os.system('mkdir -p '+ logsDir   +' && echo '+ logsDir)
+	res = os.system('mkdir -p '+ buildDir  +' && echo '+ buildDir)
+	if res != 0:
+		print('\nCould not able to create proper work dir exit code 1 ...')
+		exit()
+
+	print('')
+	time.sleep(1)
