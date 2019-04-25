@@ -118,3 +118,11 @@ for postgresVersion in postgresVersions:
 	if res != 0:
 		print('\nSomething went wrong for PostgreSQL source code downloading please refer to postgreSQL-source.log file ...')
 		exit()
+
+
+	""" Unzip the source code """
+	print('Uncompress the source code ...')
+	res = os.system('cd '+ sourceDir +' && tar xzf postgresql-'+ postgresVersion['fullVersion']+ '.tar.gz')
+	if res != 0:
+		print('\nSomething went wrong with PostgreSQL source code uncompressing ...')
+		exit()
