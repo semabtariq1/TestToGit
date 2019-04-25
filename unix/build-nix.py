@@ -126,3 +126,44 @@ for postgresVersion in postgresVersions:
 	if res != 0:
 		print('\nSomething went wrong with PostgreSQL source code uncompressing ...')
 		exit()
+
+
+	""" Running ./configure on PostgreSQL """
+	print('Running ./configure ...')
+	
+	""" Creating configure options """
+	configureWith = ''
+	configureFlags = ''
+
+	if postgresVersion['OPENSSL'] == '1':
+		configureWith += ' --with-openssl '
+
+	if postgresVersion['GSSAPI']  == '1':
+		configureWith += ' --with-gssapi '
+
+	if postgresVersion['PYTHON']  == '1':
+		configureWith += ' --with-python '
+
+	if postgresVersion['PERL']    == '1':
+		configureWith += ' --with-perl '
+
+	if postgresVersion['LDAP']    == '1':
+		configureWith += ' --with-ldap '
+
+	if postgresVersion['ZLIB']    == '1':
+		configureWith += ' --with-zlib '
+
+	if postgresVersion['TCL']     == '1':
+		configureWith += ' --with-tcl --with-tclconfig='+ pl_languages +'/Tcl-8.6/lib '
+		os.environ['TCLSH'] = pl_languages +"/Tcl-8.6/lib"
+
+	if postgresVersion['ICU']     == '1':
+		configureWith += ' --with-icu '
+		configureFlags = ' ICU_CFLAGS=\'-I'+ shareLib +'/include\' ICU_LIBS=\'-L'+ shareLib +'/lib -licui18n -licuuc -licudata\' '
+
+	""" Executing ./configure command now """
+	print('./configure '+ configureWith)
+	res = os.system('cd '+ sourceDir +'/postgresql-'+ postgresVersion['fullVersion'] +' && ./configure '+ configureWith +' '+ configureFlags +' --prefix='+ buildDir +' > '+ logsDir +'/postgreSQL-configure.log 2>&1')
+	if res != 0:
+		print('\nSomething went wrong with ./configure see\n'+ logsDir +'/postgreSQL-configure.log ...')
+		exit()
