@@ -198,3 +198,14 @@ for postgresVersion in postgresVersions:
 	if res != 0:
 		print('\nSomething went wrong with make install see\n'+ logsDir +'/postgreSQL-make-install.log ...')
 		exit()
+
+
+	if postgresVersion['POSTGIS'] == '1':
+		print('\n\nBuild POSTGIS now ...')
+
+		""" Download source code """
+		res = os.system('cd '+ sourceDir +' && '+ DOWNLOAD_KEY +' '+ postgresVersion['POSTGISTARBALL'] +' > '+ logsDir +'/postgis-source.log 2>&1')
+		if res != 0:
+			print('\nSomething went wrong with downloading the source code see\n'+ logsDir +'/postgis-source.log')
+			exit()
+
