@@ -60,28 +60,21 @@ with open('postgres_versions.json', 'r') as postgresVersions:
 	postgresVersions = json.load(postgresVersions)
 
 
-""" Setting up system PATH variables
-	This section will hold/set/modify all the build related PATHS """
-
 """ Saving current state of PATH """
-
 PATH = os.environ['PATH']
-
-""" Setting new PATHS """
-print('Setting up proper system PATH variables ...')
-
-os.environ['PYTHON_HOME']       = python_home
-
-os.environ['OPENSSL_HOME']      = openssl_home
-
-os.environ['LD_LIBRARY_PATH']   = os.environ['PYTHON_HOME'] +"/lib:"+ os.environ['OPENSSL_HOME'] +"/lib:"+ shareLib +"/lib:"+ pl_languages +"/Perl-5.26/lib"
-
-os.environ['CPPFLAGS']          = "-I"+ os.environ['PYTHON_HOME'] +"inlclude/python3.4m -I"+ os.environ['OPENSSL_HOME'] +"/include -I"+ shareLib +"/include"
-
-os.environ['PYTHON']            = os.environ['PYTHON_HOME'] +"/bin/python3"
 
 
 for postgresVersion in postgresVersions:
+
+	""" Setting up system PATH variables
+        This section will hold/set/modify all the build related PATHS """
+
+	print('Setting up proper system PATH variables ...')
+	os.environ['LD_LIBRARY_PATH']   = shareLib +'/lib'
+	os.environ['CPPFLAGS']          = '-I'+ shareLib +'/include'
+	os.environ['LDFLAGS']           = ' -L'+ shareLib +'/lib'
+
+
 	dateTime = time.strftime("%Y%m%d%H%M%S")
 
 	print('\nStarting build process for '+ postgresVersion['fullVersion'])
@@ -108,9 +101,9 @@ for postgresVersion in postgresVersions:
 
 	os.environ['PATH']              = PATH
 
-	os.environ['LDFLAGS']           = "-Wl,-rpath,"+ buildDir +" -L"+ os.environ['PYTHON_HOME'] +"/lib -L"+ os.environ['OPENSSL_HOME'] +"/lib -L"+ shareLib +"/lib -L"+ pl_languages +"/Perl-5.26/lib "
+	os.environ['LDFLAGS']           = '-Wl,-rpath,'+ buildDir + os.environ['LDFLAGS'] 
 
-	os.environ['PATH']              = buildDir +"/bin:"+ os.environ['PYTHON_HOME'] +"/bin:"+ os.environ['OPENSSL_HOME'] +"/bin:"+ shareLib +"/bin:"+ pl_languages +"/Perl-5.26/bin:"+ os.environ['PATH']
+	os.environ['PATH']              = buildDir +"/bin:"+ shareLib +"/bin:"+ os.environ['PATH']
 
 
 	print('Downloading PostgreSQL source code ...')
@@ -137,15 +130,29 @@ for postgresVersion in postgresVersions:
 
 	if postgresVersion['OPENSSL'] == '1':
 		configureWith += ' --with-openssl '
+		os.environ['OPENSSL_HOME']      = openssl_home
+		os.environ['LD_LIBRARY_PATH']   = os.environ['OPENSSL_HOME'] +'/lib:'+ os.environ['LD_LIBRARY_PATH']
+		os.environ['CPPFLAGS']          = '-I'+ os.environ['OPENSSL_HOME'] +'/include '+ os.environ['CPPFLAGS']
+		os.environ['LDFLAGS']           = os.environ['LDFLAGS'] +' -L'+ os.environ['OPENSSL_HOME'] +"/lib"
+		os.environ['PATH']              = os.environ['OPENSSL_HOME'] +"/bin:"+ os.environ['PATH']
 
 	if postgresVersion['GSSAPI']  == '1':
 		configureWith += ' --with-gssapi '
 
 	if postgresVersion['PYTHON']  == '1':
 		configureWith += ' --with-python '
+		os.environ['PYTHON_HOME']       = python_home
+		os.environ['LD_LIBRARY_PATH']   = os.environ['PYTHON_HOME'] +'/lib:'+ os.environ['LD_LIBRARY_PATH']
+		os.environ['PYTHON']            = os.environ['PYTHON_HOME'] +'/bin/python3'
+		os.environ['CPPFLAGS']          = '-I'+ os.environ['PYTHON_HOME'] +'/inlclude/python3.4m '+ os.environ['CPPFLAGS']
+		os.environ['LDFLAGS']           = os.environ['LDFLAGS'] +' -L'+ os.environ['PYTHON_HOME'] +'/lib'
+		os.environ['PATH']              = os.environ['PYTHON_HOME'] +"/bin:"+ os.environ['PATH']
 
 	if postgresVersion['PERL']    == '1':
 		configureWith += ' --with-perl '
+		os.environ['LD_LIBRARY_PATH']   = pl_languages +'/Perl-5.26/lib:'+ os.environ['LD_LIBRARY_PATH']
+		os.environ['LDFLAGS']           = os.environ['LDFLAGS'] +' -L'+ pl_languages +'/Perl-5.26/lib'
+		os.environ['PATH']              = pl_languages +'/Perl-5.26/bin:'+ os.environ['PATH']
 
 	if postgresVersion['LDAP']    == '1':
 		configureWith += ' --with-ldap '
