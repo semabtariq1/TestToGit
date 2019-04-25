@@ -39,19 +39,6 @@ the configuration related properties """
 
 callLinuxBuildMachine = 0
 
-""" PostgreSQL configure options 
-1 = enable
-0 = disable """
-
-OPENSSL = 1
-GSSAPI  = 1
-PYTHON  = 1
-PERL    = 1
-LDAP    = 1
-ZLIB    = 1
-TCL     = 1
-ICU     = 1
-
 
 """ postgreSQL_info is a json array which will hold
 all the information about postgreSQL

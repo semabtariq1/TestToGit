@@ -3,12 +3,30 @@
                 "fullVersion": "10.7",
                 "majorVersion": "10",
                 "minerVersion": "7",
-                "tarball": "https://ftp.postgresql.org/pub/source/v10.7/postgresql-10.7.tar.gz"
+                "tarball": "https://ftp.postgresql.org/pub/source/v10.7/postgresql-10.7.tar.gz",
+		
+		"OPENSSL": "1",
+		"GSSAPI" : "1",
+		"PYTHON" : "1",
+		"PERL"   : "1",
+		"LDAP"   : "1",
+		"ZLIB"   : "1",
+		"TCL"    : "1",
+		"ICU"    : "1"
         },
         {
                 "fullVersion": "11.2",
                 "majorVersion": "11",
                 "minerVersion": "2",
-                "tarball": "https://ftp.postgresql.org/pub/source/v11.2/postgresql-11.2.tar.gz"
+                "tarball": "https://ftp.postgresql.org/pub/source/v11.2/postgresql-11.2.tar.gz",
+		
+		"OPENSSL": "1",
+                "GSSAPI" : "1",
+                "PYTHON" : "0",
+                "PERL"   : "0",
+                "LDAP"   : "0",
+                "ZLIB"   : "0",
+                "TCL"    : "0",
+                "ICU"    : "0"
         }
 ]
