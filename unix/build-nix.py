@@ -216,3 +216,11 @@ for postgresVersion in postgresVersions:
 			print('Something went wrong with postgis uncompressing ...')
 			exit()
 
+
+		""" Running ./configure """
+		print('Running ./configure ...')
+		res = os.system('cd '+ sourceDir +'/postgis-'+ postgresVersion['POSTGISVERSION'] +' && ./configure --prefix='+ shareLib +' --with-pgconfig='+ buildDir +'/bin/pg_config --with-gdalconfig=' + shareLib + '/bin/gdal-config  --with-geosconfig='+ shareLib +'/bin/geos-config --with-projdir='+ shareLib +' --with-xml2config='+ shareLib +'/bin/xml2-config > '+ logsDir +'/postgis-configure.log 2>&1')
+		if res != 0:
+			print('\nSomthing went wrong with postgis configure see\n'+ logsDir +'/postgis-configure.log ...')
+			exit()
+
