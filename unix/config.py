@@ -43,14 +43,14 @@ callLinuxBuildMachine = 0
 1 = enable
 0 = disable """
 
-pl_tcl = 1
-pl_perl = 1
-openssl = 1
-gssapi = 1
-python = 1
-ldap = 1
-zlib = 1
-icu = 1
+OPENSSL = 1
+GSSAPI  = 1
+PYTHON  = 1
+PERL    = 1
+LDAP    = 1
+ZLIB    = 1
+TCL     = 1
+ICU     = 1
 
 
 """ postgreSQL_info is a json array which will hold
