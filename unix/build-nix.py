@@ -84,16 +84,16 @@ os.environ['PYTHON']            = os.environ['PYTHON_HOME'] +"/bin/python3"
 for postgresVersion in postgresVersions:
 	dateTime = time.strftime("%Y%m%d%H%M%S")
 
-	print('\nStarting build process for '+ postgresVersion['postgresFullVersion'])
+	print('\nStarting build process for '+ postgresVersion['fullVersion'])
 
 	print('\n\nSetting up work dir structure ...')
 
 	currentProjectDir = root +'/workDir/'+ projectName
-	currentBuild = currentProjectDir +'/'+ dateTime +'/'+ postgresVersion['postgresFullVersion']
+	currentBuild = currentProjectDir +'/'+ dateTime +'/'+ postgresVersion['fullVersion']
 
 	sourceDir = currentBuild +'/'+ 'source'
 	logsDir = currentBuild +'/'+ 'logs'
-	buildDir = currentBuild +'/'+ 'build' +'/'+ postgresVersion['postgresMajorVersion']
+	buildDir = currentBuild +'/'+ 'build' +'/'+ postgresVersion['majorVersion']
 
 	res = os.system('mkdir -p '+ sourceDir +' && echo '+ sourceDir)
 	res = os.system('mkdir -p '+ logsDir   +' && echo '+ logsDir)
@@ -111,3 +111,10 @@ for postgresVersion in postgresVersions:
 	os.environ['LDFLAGS']           = "-Wl,-rpath,"+ buildDir +" -L"+ os.environ['PYTHON_HOME'] +"/lib -L"+ os.environ['OPENSSL_HOME'] +"/lib -L"+ shareLib +"/lib -L"+ pl_languages +"/Perl-5.26/lib "
 
 	os.environ['PATH']              = buildDir +"/bin:"+ os.environ['PYTHON_HOME'] +"/bin:"+ os.environ['OPENSSL_HOME'] +"/bin:"+ shareLib +"/bin:"+ pl_languages +"/Perl-5.26/bin:"+ os.environ['PATH']
+
+
+	print('Downloading PostgreSQL source code ...')
+	res = os.system('cd '+ sourceDir +' && '+ DOWNLOAD_KEY +' '+ postgresVersion['tarball'] +' > '+ logsDir +'/postgreSQL-source.log 2>&1')
+	if res != 0:
+		print('\nSomething went wrong for PostgreSQL source code downloading please refer to postgreSQL-source.log file ...')
+		exit()
