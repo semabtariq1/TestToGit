@@ -211,6 +211,7 @@ for postgresVersion in postgresVersions:
 
 
 		""" Uncompress the source code """
+		print('Uncompress the source code ...')
 		res = os.system('cd '+ sourceDir +' && tar xzf postgis-'+ postgresVersion['POSTGISVERSION'] +'.tar.gz')
 		if res != 0:
 			print('Something went wrong with postgis uncompressing ...')
