@@ -324,7 +324,7 @@ for postgresVersion in postgresVersions:
 
                                     os.system('cd '+ buildDir +'/bin && install_name_tool -change "'+ shareLib +'/lib/libgeos-3.6.2.dylib" "@executable_path/../lib/libgeos-3.6.2.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-bin-rpath.log 2>&1")
 
-                                    os.system('cd '+ buildDir +'/lib/postgresql && install_name_tool -change "'+ shareLib +'/lib/libxml2.2.dylib" "@executable_path/../lib/libxml2.2.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-postgresql-rpath.log 2>&1")
+                                    os.system('cd '+ buildDir +'/bin && install_name_tool -change "'+ shareLib +'/lib/libxml2.2.dylib" "@executable_path/../lib/libxml2.2.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-bin-rpath.log 2>&1")
 
                                     os.system('cd '+ buildDir +'/bin && install_name_tool -change "'+ shareLib +'/lib/libgdal.20.dylib" "@executable_path/../lib/libgdal.20.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-bin-rpath.log 2>&1")
 
