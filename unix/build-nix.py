@@ -254,3 +254,50 @@ for postgresVersion in postgresVersions:
 		if res != 0:
 			print('\nSomething went wrong with make check see\n'+ logsDir +'/postgis-make-check.log ...')
 			exit()
+
+
+		""" running make install on postgis """
+		print('Running make install ...')
+		res = os.system('cd '+ sourceDir +'/postgis-'+ postgresVersion['POSTGISVERSION'] +' && make install > '+ logsDir +'/postgis-make-install.log 2>&1')
+		if res != 0:
+			print('\nSomething went wrong with make install see\n'+ logsDir +'/postgis-make-install.lo ...')
+			exit()
+
+
+	""" ****** POST BUILD STEPS ***** """
+	print('****** POST BUILD STEPS *****')
+	
+	""" Copy shareLib/lib into buildDir/lib """
+	print('Copy shareLib/lib into buildDir/lib ...')
+	os.system('cp -rv '+ shareLib +'/lib/* '+ buildDir +'/lib/')
+
+	""" Copy shareLib/share/gdal into buildDir/share """
+	print('Copy shareLib/share/gdal into buildDir/share ...')
+	os.system('cp -rv '+ shareLib +'/share/gdal '+ buildDir +'/share/')
+
+	""" Copy sharelib/share/proj from buildDir/share """
+	os.system('cp -rv '+ shareLib +'/share/proj '+ buildDir +'/share/')
+
+	""" Copy openssl/lib into buildDir/lib """
+	os.system('cp -rv '+ openssl_home +'/lib/* '+ buildDir +'/lib/')
+
+	""" Platform related actions """
+	if osType == 'Linux':
+		
+		""" Setting runtime paths """
+
+		print('Setting runtime paths for bin ...')
+		for file in os.listdir(buildDir +'/bin'):
+			os.system('cd '+ buildDir +'/bin && chrpath -r "\${ORIGIN}/../lib/" ./'+ file +" >> "+ logsDir +"/postgreSQL-bin-rpaths.log 2>&1")
+
+		print('Setting runtime paths for lib ...')
+                for file in os.listdir(buildDir +'/lib'):
+                        os.system('cd '+ buildDir +'/lib && chrpath -r "\${ORIGIN}/../lib/" ./'+ file +" >> "+ logsDir +"/postgreSQL-lib-rpaths.log 2>&1")
+
+		if os.path.exists(buildDir +'/lib/postgresql'):
+			print('Setting runtime paths for lib/postgresql ...')
+        	        for file in os.listdir(buildDir +'/lib/postgresql'):
+                	        os.system('cd '+ buildDir +'/lib/postgresql && chrpath -r "\${ORIGIN}/../lib/" ./'+ file +" >> "+ logsDir +"/postgreSQL-postgresql-rpaths.log 2>&1")
+
+		# Uncommit it if we have build a new version of TCL 
+                                # os.system('cd /opt/2ndQuadrant/pl-languages/Tcl-8.6/bin && chrpath -r "\${ORIGIN}/../lib/" ./tclsh8.6' " >> "+ dir_logs +"/postgreSQL_postgress_rpaths.log 2>&1")
