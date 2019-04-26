@@ -302,7 +302,7 @@ for postgresVersion in postgresVersions:
 				os.system('cd '+ buildDir +'/lib/postgresql && chrpath -r "\${ORIGIN}/../../lib/" ./'+ file +" >> "+ logsDir +"/postgreSQL-postgresql-rpaths.log 2>&1")
 
 		# Uncommit it if we have build a new version of TCL 
-                # os.system('cd /opt/2ndQuadrant/pl-languages/Tcl-8.6/bin && chrpath -r "\${ORIGIN}/../lib/" ./tclsh8.6' " >> "+ dir_logs +"/postgreSQL_postgress_rpaths.log 2>&1")
+                # os.system('cd /opt/2ndQuadrant/pl-languages/Tcl-8.6/bin && chrpath -r "\${ORIGIN}/../lib/" ./tclsh8.6' " >> "+ logsDir +"/pltcl-rpath.log 2>&1")
 
 	else:
 		""" Setting runtime paths """
