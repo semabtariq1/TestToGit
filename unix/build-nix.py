@@ -276,9 +276,11 @@ for postgresVersion in postgresVersions:
 	os.system('cp -rv '+ shareLib +'/share/gdal '+ buildDir +'/share/ >> '+ logsDir +'/copy.log')
 
 	""" Copy sharelib/share/proj from buildDir/share """
+	print('Copy sharelib/share/proj from buildDir/share...')
 	os.system('cp -rv '+ shareLib +'/share/proj '+ buildDir +'/share/ >> '+ logsDir +'/copy.log')
 
 	""" Copy openssl/lib into buildDir/lib """
+	print('Copy openssl/lib into buildDir/lib ...')
 	os.system('cp -rv '+ openssl_home +'/lib/* '+ buildDir +'/lib/ >> '+ logsDir +'/copy.log')
 
 	""" Platform related actions """
