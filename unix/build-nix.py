@@ -225,3 +225,10 @@ for postgresVersion in postgresVersions:
 			print('\nSomthing went wrong with postgis configure see\n'+ logsDir +'/postgis-configure.log ...')
 			exit()
 
+
+		""" Running make """
+		print('Running make ...')
+		res = os.system('cd '+ sourceDir +'/postgis-'+ postgresVersion['POSTGISVERSION'] +' && make > '+ logsDir +'/postgis-make.log 2>&1')
+		if res != 0:
+			print('\nSomething went wrong with make see\n'+ logsDir +'\postgis-make.log ...')
+			exit()
