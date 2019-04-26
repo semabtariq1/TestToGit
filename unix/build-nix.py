@@ -232,3 +232,25 @@ for postgresVersion in postgresVersions:
 		if res != 0:
 			print('\nSomething went wrong with make see\n'+ logsDir +'\postgis-make.log ...')
 			exit()
+
+
+		""" Running regression tests on postgis """
+		print('Running make check ...')
+		
+		""" initializing the data dir """
+		res = os.system('cd '+ buildDir +'/bin && ./initdb -D '+ logsDir +'/data > '+ logsDir +'/postgreSQL-init.log 2>&1')
+		if res != 0:
+			print('\nCould not able to initialize the data dir see\n'+ logsDir +'/postgreSQL-init.log ...')
+			exit()
+
+		""" Starting postgreSQL server """
+		res = os.system('cd '+ buildDir +'/bin && ./pg_ctl -D '+ logsDir +'/data start > '+ logsDir +'/postgreSQL-pgctl.log 2>&1')
+		if res != 0:
+			print('\nCould not able to start PostgreSQL server see\n'+ logsDir +'/postgreSQL-pgctl.log ...')
+			exit()
+
+		""" Running make check on postgis now """
+		res = os.system('cd '+ sourceDir +'/postgis-'+ postgresVersion['POSTGISVERSION'] +' && make check > '+ logsDir +'/postgis-make-check.log 2>&1')
+		if res != 0:
+			print('\nSomething went wrong with make check see\n'+ logsDir +'/postgis-make-check.log ...')
+			exit()
