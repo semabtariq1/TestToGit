@@ -392,3 +392,10 @@ for postgresVersion in postgresVersions:
                                     os.system('cd '+ buildDir +'/lib/postgresql && install_name_tool -change "/Users/2ndquadrant/pl-languages/perl-5.26/lib/CORE/libperl.dylib" "@executable_path/../../pl-languages/Perl-5.26/lib/CORE/libperl.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-postgresql-rpath.log 2>&1")
 
                                     os.system('cd '+ buildDir +'/lib/postgresql && install_name_tool -change "/Applications/2ndQuadrant/PostgreSQL/pl-languages/Tcl-8.6/lib/libtcl8.6.dylib" "@executable_path/../../pl-languages/Tcl-8.6/lib/libtcl8.6.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-postgresql-rpath.log 2>&1")
+
+
+	""" Generating .tar.gz file of final bundle """
+	res = os.system('cd '+ currentBuild +'/build && tar -zcvf PostgreSQL-'+ osType +'-'+ postgresVersion['fullVersion'] +'.tar.gz '+ postgresVersion['majorVersion'] +' > '+ logsDir +'/generate-tar-file.log 2>&1')
+	if res != 0:
+		print('\nUnable to create tar.gz of final bundle see\n'+ logsDir +'/generate-tar-file.log ...')
+		exit()
