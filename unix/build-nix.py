@@ -361,6 +361,10 @@ for postgresVersion in postgresVersions:
 
                                     os.system('cd '+ buildDir +'/lib && install_name_tool -change "'+ shareLib +'/lib/libicudata.62.dylib" "@executable_path/../lib/libicudata.62.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-lib-rpath.log 2>&1")
 
+                                    os.system('cd '+ buildDir +'/lib && install_name_tool -change "/Users/2ndquadrant/pl-languages/perl-5.26/lib/CORE/libperl.dylib" "@executable_path/../../pl-languages/Perl-5.26/lib/CORE/libperl.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-postgresql-rpath.log 2>&1")
+
+                                    os.system('cd '+ buildDir +'/lib && install_name_tool -change "/Applications/2ndQuadrant/PostgreSQL/pl-languages/Tcl-8.6/lib/libtcl8.6.dylib" "@executable_path/../../pl-languages/Tcl-8.6/lib/libtcl8.6.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-postgresql-rpath.log 2>&1")
+
 
 		if os.path.exists(buildDir +'/lib/postgresql'):
 			print('Setting rpaths for lib/postgresql ...')
