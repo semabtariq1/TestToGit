@@ -1,9 +1,29 @@
 [
+	{
+                "fullVersion": "11.3",
+                "majorVersion": "11",
+                "minerVersion": "3",
+                "tarball": "https://borka.postgresql.org/staging/377998a51d3daa7043b1f9205ef58b947281ae52/postgresql-11.3.tar.gz",
+
+                "POSTGIS": "1",
+                "POSTGISVERSION": "2.5.0",
+                "POSTGISTARBALL": "https://download.osgeo.org/postgis/source/postgis-2.5.0.tar.gz",
+
+                "OPENSSL": "1",
+                "GSSAPI" : "1",
+                "PYTHON" : "1",
+                "PERL"   : "1",
+                "LDAP"   : "1",
+                "ZLIB"   : "1",
+                "TCL"    : "1",
+                "ICU"    : "1"
+        },
+
         {
-                "fullVersion": "10.7",
+                "fullVersion": "10.8",
                 "majorVersion": "10",
-                "minerVersion": "7",
-                "tarball": "https://ftp.postgresql.org/pub/source/v10.7/postgresql-10.7.tar.gz",
+                "minerVersion": "8",
+                "tarball": "https://borka.postgresql.org/staging/377998a51d3daa7043b1f9205ef58b947281ae52/postgresql-10.8.tar.gz",
 		
 		"POSTGIS": "1",
 		"POSTGISVERSION": "2.5.0",
@@ -19,10 +39,10 @@
 		"ICU"    : "1"
         },
         {
-                "fullVersion": "11.2",
-                "majorVersion": "11",
-                "minerVersion": "2",
-                "tarball": "https://ftp.postgresql.org/pub/source/v11.2/postgresql-11.2.tar.gz",
+                "fullVersion": "9.6.13",
+                "majorVersion": "9.6",
+                "minerVersion": "13",
+                "tarball": "https://borka.postgresql.org/staging/377998a51d3daa7043b1f9205ef58b947281ae52/postgresql-9.6.13.tar.gz",
 
 		"POSTGIS": "1",
 		"POSTGISVERSION": "2.5.0",
@@ -30,11 +50,31 @@
 	
 		"OPENSSL": "1",
                 "GSSAPI" : "1",
-                "PYTHON" : "0",
-                "PERL"   : "0",
-                "LDAP"   : "0",
-                "ZLIB"   : "0",
-                "TCL"    : "0",
+                "PYTHON" : "1",
+                "PERL"   : "1",
+                "LDAP"   : "1",
+                "ZLIB"   : "1",
+                "TCL"    : "1",
+                "ICU"    : "0"
+        },
+
+	{
+                "fullVersion": "9.5.17",
+                "majorVersion": "9.5",
+                "minerVersion": "17",
+                "tarball": "https://borka.postgresql.org/staging/377998a51d3daa7043b1f9205ef58b947281ae52/postgresql-9.5.17.tar.gz",
+
+                "POSTGIS": "1",
+                "POSTGISVERSION": "2.5.0",
+                "POSTGISTARBALL": "https://download.osgeo.org/postgis/source/postgis-2.5.0.tar.gz",
+
+                "OPENSSL": "1",
+                "GSSAPI" : "1",
+                "PYTHON" : "1",
+                "PERL"   : "1",
+                "LDAP"   : "1",
+                "ZLIB"   : "1",
+                "TCL"    : "1",
                 "ICU"    : "0"
         }
 ]

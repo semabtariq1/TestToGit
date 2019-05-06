@@ -178,7 +178,7 @@ for postgresVersion in postgresVersions:
 
 	""" Running make on PostgreSQL source code """
 	print('Running make ...')
-	res = os.system('cd '+ sourceDir +'/postgresql-'+ postgresVersion['fullVersion'] +' && make > '+ logsDir +'/postgreSQL-make.log 2>&1')
+	res = os.system('cd '+ sourceDir +'/postgresql-'+ postgresVersion['fullVersion'] +' && make world > '+ logsDir +'/postgreSQL-make.log 2>&1')
 	if res != 0:
 		print('\nSomething went wrong with make see\n'+ logsDir +'/postgreSQL-make.log ...')
 		exit()
@@ -194,7 +194,7 @@ for postgresVersion in postgresVersions:
 
 	""" Running make install on PostgreSQL """
 	print('Running make install ...')
-	res = os.system('cd '+ sourceDir +'/postgresql-'+ postgresVersion['fullVersion'] +' && make install > '+ logsDir +'/postgreSQL-make-install.log 2>&1')
+	res = os.system('cd '+ sourceDir +'/postgresql-'+ postgresVersion['fullVersion'] +' && make install-world > '+ logsDir +'/postgreSQL-make-install.log 2>&1')
 	if res != 0:
 		print('\nSomething went wrong with make install see\n'+ logsDir +'/postgreSQL-make-install.log ...')
 		exit()
