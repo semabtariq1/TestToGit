@@ -255,6 +255,8 @@ for postgresVersion in postgresVersions:
 			print('\nSomething went wrong with make check see\n'+ logsDir +'/postgis-make-check.log ...')
 			exit()
 
+		""" Shutting down postgresql servver """
+		os.system('cd '+ buildDir +'/bin && ./pg_ctl -D '+ logsDir +'/data stop >> '+ logsDir +'/postgreSQL-pgctl.log 2>&1')
 
 		""" running make install on postgis """
 		print('Running make install ...')
