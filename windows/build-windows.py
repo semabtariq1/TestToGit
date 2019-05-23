@@ -261,34 +261,28 @@ try:
                         copy_tree(src, dest)
 						
 						
-			            # Running post build steps
-                        output_file = open("output.txt", "a")
-                        output_file.write("\n\n----- Running post build steps -----\n\n")   
-                        output_file.close()
+			        # Running post build steps
+                    output_file = open("output.txt", "a")
+                    output_file.write("\n\n----- Running post build steps -----\n\n")
+                    output_file.close()
 			
 			      
-				        # copying documentation into installation directory
-                        output_file = open("output.txt", "a")
-                        output_file.write("copying documentation files ...\n")   
-                        output_file.close()
-                        src = current_project +"\\" + postgreSQL_version['full_version'] +"\\src\\postgresql-" + postgreSQL_version['full_version'] \
+				    # copying documentation into installation directory
+                    output_file = open("output.txt", "a")
+                    output_file.write("copying documentation files ...\n")
+                    output_file.close()
+                    src = current_project +"\\" + postgreSQL_version['full_version'] +"\\src\\postgresql-" + postgreSQL_version['full_version'] \
                               + "\\doc\\src\\sgml\\html"
-                        dest = current_project +"\\"+ postgreSQL_version['full_version'] +"\\build\\"+ postgreSQL_version['major_version'] +"\\doc"
-                        copy_tree(src, dest)
-                        time.sleep(3)
-				
-                        output_file = open("output.txt", "a")
-                        output_file.write("copying scripts into build ...\n") 						
-                        output_file.close()      				        
-                        src = config_file.share_lib +"\\shortcut-files"
-                        dest = current_project +"\\" + postgreSQL_version['full_version'] +"\\build\\" + postgreSQL_version['major_version']
-                        copy_tree(src, dest)
+                    dest = current_project +"\\"+ postgreSQL_version['full_version'] +"\\build\\"+ postgreSQL_version['major_version'] +"\\doc"
+                    copy_tree(src, dest)
+                    time.sleep(3)
+
  
-						# Generating final zip
-                        shutil.make_archive(current_project +"\\Windows-"+ postgreSQL_version["full_version"], 'zip', current_project + "\\" + postgreSQL_version["full_version"] +"\\build")
+					# Generating final zip
+                    shutil.make_archive(current_project +"\\Windows-"+ postgreSQL_version["full_version"], 'zip', current_project + "\\" + postgreSQL_version["full_version"] +"\\build")
 						
 						
-                        build_result = 0
+                    build_result = 0
 						
 except Exception as e:
     print(e)
