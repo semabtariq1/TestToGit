@@ -9,6 +9,7 @@
                 "POSTGISVERSION": "2.5.0",
                 "POSTGISTARBALL": "https://download.osgeo.org/postgis/source/postgis-2.5.0.tar.gz",
 
+		"QUANTILE"   : "0",
                 "OPENSSL": "1",
                 "GSSAPI" : "1",
                 "PYTHON" : "1",
@@ -16,6 +17,8 @@
                 "LDAP"   : "1",
                 "ZLIB"   : "1",
                 "TCL"    : "1",
-                "ICU"    : "1"
+                "ICU"    : "1",
+
+		"Comments": "QUANTILE is not supported for PostgreSQL 12 beta"
         }
 ]

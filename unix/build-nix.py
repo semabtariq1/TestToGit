@@ -400,6 +400,22 @@ for postgresVersion in postgresVersions:
                                     os.system('cd '+ buildDir +'/lib/postgresql && install_name_tool -change "/Applications/2ndQuadrant/PostgreSQL/pl-languages/Tcl-8.6/lib/libtcl8.6.dylib" "@executable_path/../../pl-languages/Tcl-8.6/lib/libtcl8.6.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-postgresql-rpath.log 2>&1")
 
 
+	""" Code related to 2UDA """
+	if postgresVersion['QUANTILE'] == '1':
+		print('build QUANTILE ... ')
+		os.system('cd '+ sourceDir +' && git clone https://github.com/tvondra/quantile.git > '+ logsDir +'/quantile-clone.log 2>&1')
+		if postgresVersion['majorVersion'] == '9.5':
+			res = os.system('cd '+ sourceDir +'/quantile && make USE_PGXS=1 > '+ logsDir +'/quantile-build.log 2>&1 && make USE_PGXS=1 install >> '+ logsDir +'/quantile-build.log 2>&1')
+			if res != 0:
+				print('QUANTILE fails ...')
+				exit()
+		else:
+			res = os.system('cd '+ sourceDir +'/quantile && git checkout parallel-aggregation && make USE_PGXS=1 > '+ logsDir +'/quantile-build.log 2>&1 && make USE_PGXS=1 install >> '+ logsDir +'/quantile-build.log 2>&1')
+			if res != 0:
+				print('QUANTILE fails ...')
+				exit()
+
+
 	""" Generating .tar.gz file of final bundle """
 	res = os.system('cd '+ currentBuild +'/build && tar -zcvf PostgreSQL-'+ osType +'-'+ postgresVersion['fullVersion'] +'.tar.gz '+ postgresVersion['majorVersion'] +' > '+ logsDir +'/generate-tar-file.log 2>&1')
 	if res != 0:
