@@ -3,7 +3,7 @@
                 "fullVersion": "12beta1",
                 "majorVersion": "12",
                 "minerVersion": "beta1",
-                "tarball": "https://ftp.postgresql.org/pub/source/v11.3/postgresql-12beta1.tar.gz",
+                "tarball": "https://ftp.postgresql.org/pub/source/v12beta1/postgresql-12beta1.tar.gz",
 
                 "POSTGIS": "0",
                 "POSTGISVERSION": "2.5.2",
