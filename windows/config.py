@@ -15,6 +15,7 @@ class config_file:
     perl_path = "c:\\perl"
     
     # PostgreSQL configure options (1 for build 0 for do not build)
+    QUANTILE = 1
     openssl = 1
     python = 1
     zlib = 1
@@ -23,12 +24,12 @@ class config_file:
     tcl = 1
 
     # PostgreSQL source code info
-    postgreSQL_info = '{"postgreSQL_version": [{"full_version": "12beta1", "major_version": "12", "miner_version" : "beta1",' \
-                 ' "url" : "https://borka.postgresql.org/staging/fd55cfe2850e868d9841ece8bcb4faacd86bf09b/postgresql-12beta1.tar.gz"} ] }'
+    postgreSQL_info = '{"postgreSQL_version": [{"full_version": "11.1", "major_version": "11", "miner_version" : "11",' \
+                 ' "url" : "https://ftp.postgresql.org/pub/source/v11.1/postgresql-11.1.tar.gz"} ] }'
     postgreSQL_info_decoded = json.loads(postgreSQL_info)
 
     # Additional features (1 for required 0 for not required)
-    postgis_required = 0
+    postgis_required = 1
     postgis_download_url = "https://download.osgeo.org/postgis/source/postgis-2.4.4.tar.gz"
     postgis_full_version = "2.4.4"
 	

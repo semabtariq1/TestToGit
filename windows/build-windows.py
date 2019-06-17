@@ -230,6 +230,18 @@ try:
         file.close()
 	
 	
+        # Copying quantile binaries in build
+        if config_file.QUANTILE == 1:
+            print("Copying quantile binaries in build ...")
+            if postgreSQL_version['major_version'] == '9.5':
+                src = config_file.share_lib +"\\quantile"
+            else:
+                src = config_file.share_lib +"\\quantile-parallel"
+            dest = current_project +"\\"+ postgreSQL_version['full_version'] +"\\src\\postgresql-"+ postgreSQL_version['full_version'] +"\\contrib\\quantile"
+            print(src)
+            copy_tree(src, dest)
+
+
         output_file = open("output.txt", "a")
         output_file.write("Running make on postgreSQL ...\n")
         output_file.close()
