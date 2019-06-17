@@ -3,11 +3,11 @@
                 "fullVersion": "12beta1",
                 "majorVersion": "12",
                 "minerVersion": "beta1",
-                "tarball": "https://borka.postgresql.org/staging/fd55cfe2850e868d9841ece8bcb4faacd86bf09b/postgresql-12beta1.tar.gz",
+                "tarball": "https://ftp.postgresql.org/pub/source/v11.3/postgresql-12beta1.tar.gz",
 
                 "POSTGIS": "0",
-                "POSTGISVERSION": "2.5.0",
-                "POSTGISTARBALL": "https://download.osgeo.org/postgis/source/postgis-2.5.0.tar.gz",
+                "POSTGISVERSION": "2.5.2",
+                "POSTGISTARBALL": "https://download.osgeo.org/postgis/source/postgis-2.5.2.tar.gz",
 
 		"QUANTILE"   : "0",
                 "OPENSSL"    : "1",
@@ -20,5 +20,93 @@
                 "ICU"        : "1",
 
 		"Comments": "QUANTILE is not supported for PostgreSQL 12 beta"
+        },
+
+	{
+                "fullVersion": "11.3",
+                "majorVersion": "11",
+                "minerVersion": "3",
+                "tarball": "https://ftp.postgresql.org/pub/source/v11.3/postgresql-11.3.tar.gz",
+
+                "POSTGIS": "1",
+                "POSTGISVERSION": "2.5.2",
+                "POSTGISTARBALL": "https://download.osgeo.org/postgis/source/postgis-2.5.2.tar.gz",
+
+                "QUANTILE"   : "1",
+                "OPENSSL"    : "1",
+                "GSSAPI"     : "1",
+                "PYTHON"     : "1",
+                "PERL"       : "1",
+                "LDAP"       : "1",
+                "ZLIB"       : "1",
+                "TCL"        : "1",
+                "ICU"        : "1"
+        },
+
+	{
+                "fullVersion": "10.8",
+                "majorVersion": "10",
+                "minerVersion": "8",
+                "tarball": "https://ftp.postgresql.org/pub/source/v10.8/postgresql-10.8.tar.gz",
+
+                "POSTGIS": "1",
+                "POSTGISVERSION": "2.5.2",
+                "POSTGISTARBALL": "https://download.osgeo.org/postgis/source/postgis-2.5.2.tar.gz",
+
+                "QUANTILE"   : "1",
+                "OPENSSL"    : "1",
+                "GSSAPI"     : "1",
+                "PYTHON"     : "1",
+                "PERL"       : "1",
+                "LDAP"       : "1",
+                "ZLIB"       : "1",
+                "TCL"        : "1",
+                "ICU"        : "1"
+        },
+
+	{
+                "fullVersion": "9.6.13",
+                "majorVersion": "9.6",
+                "minerVersion": "13",
+                "tarball": "https://ftp.postgresql.org/pub/source/v9.6.13/postgresql-9.6.13.tar.gz",
+
+                "POSTGIS": "1",
+                "POSTGISVERSION": "2.5.2",
+                "POSTGISTARBALL": "https://download.osgeo.org/postgis/source/postgis-2.5.2.tar.gz",
+
+                "QUANTILE"   : "1",
+                "OPENSSL"    : "1",
+                "GSSAPI"     : "1",
+                "PYTHON"     : "1",
+                "PERL"       : "1",
+                "LDAP"       : "1",
+                "ZLIB"       : "1",
+                "TCL"        : "1",
+                "ICU"        : "0",
+
+                "Comments": "ICU is not supported for PostgreSQL 9.6.*"
+        },
+
+	{
+                "fullVersion": "9.5.17",
+                "majorVersion": "9.5",
+                "minerVersion": "17",
+                "tarball": "https://ftp.postgresql.org/pub/source/v9.5.17/postgresql-9.5.17.tar.gz",
+
+                "POSTGIS": "1",
+                "POSTGISVERSION": "2.5.2",
+                "POSTGISTARBALL": "https://download.osgeo.org/postgis/source/postgis-2.5.2.tar.gz",
+
+                "QUANTILE"   : "1",
+                "OPENSSL"    : "1",
+                "GSSAPI"     : "1",
+                "PYTHON"     : "1",
+                "PERL"       : "1",
+                "LDAP"       : "1",
+                "ZLIB"       : "1",
+                "TCL"        : "1",
+                "ICU"        : "0",
+
+                "Comments": "ICU is not supported for PostgreSQL 9.5.*"
         }
 ]
