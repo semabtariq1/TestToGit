@@ -1,9 +1,9 @@
 [
 	{
-                "fullVersion": "12beta1",
+                "fullVersion": "12beta2",
                 "majorVersion": "12",
-                "minerVersion": "beta1",
-                "tarball": "https://ftp.postgresql.org/pub/source/v12beta1/postgresql-12beta1.tar.gz",
+                "minerVersion": "beta2",
+                "tarball": "https://borka.postgresql.org/staging/99290cbc86ee2196c047ccfeda84fe5169e14965/postgresql-12beta2.tar.gz",
 
                 "POSTGIS": "0",
                 "POSTGISVERSION": "2.5.2",
@@ -23,16 +23,16 @@
         },
 
 	{
-                "fullVersion": "11.3",
+                "fullVersion": "11.4",
                 "majorVersion": "11",
-                "minerVersion": "3",
-                "tarball": "https://ftp.postgresql.org/pub/source/v11.3/postgresql-11.3.tar.gz",
+                "minerVersion": "4",
+                "tarball": "https://borka.postgresql.org/staging/99290cbc86ee2196c047ccfeda84fe5169e14965/postgresql-11.4.tar.gz",
 
                 "POSTGIS": "1",
                 "POSTGISVERSION": "2.5.2",
                 "POSTGISTARBALL": "https://download.osgeo.org/postgis/source/postgis-2.5.2.tar.gz",
 
-                "QUANTILE"   : "1",
+                "QUANTILE"   : "0",
                 "OPENSSL"    : "1",
                 "GSSAPI"     : "1",
                 "PYTHON"     : "1",
@@ -44,16 +44,16 @@
         },
 
 	{
-                "fullVersion": "10.8",
+                "fullVersion": "10.9",
                 "majorVersion": "10",
-                "minerVersion": "8",
-                "tarball": "https://ftp.postgresql.org/pub/source/v10.8/postgresql-10.8.tar.gz",
+                "minerVersion": "9",
+                "tarball": "https://borka.postgresql.org/staging/99290cbc86ee2196c047ccfeda84fe5169e14965/postgresql-10.9.tar.gz",
 
                 "POSTGIS": "1",
                 "POSTGISVERSION": "2.5.2",
                 "POSTGISTARBALL": "https://download.osgeo.org/postgis/source/postgis-2.5.2.tar.gz",
 
-                "QUANTILE"   : "1",
+                "QUANTILE"   : "0",
                 "OPENSSL"    : "1",
                 "GSSAPI"     : "1",
                 "PYTHON"     : "1",
@@ -65,16 +65,16 @@
         },
 
 	{
-                "fullVersion": "9.6.13",
+                "fullVersion": "9.6.14",
                 "majorVersion": "9.6",
-                "minerVersion": "13",
-                "tarball": "https://ftp.postgresql.org/pub/source/v9.6.13/postgresql-9.6.13.tar.gz",
+                "minerVersion": "14",
+                "tarball": "https://borka.postgresql.org/staging/99290cbc86ee2196c047ccfeda84fe5169e14965/postgresql-9.6.14.tar.gz",
 
                 "POSTGIS": "1",
                 "POSTGISVERSION": "2.5.2",
                 "POSTGISTARBALL": "https://download.osgeo.org/postgis/source/postgis-2.5.2.tar.gz",
 
-                "QUANTILE"   : "1",
+                "QUANTILE"   : "0",
                 "OPENSSL"    : "1",
                 "GSSAPI"     : "1",
                 "PYTHON"     : "1",
@@ -88,16 +88,16 @@
         },
 
 	{
-                "fullVersion": "9.5.17",
+                "fullVersion": "9.5.18",
                 "majorVersion": "9.5",
-                "minerVersion": "17",
-                "tarball": "https://ftp.postgresql.org/pub/source/v9.5.17/postgresql-9.5.17.tar.gz",
+                "minerVersion": "18",
+                "tarball": "https://borka.postgresql.org/staging/99290cbc86ee2196c047ccfeda84fe5169e14965/postgresql-9.5.18.tar.gz",
 
                 "POSTGIS": "1",
                 "POSTGISVERSION": "2.5.2",
                 "POSTGISTARBALL": "https://download.osgeo.org/postgis/source/postgis-2.5.2.tar.gz",
 
-                "QUANTILE"   : "1",
+                "QUANTILE"   : "0",
                 "OPENSSL"    : "1",
                 "GSSAPI"     : "1",
                 "PYTHON"     : "1",
