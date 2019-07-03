@@ -1,0 +1,69 @@
+[
+	{
+                "fullVersion": "11.4",
+                "majorVersion": "11",
+                "minerVersion": "4",
+                "tarball": "https://ftp.postgresql.org/pub/source/v11.4/postgresql-11.4.tar.gz",
+
+                "QUANTILE"   : "1",
+				"POSTGIS"    : "1",
+                "OPENSSL"    : "1",
+                "PYTHON"     : "1",
+                "PERL"       : "1",
+                "ZLIB"       : "1",
+                "TCL"        : "1",
+                "ICU"        : "1"
+        },
+
+	{
+                "fullVersion": "10.9",
+                "majorVersion": "10",
+                "minerVersion": "9",
+                "tarball": "https://ftp.postgresql.org/pub/source/v10.9/postgresql-10.9.tar.gz",
+
+                "QUANTILE"   : "1",
+				"POSTGIS"    : "1",
+                "OPENSSL"    : "1",
+                "PYTHON"     : "1",
+                "PERL"       : "1",
+                "ZLIB"       : "1",
+                "TCL"        : "1",
+                "ICU"        : "1"
+        },
+
+	{
+                "fullVersion": "9.6.14",
+                "majorVersion": "9.6",
+                "minerVersion": "14",
+                "tarball": "https://ftp.postgresql.org/pub/source/v9.6.14/postgresql-9.6.14.tar.gz",
+
+                "QUANTILE"   : "1",
+				"POSTGIS"    : "1",
+                "OPENSSL"    : "1",
+                "PYTHON"     : "1",
+                "PERL"       : "1",
+                "ZLIB"       : "1",
+                "TCL"        : "1",
+                "ICU"        : "0",
+
+                "Comments": "ICU is not supported for PostgreSQL 9.6.*"
+        },
+
+	{
+                "fullVersion": "9.5.18",
+                "majorVersion": "9.5",
+                "minerVersion": "18",
+                "tarball": "https://ftp.postgresql.org/pub/source/v9.5.18/postgresql-9.5.18.tar.gz",
+
+                "QUANTILE"   : "1",
+				"POSTGIS"    : "1",
+                "OPENSSL"    : "1",
+                "PYTHON"     : "1",
+                "PERL"       : "1",
+                "ZLIB"       : "1",
+                "TCL"        : "1",
+                "ICU"        : "0",
+
+                "Comments": "ICU is not supported for PostgreSQL 9.5.*"
+        }
+]
