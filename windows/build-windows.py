@@ -4,6 +4,7 @@ import time
 import requests
 import tarfile
 import shutil
+import subprocess
 from local_env import *
 from distutils.dir_util import copy_tree
 
@@ -40,9 +41,57 @@ else:
 print('\n\nPre build checks are executed successfully ...')
 
 
+# Saving current state of system PATH variable
+print('Saving current state of system PATH variable ...')
+systemPATH = os.environ['PATH']
+
+
 """ Reading postgreSQ versions from postgres_versions.json """
 with open('postgres_versions.json', 'r') as postgresVersions:
 	postgresVersions = json.load(postgresVersions)
+
+
+# Checking if installers creation mode is Enabled or Disabled
+installerCreationMode = 'Disabled'
+for postgresVersion in postgresVersions:
+
+    if postgresVersion['createInstaller'] == '1':
+        installerCreationMode = 'Enabled'
+        break
+
+print('Installer creation mode ... '+ installerCreationMode)
+
+
+# Running check if Installer creation mode is Enabled
+if installerCreationMode == 'Enabled':
+    if os.path.exists('C:\\bitrock_installation\\output') and os.path.isdir('C:\\bitrock_installation\\output'):
+        if os.listdir('C:\\bitrock_installation\\output'):
+            print('Please remove old installers from C:\\bitrock_installation\\output ...')
+            exit()
+    else:
+        print('Output directory for installers does not exists ...')
+        exit()
+
+    # Add git in system PATH variable
+    os.environ['PATH'] = 'C:\\Program Files\\Git\\bin;'+ systemPATH
+
+    # Creating a directory if not exists and clone installer code from GitHub
+    installerSourcFolder = 'C:\\postgres_installer_source_code'
+    print('Clone Postgres installer source repository from GitHub ...')
+    if not os.path.exists(installerSourcFolder):
+        os.makedirs(installerSourcFolder)
+    res = os.system('cd '+ installerSourcFolder +' && git clone --recursive https://github.com/2ndQuadrant/postgresql-installer.git')
+    if res != 0:
+        print('Could not able to clone Postgres installer repository ...')
+        exit()
+
+    # Checkout stable branch and Getting latest commit hash
+    os.system('cd '+ installerSourcFolder +'\\postgresql-installer && git checkout stable')
+    latestCommitHash = subprocess.check_output('cd '+ installerSourcFolder +'\\postgresql-installer && git rev-parse HEAD', shell=True)
+    print('latest commit hash: '+ latestCommitHash.decode("utf-8"))
+
+    # Restoring system PATH variable into its orignal shape
+    os.environ['PATH'] = systemPATH
 
 
 for postgresVersion in postgresVersions:
@@ -148,9 +197,6 @@ for postgresVersion in postgresVersions:
 
 
     # Modifying system PATH variable
-    print('Saving current state of system PATH variable ...')
-    systemPATH = os.environ['PATH']
-    # Add custom PATHS
     print('Modify system PATH variable ...')
     os.environ['PATH'] = buildDir +'\\bin;'+ shareLib +'\\extra_utils\\bin;'+ opensslPATH + icuPATH + zlibPATH + systemPATH
 	
@@ -204,3 +250,27 @@ for postgresVersion in postgresVersions:
 
     # Restoring system PATH variable into default state
     os.environ['PATH'] = systemPATH
+
+
+    # --------------------------
+    # Installer creation section
+    # --------------------------
+
+
+    # Checking installer creation mode
+    if installerCreationMode == 'Enabled':
+
+        # Check if current version of PostgreSQL build needs an installer
+        if postgresVersion['createInstaller'] == '1':
+
+            print('------------------')
+            print('INSTALLER CREATION')
+            print('------------------')
+
+            # Creating required folder structure inside Postgres installer clone repo
+            print(installerSourcFolder +'\\postgresql-installer\\Builds\\Windows\\'+ postgresVersion["majorVersion"])
+            os.makedirs(installerSourcFolder +'\\postgresql-installer\\Builds\\Windows\\'+ postgresVersion["majorVersion"])
+
+            # Copy build into installerSourcFolder\postgresql-installer\Builds\Windows
+            print('Copy build into: '+ installerSourcFolder +'\\postgresql-installer\\Builds\\Windows\\'+ postgresVersion["majorVersion"])
+            copy_tree(buildDir, installerSourcFolder +'\\postgresql-installer\\Builds\\Windows\\'+ postgresVersion["majorVersion"])
