@@ -8,7 +8,7 @@
 		"createInstaller": "1",
 
                 "QUANTILE"   : "1",
-				"POSTGIS"    : "1",
+		"POSTGIS"    : "1",
                 "OPENSSL"    : "1",
                 "PYTHON"     : "1",
                 "PERL"       : "1",
@@ -26,7 +26,7 @@
 		"createInstaller": "1",
 
                 "QUANTILE"   : "1",
-				"POSTGIS"    : "1",
+		"POSTGIS"    : "1",
                 "OPENSSL"    : "1",
                 "PYTHON"     : "1",
                 "PERL"       : "1",
@@ -44,7 +44,7 @@
 		"createInstaller": "1",
 
                 "QUANTILE"   : "1",
-				"POSTGIS"    : "1",
+		"POSTGIS"    : "1",
                 "OPENSSL"    : "1",
                 "PYTHON"     : "1",
                 "PERL"       : "1",
@@ -64,7 +64,7 @@
 		"createInstaller": "1",
 
                 "QUANTILE"   : "1",
-				"POSTGIS"    : "1",
+		"POSTGIS"    : "1",
                 "OPENSSL"    : "1",
                 "PYTHON"     : "1",
                 "PERL"       : "1",
