@@ -64,22 +64,14 @@ print('Installer creation mode ... '+ installerCreationMode)
 
 # Running check if Installer creation mode is Enabled
 if installerCreationMode == 'Enabled':
-    if os.path.exists('C:\\bitrock_installation\\output') and os.path.isdir('C:\\bitrock_installation\\output'):
-        if os.listdir('C:\\bitrock_installation\\output'):
-            print('Please remove old installers from C:\\bitrock_installation\\output ...')
-            exit()
-    else:
-        print('Output directory for installers does not exists ...')
-        exit()
 
     # Add git in system PATH variable
     os.environ['PATH'] = 'C:\\Program Files\\Git\\bin;'+ systemPATH
 
     # Creating a directory if not exists and clone installer code from GitHub
-    installerSourcFolder = 'C:\\postgres_installer_source_code'
+    installerSourcFolder = root +'\\workDir\\'+ projectName +"\\installers"
     print('Clone Postgres installer source repository from GitHub ...')
-    if not os.path.exists(installerSourcFolder):
-        os.makedirs(installerSourcFolder)
+    os.makedirs(installerSourcFolder)
     res = os.system('cd '+ installerSourcFolder +' && git clone --recursive https://github.com/2ndQuadrant/postgresql-installer.git')
     if res != 0:
         print('Could not able to clone Postgres installer repository ...')
@@ -94,6 +86,9 @@ if installerCreationMode == 'Enabled':
     os.environ['PATH'] = systemPATH
 
 
+currentProjectDir = root +'\\workDir\\'+ projectName
+
+
 for postgresVersion in postgresVersions:
 
     print('\n\nStarting build process for '+ postgresVersion['fullVersion'])
@@ -101,7 +96,6 @@ for postgresVersion in postgresVersions:
 
     print('\nSetting up work dir structure ...')
     dateTime = time.strftime("%Y%m%d%H%M%S")
-    currentProjectDir = root +'\\workDir\\'+ projectName
     currentBuild = currentProjectDir +'\\'+ dateTime +'\\'+ postgresVersion['fullVersion']
     sourceDir = currentBuild +'\\'+ 'source'
     logsDir = currentBuild +'\\'+ 'logs'
