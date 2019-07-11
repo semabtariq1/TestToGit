@@ -9,6 +9,8 @@
                 "POSTGISVERSION": "2.5.2",
                 "POSTGISTARBALL": "https://download.osgeo.org/postgis/source/postgis-2.5.2.tar.gz",
 
+		"createInstaller": "1",
+
                 "QUANTILE"   : "1",
                 "OPENSSL"    : "1",
                 "GSSAPI"     : "1",
@@ -30,6 +32,8 @@
                 "POSTGISVERSION": "2.5.2",
                 "POSTGISTARBALL": "https://download.osgeo.org/postgis/source/postgis-2.5.2.tar.gz",
 
+		"createInstaller": "1",
+
                 "QUANTILE"   : "1",
                 "OPENSSL"    : "1",
                 "GSSAPI"     : "1",
@@ -50,6 +54,8 @@
                 "POSTGIS": "1",
                 "POSTGISVERSION": "2.5.2",
                 "POSTGISTARBALL": "https://download.osgeo.org/postgis/source/postgis-2.5.2.tar.gz",
+
+		"createInstaller": "1",
 
                 "QUANTILE"   : "1",
                 "OPENSSL"    : "1",
@@ -73,6 +79,8 @@
                 "POSTGIS": "1",
                 "POSTGISVERSION": "2.5.2",
                 "POSTGISTARBALL": "https://download.osgeo.org/postgis/source/postgis-2.5.2.tar.gz",
+
+		"createInstaller": "1",
 
                 "QUANTILE"   : "1",
                 "OPENSSL"    : "1",
