@@ -2,6 +2,7 @@ import json
 import os
 import time
 import platform
+import subprocess
 from config import *
 from local_env import *
 
@@ -50,6 +51,40 @@ if osType == 'Linux':
 	DOWNLOAD_KEY = 'wget'
 
 
+""" Reading postgreSQ versions from postgres_versions.json """
+with open('postgres_versions.json', 'r') as postgresVersions:
+	postgresVersions = json.load(postgresVersions)
+
+
+""" Checking if installers creation mode is Enabled or Disabled """
+installerCreationMode = 'Disabled'
+for postgresVersion in postgresVersions:
+
+    if postgresVersion['createInstaller'] == '1':
+        installerCreationMode = 'Enabled'
+        break
+
+print('Installer creation mode ... '+ installerCreationMode)
+
+
+""" Running check if Installer creation mode is Enabled """
+if installerCreationMode == 'Enabled':
+
+    """ Creating a directory if not exists and clone installer code from GitHub """
+    installerSourcFolder = root +'/workDir/'+ projectName +"/installers"
+    print('Clone Postgres installer source repository from GitHub ...')
+    os.makedirs(installerSourcFolder)
+    res = os.system('cd '+ installerSourcFolder +' && git clone --recursive https://github.com/2ndQuadrant/postgresql-installer.git')
+    if res != 0:
+        print('Could not able to clone Postgres installer repository ...')
+        exit()
+
+    """ Checkout stable branch and Getting latest commit hash """
+    os.system('cd '+ installerSourcFolder +'/postgresql-installer && git checkout stable')
+    latestCommitHash = subprocess.check_output('cd '+ installerSourcFolder +'/postgresql-installer && git rev-parse HEAD', shell=True)
+    print('latest commit hash: '+ latestCommitHash.decode("utf-8"))
+
+
 """ Generate build """
 
 print('Preparing to generate builds now ...')
@@ -62,6 +97,9 @@ with open('postgres_versions.json', 'r') as postgresVersions:
 
 """ Saving current state of PATH """
 PATH = os.environ['PATH']
+
+
+currentProjectDir = root +'/workDir/'+ projectName
 
 
 for postgresVersion in postgresVersions:
@@ -81,7 +119,6 @@ for postgresVersion in postgresVersions:
 
 	print('\n\nSetting up work dir structure ...')
 
-	currentProjectDir = root +'/workDir/'+ projectName
 	currentBuild = currentProjectDir +'/'+ dateTime +'/'+ postgresVersion['fullVersion']
 
 	sourceDir = currentBuild +'/'+ 'source'
@@ -421,3 +458,27 @@ for postgresVersion in postgresVersions:
 	if res != 0:
 		print('\nUnable to create tar.gz of final bundle see\n'+ logsDir +'/generate-tar-file.log ...')
 		exit()
+
+
+	"""	--------------------------
+		Installer creation section
+		--------------------------	"""
+
+
+	""" Checking installer creation mode """
+	if installerCreationMode == 'Enabled':
+
+		""" Check if current version of PostgreSQL build needs an installer """
+		if postgresVersion['createInstaller'] == '1':
+
+			print('------------------')
+			print('INSTALLER CREATION')
+			print('------------------')
+
+			""" Creating required folder structure inside Postgres installer clone repo """
+			print(installerSourcFolder +'/postgresql-installer/Builds/'+ osType +'/'+ postgresVersion["majorVersion"])
+			os.makedirs(installerSourcFolder +'/postgresql-installer/Builds/'+ osType +'/'+ postgresVersion["majorVersion"])
+
+			""" Copy build into installerSourcFolder/postgresql-installer/Builds/ """
+			print('Copy build into: '+ installerSourcFolder +'/postgresql-installer/Builds/'+ osType +'/'+ postgresVersion["majorVersion"])
+			os.system('cp -r '+ buildDir +'/* '+ installerSourcFolder +'/postgresql-installer/Builds/'+ osType +'/'+ postgresVersion["majorVersion"])
