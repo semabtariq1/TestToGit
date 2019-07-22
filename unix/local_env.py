@@ -10,6 +10,9 @@ python_home = "/Users/2ndquadrant/2UDA/Python-3.4.4/inst"
 openssl_home = "/Users/2ndquadrant/2UDA/openssl-1.0.2g/inst"
 shareLib = "/Users/2ndquadrant/pythonAutomation/srcBuild"
 mac_build_path = "/Users/2ndquadrant/semabHome/main"
+signingPasswordRoot = '/Users/2ndquadrant/semabHome/automation/codesign/signing'
+bitrockInstallation = '/Applications/BitRockInstallBuilderProfessional16'
+projectFileName = 'PGInstaller.xml'
 
 
 if os_name == "Linux":

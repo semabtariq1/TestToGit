@@ -10,6 +10,11 @@
                 "POSTGISTARBALL": "https://download.osgeo.org/postgis/source/postgis-2.5.2.tar.gz",
 
 		"createInstaller": "1",
+			"__EXTRA_VERSION_STRING__"  : "undef",
+                        "__RELEASE__"               : "1",
+                        "__BUILD_NUMBER__"          : "1",
+                        "__DEV_TEST__"              : "release",
+                        "__DEBUG__"                 : "0",
 
                 "QUANTILE"   : "1",
                 "OPENSSL"    : "1",
@@ -33,6 +38,11 @@
                 "POSTGISTARBALL": "https://download.osgeo.org/postgis/source/postgis-2.5.2.tar.gz",
 
 		"createInstaller": "1",
+			"__EXTRA_VERSION_STRING__"  : "undef",
+                        "__RELEASE__"               : "1",
+                        "__BUILD_NUMBER__"          : "1",
+                        "__DEV_TEST__"              : "release",
+                        "__DEBUG__"                 : "0",
 
                 "QUANTILE"   : "1",
                 "OPENSSL"    : "1",
@@ -56,6 +66,11 @@
                 "POSTGISTARBALL": "https://download.osgeo.org/postgis/source/postgis-2.5.2.tar.gz",
 
 		"createInstaller": "1",
+			"__EXTRA_VERSION_STRING__"  : "undef",
+                        "__RELEASE__"               : "1",
+                        "__BUILD_NUMBER__"          : "1",
+                        "__DEV_TEST__"              : "release",
+                        "__DEBUG__"                 : "0",
 
                 "QUANTILE"   : "1",
                 "OPENSSL"    : "1",
@@ -81,6 +96,11 @@
                 "POSTGISTARBALL": "https://download.osgeo.org/postgis/source/postgis-2.5.2.tar.gz",
 
 		"createInstaller": "1",
+			"__EXTRA_VERSION_STRING__"  : "undef",
+                        "__RELEASE__"               : "1",
+                        "__BUILD_NUMBER__"          : "1",
+                        "__DEV_TEST__"              : "release",
+                        "__DEBUG__"                 : "0",
 
                 "QUANTILE"   : "1",
                 "OPENSSL"    : "1",

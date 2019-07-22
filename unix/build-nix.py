@@ -70,8 +70,9 @@ print('Installer creation mode ... '+ installerCreationMode)
 """ Running check if Installer creation mode is Enabled """
 if installerCreationMode == 'Enabled':
 
-    """ Creating a directory if not exists and clone installer code from GitHub """
     installerSourcFolder = root +'/workDir/'+ projectName +"/installers"
+
+    """ Creating a directory if not exists and clone installer code from GitHub """
     print('Clone Postgres installer source repository from GitHub ...')
     os.makedirs(installerSourcFolder)
     res = os.system('cd '+ installerSourcFolder +' && git clone --recursive https://github.com/2ndQuadrant/postgresql-installer.git')
@@ -83,6 +84,9 @@ if installerCreationMode == 'Enabled':
     os.system('cd '+ installerSourcFolder +'/postgresql-installer && git checkout stable')
     latestCommitHash = subprocess.check_output('cd '+ installerSourcFolder +'/postgresql-installer && git rev-parse HEAD', shell=True)
     print('latest commit hash: '+ latestCommitHash.decode("utf-8"))
+
+    """ Creating output dir for installers """
+    os.makedirs(installerSourcFolder +'/postgresql-installer/installers')
 
 
 """ Generate build """
@@ -482,3 +486,36 @@ for postgresVersion in postgresVersions:
 			""" Copy build into installerSourcFolder/postgresql-installer/Builds/ """
 			print('Copy build into: '+ installerSourcFolder +'/postgresql-installer/Builds/'+ osType +'/'+ postgresVersion["majorVersion"])
 			os.system('cp -r '+ buildDir +'/* '+ installerSourcFolder +'/postgresql-installer/Builds/'+ osType +'/'+ postgresVersion["majorVersion"])
+
+			# Export signing password
+			print('Signing the installer ...')
+			os.system('cd '+ signingPasswordRoot +' && source signing-pass.vault')
+
+
+			# Re-generating installer-properties.sh
+			print('Re-generating installer-properties.sh ...')
+			f = open(installerSourcFolder +'/postgresql-installer/installer-properties.sh',"w+")
+
+			f.write('__PG_MAJOR_VERSION__='+      postgresVersion['majorVersion']              +'\n')
+			f.write('__FULL_VERSION__='+          postgresVersion['fullVersion']               +'\n')
+			f.write('__EXTRA_VERSION_STRING__='+  postgresVersion['__EXTRA_VERSION_STRING__']  +'\n')
+			f.write('__RELEASE__='+               postgresVersion['__RELEASE__']               +'\n')
+			f.write('__BUILD_NUMBER__='+          postgresVersion['__BUILD_NUMBER__']          +'\n')
+			f.write('__DEV_TEST__='+              postgresVersion['__DEV_TEST__']              +'\n')
+			f.write('__DEBUG__='+                 postgresVersion['__DEBUG__']                 +'\n')
+
+			f.close()
+
+
+			# Running autogen.sh
+			os.system('cd '+ installerSourcFolder +'/postgresql-installer && ./autogen.sh')
+
+
+			# Generating installer
+			print('Build installer ...')
+			res = os.system(bitrockInstallation +'/bin/builder build '+ installerSourcFolder +'/postgresql-installer/'+ projectFileName +' '+ osType +' --setvars project.outputDirectory='+ installerSourcFolder +'/postgresql-installer/installers > '+ logsDir +'/build-installer-'+ postgresVersion["majorVersion"] +'.log 2>&1')
+
+
+			if res != 0:
+				print('Unable to generate installer ...')
+
