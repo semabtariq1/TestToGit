@@ -489,7 +489,7 @@ for postgresVersion in postgresVersions:
 
 			# Export signing password
 			print('Signing the installer ...')
-			os.system('cd '+ signingPasswordRoot +' && source signing-pass.vault')
+			os.system('source '+ signingPasswordRoot +'/signing-pass.vault')
 
 
 			# Re-generating installer-properties.sh

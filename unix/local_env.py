@@ -21,6 +21,8 @@ if os_name == "Linux":
     openssl_home = "/opt/openssl-1.0.2g/inst"
     shareLib = "/opt/PGInstaller/Python-automation-code/linux_share_lib1"
     mac_address = "2ndquadrant@208.52.185.118"
+    signingPasswordRoot = '/opt/semabHome/automation/postgres-installer-private/signing'
+    bitrockInstallation = '/opt/semabHome/bitrock/installation/'
 
 else:
     """ Variables that are used to call linux machine and execute build code are ipAddr, userName, buildCode """
