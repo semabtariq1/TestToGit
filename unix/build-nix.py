@@ -97,6 +97,7 @@ if installerCreationMode == 'Enabled':
     """ Creating required dirs inside installer source code dir """
     os.makedirs(installerSourcFolder +'/postgresql-installer/installers')
     os.makedirs(installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType)
+    os.makedirs(installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/OmniDB')
 
     # Preparing components for installer
     # Pl languages
@@ -104,15 +105,23 @@ if installerCreationMode == 'Enabled':
     os.system('cp -r '+ pl_languages +' '+ installerSourcFolder+'/postgresql-installer/Builds/'+ tempOsType)
 
     # OmniDB
+    print('Preparing OmniDB component ...')
+
+    os.system('cd '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +' && '+ DOWNLOAD_KEY +'  '+ omnidbUrl +'')
+    # Get filename from url
+    omnidbFileName = urlparse(omnidbUrl)
+    omnidbFileName = os.path.basename(omnidbFileName.path)
+
     if osType == 'Linux':
-        os.system('cd '+ installerSourcFolder+ +'/postgresql-installer/Builds/'+ tempOsType +' && wget '+ omnidbUrl +'')
-        # Get filename from url
-        omniDBrpmName = urlparse(omnidbUrl)
-        res = os.system('cd '+ installerSourcFolder+ +'/postgresql-installer/Builds/'+ tempOsType +' && rpm2cpio ./'+ omniDBrpmName +' | cpio -idmv')
+        res = os.system('cd '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +' && rpm2cpio ./'+ omnidbFileName +' | cpio -idmv')
         if res != 0:
             print('Uanle to prepare OmniDB ...')
             exit()
-
+    else:
+        os.system('open '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/'+ omnidbFileName)
+        time.sleep(6)
+        os.system('cp -r "/Volumes/OmniDB Installer/OmniDB.app" '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/OmniDB')
+        os.system('hdiutil detach "/Volumes/OmniDB Installer"')
 
 """ Generate build """
 
