@@ -12,6 +12,7 @@ shareLib = "/Users/2ndquadrant/pythonAutomation/srcBuild"
 mac_build_path = "/Users/2ndquadrant/semabHome/main"
 signingPasswordRoot = '/Users/2ndquadrant/semabHome/automation/codesign/signing'
 bitrockInstallation = '/Applications/BitRockInstallBuilderProfessional16'
+omnidbUrl = 'https://omnidb.org/dist/2.16.0/omnidb-server_2.16.0-centos7-amd64.rpm'
 projectFileName = 'PGInstaller.xml'
 
 

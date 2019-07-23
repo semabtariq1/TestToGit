@@ -5,6 +5,7 @@ import platform
 import subprocess
 from config import *
 from local_env import *
+from urllib.parse import urlparse
 
 
 """ Call Linux build machine to generate builds """
@@ -70,6 +71,14 @@ print('Installer creation mode ... '+ installerCreationMode)
 """ Running check if Installer creation mode is Enabled """
 if installerCreationMode == 'Enabled':
 
+    # temp vars
+    if osType == 'Darwin':
+        tempOsType = 'OSX'
+        tempOsTypeForInstaller = 'osx'
+    else:
+        tempOsType = 'Linux'
+        tempOsTypeForInstaller = 'linux-x64'
+
     installerSourcFolder = root +'/workDir/'+ projectName +"/installers"
 
     """ Creating a directory if not exists and clone installer code from GitHub """
@@ -85,8 +94,24 @@ if installerCreationMode == 'Enabled':
     latestCommitHash = subprocess.check_output('cd '+ installerSourcFolder +'/postgresql-installer && git rev-parse HEAD', shell=True)
     print('latest commit hash: '+ latestCommitHash.decode("utf-8"))
 
-    """ Creating output dir for installers """
+    """ Creating required dirs inside installer source code dir """
     os.makedirs(installerSourcFolder +'/postgresql-installer/installers')
+    os.makedirs(installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType)
+
+    # Preparing components for installer
+    # Pl languages
+    print('Preparing pl-languages component ...')
+    os.system('cp -r '+ pl_languages +' '+ installerSourcFolder+'/postgresql-installer/Builds/'+ tempOsType)
+
+    # OmniDB
+    if osType == 'Linux':
+        os.system('cd '+ installerSourcFolder+ +'/postgresql-installer/Builds/'+ tempOsType +' && wget '+ omnidbUrl +'')
+        # Get filename from url
+        omniDBrpmName = urlparse(omnidbUrl)
+        res = os.system('cd '+ installerSourcFolder+ +'/postgresql-installer/Builds/'+ tempOsType +' && rpm2cpio ./'+ omniDBrpmName +' | cpio -idmv')
+        if res != 0:
+            print('Uanle to prepare OmniDB ...')
+            exit()
 
 
 """ Generate build """
@@ -478,14 +503,6 @@ for postgresVersion in postgresVersions:
 			print('------------------')
 			print('INSTALLER CREATION')
 			print('------------------')
-
-			# temp vars
-			if osType == 'Darwin':
-				tempOsType = 'OSX'
-				tempOsTypeForInstaller = 'osx'
-			else:
-				tempOsType = 'Linux'
-				tempOsTypeForInstaller = 'linux-x64'
 
 			""" Creating required folder structure inside Postgres installer clone repo """
 			print(installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/'+ postgresVersion["majorVersion"])
