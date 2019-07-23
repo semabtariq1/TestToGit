@@ -479,18 +479,18 @@ for postgresVersion in postgresVersions:
 			print('INSTALLER CREATION')
 			print('------------------')
 
+			# temp vars
+			if osType == 'Darwin':
+				tempOsType = 'osx'
+			else:
+				tempOsType = 'linux'
+
 			""" Creating required folder structure inside Postgres installer clone repo """
-			print(installerSourcFolder +'/postgresql-installer/Builds/'+ osType +'/'+ postgresVersion["majorVersion"])
-			os.makedirs(installerSourcFolder +'/postgresql-installer/Builds/'+ osType +'/'+ postgresVersion["majorVersion"])
-
+			print(installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/'+ postgresVersion["majorVersion"])
+			os.makedirs(installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/'+ postgresVersion["majorVersion"])
 			""" Copy build into installerSourcFolder/postgresql-installer/Builds/ """
-			print('Copy build into: '+ installerSourcFolder +'/postgresql-installer/Builds/'+ osType +'/'+ postgresVersion["majorVersion"])
-			os.system('cp -r '+ buildDir +'/* '+ installerSourcFolder +'/postgresql-installer/Builds/'+ osType +'/'+ postgresVersion["majorVersion"])
-
-			# Export signing password
-			print('Signing the installer ...')
-			os.system('source '+ signingPasswordRoot +'/signing-pass.vault')
-
+			print('Copy build into: '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/'+ postgresVersion["majorVersion"])
+			os.system('cp -r '+ buildDir +'/* '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/'+ postgresVersion["majorVersion"])
 
 			# Re-generating installer-properties.sh
 			print('Re-generating installer-properties.sh ...')
@@ -513,7 +513,7 @@ for postgresVersion in postgresVersions:
 
 			# Generating installer
 			print('Build installer ...')
-			res = os.system(bitrockInstallation +'/bin/builder build '+ installerSourcFolder +'/postgresql-installer/'+ projectFileName +' '+ osType +' --setvars project.outputDirectory='+ installerSourcFolder +'/postgresql-installer/installers > '+ logsDir +'/build-installer-'+ postgresVersion["majorVersion"] +'.log 2>&1')
+			res = os.system('source '+ signingPasswordRoot +'/signing-pass.vault && '+ bitrockInstallation +'/bin/builder build '+ installerSourcFolder +'/postgresql-installer/'+ projectFileName +' '+ tempOsType +' --setvars project.outputDirectory='+ installerSourcFolder +'/postgresql-installer/installers > '+ logsDir +'/build-installer-'+ postgresVersion["majorVersion"] +'.log 2>&1')
 
 
 			if res != 0:
