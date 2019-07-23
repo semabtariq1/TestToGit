@@ -481,9 +481,11 @@ for postgresVersion in postgresVersions:
 
 			# temp vars
 			if osType == 'Darwin':
-				tempOsType = 'osx'
+				tempOsType = 'OSX'
+				tempOsTypeForInstaller = 'osx'
 			else:
-				tempOsType = 'linux'
+				tempOsType = 'Linux'
+				tempOsTypeForInstaller = 'linux-x64'
 
 			""" Creating required folder structure inside Postgres installer clone repo """
 			print(installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/'+ postgresVersion["majorVersion"])
@@ -513,7 +515,7 @@ for postgresVersion in postgresVersions:
 
 			# Generating installer
 			print('Build installer ...')
-			res = os.system('source '+ signingPasswordRoot +'/signing-pass.vault && '+ bitrockInstallation +'/bin/builder build '+ installerSourcFolder +'/postgresql-installer/'+ projectFileName +' '+ tempOsType +' --setvars project.outputDirectory='+ installerSourcFolder +'/postgresql-installer/installers > '+ logsDir +'/build-installer-'+ postgresVersion["majorVersion"] +'.log 2>&1')
+			res = os.system('source '+ signingPasswordRoot +'/signing-pass.vault && '+ bitrockInstallation +'/bin/builder build '+ installerSourcFolder +'/postgresql-installer/'+ projectFileName +' '+ tempOsTypeForInstaller +' --setvars project.outputDirectory='+ installerSourcFolder +'/postgresql-installer/installers > '+ logsDir +'/build-installer-'+ postgresVersion["majorVersion"] +'.log 2>&1')
 
 
 			if res != 0:
