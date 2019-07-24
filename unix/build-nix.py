@@ -3,14 +3,9 @@ import os
 import time
 import platform
 import subprocess
-from config import *
 from local_env import *
 from urllib.parse import urlparse
 
-
-""" Call Linux build machine to generate builds """
-if platform.system() == 'Darwin' and callLinuxBuildMachine == 1:
-	os.system('ssh '+ userName +'@'+ ipAddr +' "cd '+ buildCode +' && python3 build-nix.py"')
 
 
 """ Pre build checks """
