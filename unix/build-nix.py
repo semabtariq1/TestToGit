@@ -8,7 +8,15 @@ from urllib.parse import urlparse
 
 
 
-""" Pre build checks """
+print('\n\n\n')
+
+print(' ************************************* \n')
+
+print('           PRE BUILD SECTION           \n')
+
+print(' ************************************* \n')
+
+
 
 """ Check file exists, Check if not empty, Read version file(postgres_versions.json) """
 
@@ -125,7 +133,16 @@ if installerCreationMode == 'Enabled':
                 continue
 
 
-""" Generate build """
+
+print('\n\n\n')
+
+print(' ********************************************* \n')
+
+print('           BUILDS GENERATION SECTION           \n')
+
+print(' ********************************************* \n')
+
+
 
 print('Preparing to generate builds now ...')
 
@@ -500,9 +517,15 @@ for postgresVersion in postgresVersions:
 		exit()
 
 
-	"""	--------------------------
-		Installer creation section
-		--------------------------	"""
+
+	print('\n\n\n')
+
+	print(' ************************************************ \n')
+
+	print('           INSTALLER GENERATION SECTION           \n')
+
+	print(' ************************************************ \n')
+
 
 
 	""" Checking installer creation mode """
