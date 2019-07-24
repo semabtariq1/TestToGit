@@ -49,15 +49,6 @@ with open('postgres_versions.json', 'r') as componentsInfo:
 	componentsInfo = json.load(componentsInfo)
 
 
-""" Check share lib folder available or not on give path """
-
-if os.path.exists(shareLib) and os.path.isdir(shareLib):
-	if not os.listdir(shareLib):
-		print('Provided share lib is empty ...')
-		exit()
-else:
-	print('provided share lib don"t exists ...')
-	exit()
 
 print('Pre build checks are executed successfully ...')
 
