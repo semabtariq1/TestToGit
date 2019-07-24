@@ -116,9 +116,14 @@ if installerCreationMode == 'Enabled':
         os.system('cp -r '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/opt/* '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/OmniDB')
     else:
         os.system('open '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/'+ omnidbFileName)
-        time.sleep(6)
-        os.system('cp -r "/Volumes/OmniDB Installer/OmniDB.app" '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/OmniDB')
-        os.system('hdiutil detach "/Volumes/OmniDB Installer"')
+        while True:
+            if os.path.exists('/Volumes/OmniDB Installer/OmniDB.app'):
+                os.system('cp -r "/Volumes/OmniDB Installer/OmniDB.app" '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/OmniDB')
+                os.system('hdiutil detach "/Volumes/OmniDB Installer"')
+                break
+            else:
+                continue
+
 
 """ Generate build """
 
