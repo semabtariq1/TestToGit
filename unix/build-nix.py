@@ -98,6 +98,7 @@ if installerCreationMode == 'Enabled':
     os.makedirs(installerSourcFolder +'/postgresql-installer/installers')
     os.makedirs(installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType)
     os.makedirs(installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/OmniDB')
+    os.makedirs(installerSourcFolder +'/postgresql-installer/logs')
 
     # Preparing components for installer
     # Pl languages
@@ -113,10 +114,11 @@ if installerCreationMode == 'Enabled':
     omnidbFileName = os.path.basename(omnidbFileName.path)
 
     if osType == 'Linux':
-        res = os.system('cd '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +' && rpm2cpio ./'+ omnidbFileName +' | cpio -idmv')
+        res = os.system('cd '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +' && rpm2cpio ./'+ omnidbFileName +' | cpio -idmv > '+ installerSourcFolder +'/postgresql-installer/logs/OmniDB-extract.log 2>&1')
         if res != 0:
             print('Uanle to prepare OmniDB ...')
             exit()
+        os.system('cp -r '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/opt/* '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/OmniDB')
     else:
         os.system('open '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/'+ omnidbFileName)
         time.sleep(6)
