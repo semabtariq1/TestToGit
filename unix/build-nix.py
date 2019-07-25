@@ -19,90 +19,91 @@ print(' ************************************* \n')
 
 
 # Checking operating system and setting platform specific commands
+print('checking operating system ...')
+time.sleep(2)
 DOWNLOAD_KEY = 'curl -O'
 osType = platform.system();
-
 if osType == 'Linux':
         DOWNLOAD_KEY = 'wget'
-
 print('Operating system ... '+ osType)
 
 
 # Checking all the required file, directories exists or not
-
+print('Checking postgres_versions.json ...')
+time.sleep(2)
 if os.path.isfile('postgres_versions.json') != True:
-	print('postgres_versions.json ... NOT FOUND')
+	print('postgres_versions.json ... Not found\nError: Following property file is maybe deleted '+ root +'/postgres_versions.json')
 	exit()
-else:
-	print('postgres_versions.json ... OK')
+
 
 if os.path.getsize('postgres_versions.json') == 0:
-	print('postgres_versions.json ... CONTENT NOT FOUND')
+	print('postgres_versions.json ... Empty\nError: Following property file should not be an empty file '+ root +'/postgres_versions.json')
 	exit()
 else:
-	print('postgres_versions.json ... CONTENT FOUND')
-
 	try:
 		with open('postgres_versions.json', 'r') as postgresVersions:
 			postgresVersions = json.load(postgresVersions)
 	except ValueError:
-		print('Reading postgres_versions.json ... FAILED\nNOTE: Please check for proper json syntax')
+		print('Reading postgres_versions.json ... FAILED\nError: Please check for proper json syntax in '+ root +'/postgres_versions.json')
 		exit()
-	print('Reading postgres_versions.json ... OK')
+print('Reading postgres_versions.json ... ok')
 
+
+print('Checking shared libraries directory ...')
+time.sleep(2)
 if os.path.exists(shareLib):
-	print('Shared libraries folder ... OK')
-
 	if not os.listdir(shareLib):
-		print('Shared libraries folder ... CONTENT NOT FOUND')
+		print('Shared libraries folder ... Empty\nError: Provided path to share libraries is empty '+ shareLib)
 		exit()
-	else:
-		print('Shared libraries folder ... CONTENT FOUND ')
 else:
-	print('Shared libraries folder ... NOT FOUND')
+	print('Shared libraries folder ... NOT FOUND\nError: Provided path to share libraries does not exists '+ shareLib)
 	exit()
+print('Shared libraries folder ... ok')
 
+
+print('Checking PL language directory ...')
+time.sleep(2)
 if os.path.exists(pl_languages):
-        print('PL languages folder ... OK')
-
         if not os.listdir(pl_languages):
-                print('PL languages folder ... CONTENT NOT FOUND')
+                print('PL languages directory ... Empty\nError: Provided PL languages directory is empty '+ pl_languages)
                 exit()
-        else:
-                print('PL languages folder ... CONTENT FOUND ')
 else:
-        print('PL languages folder ... NOT FOUND')
+        print('PL languages directory ... NOT FOUND\nError: Provided PL languages directory does not exists '+ pl_languages)
         exit()
+print('PL language directory ... ok')
 
+
+print('Checking Python directory ...')
+time.sleep(2)
 if os.path.exists(python_home):
-        print('Python folder ... OK')
-
         if not os.listdir(python_home):
-                print('Python folder ... CONTENT NOT FOUND')
+                print('Python directory ... Empty\nError: Provided Python directory is empty '+ python_home)
                 exit()
-        else:
-                print('Python folder ... CONTENT FOUND ')
 else:
-        print('Python folder ... NOT FOUND')
+        print('Python directory ... Not found\nError: Provided Python directory does not exists '+ python_home)
         exit()
+print('Python directory ... ok')
 
+
+print('Checking Openssl directory ...')
+time.sleep(2)
 if os.path.exists(openssl_home):
-        print('Openssl folder ... OK')
-
         if not os.listdir(openssl_home):
-                print('Openssl folder ... CONTENT NOT FOUND')
+                print('Openssl directory ... Empty\nError: Provided Openssl directory is empty '+ openssl_home)
                 exit()
-        else:
-                print('Openssl folder ... CONTENT FOUND ')
 else:
-        print('Openssl folder ... NOT FOUND')
+        print('Openssl directory ... NOT FOUND\nError: Provided Openssl directory dose not exists '+ openssl_home)
         exit()
+print('Openssl directory ... ok')
 
+
+print('Checking project name ...')
+time.sleep(2)
 if projectName == '':
-	print('Project Name property ... EMPTY')
+	print('Project Name ... EMPTY\nError: Project name can not be an empty value please set a value in local_env.py')
 	exit()
-else:
-	print('Project name ... '+ projectName)
+print('Project name ... '+ projectName)
+
 
 # Checking status for installers creation mode switch
 installerCreationMode = 'Disabled'
