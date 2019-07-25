@@ -80,7 +80,7 @@ else:
         print('Openssl folder ... NOT FOUND')
         exit()
 
-if projectFileName == '':
+if projectName == '':
         print('Project Name property ... EMPTY')
 	exit()
 else:
