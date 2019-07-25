@@ -88,10 +88,6 @@ else:
 
 
 
-with open('postgres_versions.json', 'r') as componentsInfo:
-	componentsInfo = json.load(componentsInfo)
-
-
 
 print('Pre build checks are executed successfully ...')
 
