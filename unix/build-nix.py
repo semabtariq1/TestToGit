@@ -192,7 +192,7 @@ if installerCreationMode == 'Enabled':
 	omnidbFileName = os.path.basename(omnidbFileName.path)
 
 	if osType == 'Linux':
-		res = os.system('cd '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +' && rpm2cpio ./'+ omnidbFileName +' | cpio -idmv > '+ installerSourcFolder +'/postgresql-installer/logs/OmniDB-extract.log 2>&1')
+		res = os.system('cd '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +' && rpm2cpio ./'+ omnidbFileName +' | cpio -idmv > '+ installerSourcFolder +'/logs/OmniDB-extract.log 2>&1')
 
 		if res != 0:
 			print('Extract OmniDB files  ... FAILS')
