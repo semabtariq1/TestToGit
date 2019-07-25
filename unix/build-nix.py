@@ -106,6 +106,8 @@ print('Project name ... '+ projectName)
 
 
 # Checking status for installers creation mode switch
+print('Checking installer creation mode ...')
+time.sleep(1)
 installerCreationMode = 'Disabled'
 for postgresVersion in postgresVersions:
 	if postgresVersion['createInstaller'] == '1':
@@ -170,28 +172,31 @@ if installerCreationMode == 'Enabled':
 
 
 	# clone Postgres installer code
+	print('Clone Installer repository ...')
 	res = os.system('cd '+ installerSourcFolder +' && git clone --recursive https://github.com/2ndQuadrant/postgresql-installer.git > '+ installerSourcFolder +'/logs/Installer-source-clone.log 2>&1')
 	if res != 0:
-		print('Clne Postgres installer source repository ... FAILS')
+		print('Clone Postgres installer source repository ... FAILS')
 		exit()
 	else:
-		print('Clne Postgres installer source repository ... OK')
+		print('Clone Postgres installer source repository ... OK')
 
 
         # Preparing a folder hierarchy for installers
+	print('Creating directory hierarchy for builds and preparing components ...')
+	time.sleep(2)
 	os.system('mkdir -p '+ installerSourcFolder +'/postgresql-installer/final-installers' )
 	os.system('mkdir -p '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/OmniDB')
 
 
 	# Checking required directories are created or not
 	if os.path.exists(installerSourcFolder +'/postgresql-installer/final-installers'):
-		print('Installer final executable path ... '+ installerSourcFolder +'/postgresql-installer/final-installers')
+		print('Created ... '+ installerSourcFolder +'/postgresql-installer/final-installers')
 	else:
 		print('Unable to create => '+ installerSourcFolder +'/postgresql-installer/final-installers')
 		exit()
 
 	if os.path.exists(installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/OmniDB'):
-		print('OmniDB binaries path ... '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'OmniDB')
+		print('Created ... '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'OmniDB')
 	else:
 		print('Unable to create => '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'OmniDB')
 		exit()
@@ -199,6 +204,7 @@ if installerCreationMode == 'Enabled':
 
 	# Checkout stable branch
 	print('Checkout stable branch ...')
+	time.sleep(2)
 	res = os.system('cd '+ installerSourcFolder +'/postgresql-installer && git checkout stable > '+ installerSourcFolder +'/logs/checkout-stable.log 2>&1')
 	if res != 0:
 		print('Checkout stable branch ... FAILS')
@@ -209,6 +215,7 @@ if installerCreationMode == 'Enabled':
 
 	# Preparing components for installer
 	# Pl languages
+	print('Prepare PL languages component ...')
 	res = os.system('cp -r '+ pl_languages +' '+ installerSourcFolder+'/postgresql-installer/Builds/'+ tempOsType)
 	if res != 0:
 		print('PL languages component ... FAILS')
@@ -216,64 +223,64 @@ if installerCreationMode == 'Enabled':
 	else:
 		print('PL languages component ... OK')
 
-	# OmniDB
-	res = os.system('cd '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +' && '+ DOWNLOAD_KEY +'  '+ omnidbUrl +' > '+ installerSourcFolder +'/logs/OmniDB-download.log 2>&1')
 
+	# OmniDB
+	print('Prepare OmniDB component... ')
+	time.sleep(2)
+	print('Downloading OmniDB ...')
+	res = os.system('cd '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +' && '+ DOWNLOAD_KEY +'  '+ omnidbUrl +' > '+ installerSourcFolder +'/logs/OmniDB-download.log 2>&1')
 	if res != 0:
-		print('Download OmniDB ... FAILS')
+		print('Download OmniDB ... FAILS\nErroe: OmniDB downloading fails please see followng file for more details '+ installerSourcFolder +'/logs/OmniDB-download.log')
 		exit()
-	else:
-		print('Download OmniDB ... OK')
+
 
 	# Get filename from url
 	omnidbFileName = urlparse(omnidbUrl)
 	omnidbFileName = os.path.basename(omnidbFileName.path)
+	print('OmniDB file name ... '+ omnidbFileName)
+
 
 	if osType == 'Linux':
 		res = os.system('cd '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +' && rpm2cpio ./'+ omnidbFileName +' | cpio -idmv > '+ installerSourcFolder +'/logs/OmniDB-extract.log 2>&1')
-
 		if res != 0:
-			print('Extract OmniDB files  ... FAILS')
+			print('Extract OmniDB files  ... FAILS\nError: Could not able to extract OmniDB file please see following file for more details '+ installerSourcFolder +'/logs/OmniDB-extract.log')
 			exit()
 		else:
 			print('Extract OmniDB files ... OK')
-
 		res = os.system('cp -r '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/opt/* '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/OmniDB')
-
 		if res != 0:
-			print('OmniDB component ... FAILS')
+			print('OmniDB component ... FAILS\nError: Copy fails from '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/opt/*')
 			exit()
 		else:
-			print('OmniDB component ... OK')
-
+			print('OmniDB component status ... OK')
 	else:
-		print('Prepare OmniDB component ...')
+		print('Running open on ... '+ omnidbFileName )
 		res = os.system('open '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/'+ omnidbFileName)
-
 		if res != 0:
-			print('Can not open OmniDB file ... '+ omnidbFileName)
+			print('open OmniDB file ... Fails\nError: open command returns non zeor value on '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/'+ omnidbFileName)
 			exit()
 
+		print('Waiting for /Volumes/OmniDB Installer/OmniDB.app path to became available ...')
 		while True:
 			if os.path.exists('/Volumes/OmniDB Installer/OmniDB.app'):
+				print('Copy OmniDB binaries ...')
 				os.system('cp -r "/Volumes/OmniDB Installer/OmniDB.app" '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/OmniDB > '+ installerSourcFolder +'/logs/OmniDB-copy.log 2>&1')
-
-				res = os.system('hdiutil detach "/Volumes/OmniDB Installer"')
-
+				print('Detach the /Volumes/OmniDB Installer ...')
+				time.sleep(1)
+				res = os.system('hdiutil detach "/Volumes/OmniDB Installer" > '+ installerSourcFolder +'/logs/OmniDB-detach.log 2>&1')
 				if res != 0:
 					print('detach "/Volumes/OmniDB Installer" ... FAILS')
 					exit()
 				else:
 					print('detach "/Volumes/OmniDB Installer" ... OK')
-
+					print('OmniDB component ... ok')
 				break
 			else:
 				continue
 
 
-print('Pre build checks are executed successfully ...')
-
-
+print('\nPre build checks are executed successfully ...')
+time.sleep(3)
 
 
 print('\n\n\n')
