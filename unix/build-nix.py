@@ -42,6 +42,14 @@ if os.path.getsize('postgres_versions.json') == 0:
 else:
 	print('postgres_versions.json ... CONTENT FOUND')
 
+	try:
+		with open('postgres_versions.json', 'r') as postgresVersions:
+			postgresVersions = json.load(postgresVersions)
+	except ValueError:
+		print('Reading postgres_versions.json ... FAILED\nNOTE: Please check for proper json syntax')
+		exit()
+	print('Reading postgres_versions.json ... OK')
+
 if os.path.exists(shareLib):
 	print('Shared libraries folder ... OK')
 
@@ -101,11 +109,6 @@ else:
 
 print('Pre build checks are executed successfully ...')
 
-
-
-""" Reading postgreSQ versions from postgres_versions.json """
-with open('postgres_versions.json', 'r') as postgresVersions:
-	postgresVersions = json.load(postgresVersions)
 
 
 """ Checking if installers creation mode is Enabled or Disabled """
