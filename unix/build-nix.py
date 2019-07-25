@@ -80,6 +80,13 @@ else:
         print('Openssl folder ... NOT FOUND')
         exit()
 
+if projectFileName == '':
+        print('Project Name property ... EMPTY')
+	exit()
+else:
+        print('Project name ... '+ projectFileName)
+
+
 
 with open('postgres_versions.json', 'r') as componentsInfo:
 	componentsInfo = json.load(componentsInfo)
