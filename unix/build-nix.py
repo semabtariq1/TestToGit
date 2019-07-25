@@ -44,6 +44,18 @@ else:
 	print('Shared libraries folder ... NOT FOUND')
 	exit()
 
+if os.path.exists(pl_languages):
+        print('PL languages folder ... OK')
+
+        if not os.listdir(pl_languages):
+                print('PL languages folder ... CONTENT NOT FOUND')
+                exit()
+        else:
+                print('PL languages folder ... CONTENT FOUND ')
+else:
+        print('PL languages folder ... NOT FOUND')
+        exit()
+
 
 with open('postgres_versions.json', 'r') as componentsInfo:
 	componentsInfo = json.load(componentsInfo)
