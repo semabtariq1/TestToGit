@@ -56,6 +56,18 @@ else:
         print('PL languages folder ... NOT FOUND')
         exit()
 
+if os.path.exists(python_home):
+        print('Python folder ... OK')
+
+        if not os.listdir(python_home):
+                print('Python folder ... CONTENT NOT FOUND')
+                exit()
+        else:
+                print('Python folder ... CONTENT FOUND ')
+else:
+        print('Python folder ... NOT FOUND')
+        exit()
+
 
 with open('postgres_versions.json', 'r') as componentsInfo:
 	componentsInfo = json.load(componentsInfo)
