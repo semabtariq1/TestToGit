@@ -18,6 +18,16 @@ print(' ************************************* \n')
 
 
 
+# Checking operating system and setting platform specific commands
+DOWNLOAD_KEY = 'curl -O'
+osType = platform.system();
+
+if osType == 'Linux':
+        DOWNLOAD_KEY = 'wget'
+
+print('Operating system ... '+ osType)
+
+
 # Checking all the required file, directories exists or not
 
 if os.path.isfile('postgres_versions.json') != True:
@@ -81,22 +91,16 @@ else:
         exit()
 
 if projectName == '':
-        print('Project Name property ... EMPTY')
+	print('Project Name property ... EMPTY')
 	exit()
 else:
-        print('Project name ... '+ projectFileName)
+	print('Project name ... '+ projectFileName)
 
 
 
 
 print('Pre build checks are executed successfully ...')
 
-
-""" Checking operating system and setting platform related commands """
-DOWNLOAD_KEY = 'curl -O'
-osType = platform.system();
-if osType == 'Linux':
-	DOWNLOAD_KEY = 'wget'
 
 
 """ Reading postgreSQ versions from postgres_versions.json """
