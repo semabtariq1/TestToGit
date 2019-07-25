@@ -68,6 +68,18 @@ else:
         print('Python folder ... NOT FOUND')
         exit()
 
+if os.path.exists(openssl_home):
+        print('Openssl folder ... OK')
+
+        if not os.listdir(openssl_home):
+                print('Openssl folder ... CONTENT NOT FOUND')
+                exit()
+        else:
+                print('Openssl folder ... CONTENT FOUND ')
+else:
+        print('Openssl folder ... NOT FOUND')
+        exit()
+
 
 with open('postgres_versions.json', 'r') as componentsInfo:
 	componentsInfo = json.load(componentsInfo)
