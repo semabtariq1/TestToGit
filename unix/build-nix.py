@@ -114,71 +114,127 @@ for postgresVersion in postgresVersions:
 
 print('Installer creation status ... '+ installerCreationMode)
 
+# Running check if Installer creation mode is Enabled
+
+if installerCreationMode == 'Enabled':
+	# Some temp variables used to create installer
+
+	if osType == 'Darwin':
+		tempOsType = 'OSX'
+		tempOsTypeForInstaller = 'osx'
+	else:
+		tempOsType = 'Linux'
+		tempOsTypeForInstaller = 'linux-x64'
+
+
+	# Creating directory for Postgres installer source code and log files
+	installerSourcFolder = root +'/workDir/'+ projectName +"/installers" # Variable which will point to installer directory inside workDir
+	os.system('mkdir -p '+ installerSourcFolder)
+	os.system('mkdir -p '+ installerSourcFolder +'/logs')
+
+	# clone Postgres installer code
+	res = os.system('cd '+ installerSourcFolder +' && git clone --recursive https://github.com/2ndQuadrant/postgresql-installer.git > '+ installerSourcFolder +'/logs/Installer-source-clone.log 2>&1')
+	if res != 0:
+		print('Clne Postgres installer source repository ... FAILS')
+		exit()
+	else:
+		print('Clne Postgres installer source repository ... OK')
+
+
+        # Preparing a folder hierarchy for installers
+	os.system('mkdir -p '+ installerSourcFolder +'/postgresql-installer/final-installers' )
+	os.system('mkdir -p '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/OmniDB')
+
+	# Checking required directories are created or not
+	if os.path.exists(installerSourcFolder +'/postgresql-installer/final-installers'):
+		print('Installer final executable path ... '+ installerSourcFolder +'/postgresql-installer/final-installers')
+	else:
+		print('Unable to create => '+ installerSourcFolder +'/postgresql-installer/final-installers')
+		exit()
+
+	if os.path.exists(installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/OmniDB'):
+		print('OmniDB binaries path ... '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'OmniDB')
+	else:
+		print('Unable to create => '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'OmniDB')
+		exit()
+
+
+
+	# Checkout stable branch
+	res = os.system('cd '+ installerSourcFolder +'/postgresql-installer && git checkout stable')
+	if res != 0:
+		print('Checkout stable branch ... FAILS')
+		exit()
+	else:
+		print('Checkout stable branch ... OK')
+
+	# Preparing components for installer
+
+	# Pl languages
+	res = os.system('cp -r '+ pl_languages +' '+ installerSourcFolder+'/postgresql-installer/Builds/'+ tempOsType)
+	if res != 0:
+		print('PL languages component ... FAILS')
+		exit()
+	else:
+		print('PL languages component ... OK')
+
+	# OmniDB
+	res = os.system('cd '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +' && '+ DOWNLOAD_KEY +'  '+ omnidbUrl +' > '+ installerSourcFolder +'/logs/OmniDB-download.log 2>&1')
+
+	if res != 0:
+		print('Download OmniDB ... FAILS')
+		exit()
+	else:
+		print('Download OmniDB ... OK')
+
+	# Get filename from url
+	omnidbFileName = urlparse(omnidbUrl)
+	omnidbFileName = os.path.basename(omnidbFileName.path)
+
+	if osType == 'Linux':
+		res = os.system('cd '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +' && rpm2cpio ./'+ omnidbFileName +' | cpio -idmv > '+ installerSourcFolder +'/postgresql-installer/logs/OmniDB-extract.log 2>&1')
+
+		if res != 0:
+			print('Extract OmniDB files  ... FAILS')
+			exit()
+		else:
+			print('Extract OmniDB files ... OK')
+
+		res = os.system('cp -r '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/opt/* '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/OmniDB')
+
+		if res != 0:
+			print('OmniDB component ... FAILS')
+			exit()
+		else:
+			print('OmniDB component ... OK')
+
+	else:
+		print('Prepare OmniDB component ...')
+		res = os.system('open '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/'+ omnidbFileName)
+
+		if res != 0:
+			print('Can not open OmniDB file ... '+ omnidbFileName)
+			exit()
+
+		while True:
+			if os.path.exists('/Volumes/OmniDB Installer/OmniDB.app'):
+				os.system('cp -r "/Volumes/OmniDB Installer/OmniDB.app" '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/OmniDB > '+ installerSourcFolder +'/logs/OmniDB-copy.log 2>&1')
+
+				res = os.system('hdiutil detach "/Volumes/OmniDB Installer"')
+
+				if res != 0:
+					print('detach "/Volumes/OmniDB Installer" ... FAILS')
+					exit()
+				else:
+					print('detach "/Volumes/OmniDB Installer" ... OK')
+
+				break
+			else:
+				continue
 
 
 print('Pre build checks are executed successfully ...')
 
-
-""" Running check if Installer creation mode is Enabled """
-if installerCreationMode == 'Enabled':
-
-    # temp vars
-    if osType == 'Darwin':
-        tempOsType = 'OSX'
-        tempOsTypeForInstaller = 'osx'
-    else:
-        tempOsType = 'Linux'
-        tempOsTypeForInstaller = 'linux-x64'
-
-    installerSourcFolder = root +'/workDir/'+ projectName +"/installers"
-
-    """ Creating a directory if not exists and clone installer code from GitHub """
-    print('Clone Postgres installer source repository from GitHub ...')
-    os.makedirs(installerSourcFolder)
-    res = os.system('cd '+ installerSourcFolder +' && git clone --recursive https://github.com/2ndQuadrant/postgresql-installer.git')
-    if res != 0:
-        print('Could not able to clone Postgres installer repository ...')
-        exit()
-
-    """ Checkout stable branch and Getting latest commit hash """
-    os.system('cd '+ installerSourcFolder +'/postgresql-installer && git checkout stable')
-    latestCommitHash = subprocess.check_output('cd '+ installerSourcFolder +'/postgresql-installer && git rev-parse HEAD', shell=True)
-    print('latest commit hash: '+ latestCommitHash.decode("utf-8"))
-
-    """ Creating required dirs inside installer source code dir """
-    os.makedirs(installerSourcFolder +'/postgresql-installer/installers')
-    os.makedirs(installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType)
-    os.makedirs(installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/OmniDB')
-    os.makedirs(installerSourcFolder +'/postgresql-installer/logs')
-
-    # Preparing components for installer
-    # Pl languages
-    print('Preparing pl-languages component ...')
-    os.system('cp -r '+ pl_languages +' '+ installerSourcFolder+'/postgresql-installer/Builds/'+ tempOsType)
-
-    # OmniDB
-    print('Preparing OmniDB component ...')
-
-    os.system('cd '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +' && '+ DOWNLOAD_KEY +'  '+ omnidbUrl +'')
-    # Get filename from url
-    omnidbFileName = urlparse(omnidbUrl)
-    omnidbFileName = os.path.basename(omnidbFileName.path)
-
-    if osType == 'Linux':
-        res = os.system('cd '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +' && rpm2cpio ./'+ omnidbFileName +' | cpio -idmv > '+ installerSourcFolder +'/postgresql-installer/logs/OmniDB-extract.log 2>&1')
-        if res != 0:
-            print('Uanle to prepare OmniDB ...')
-            exit()
-        os.system('cp -r '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/opt/* '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/OmniDB')
-    else:
-        os.system('open '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/'+ omnidbFileName)
-        while True:
-            if os.path.exists('/Volumes/OmniDB Installer/OmniDB.app'):
-                os.system('cp -r "/Volumes/OmniDB Installer/OmniDB.app" '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/OmniDB')
-                os.system('hdiutil detach "/Volumes/OmniDB Installer"')
-                break
-            else:
-                continue
 
 
 
