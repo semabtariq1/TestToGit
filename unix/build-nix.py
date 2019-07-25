@@ -102,24 +102,21 @@ if projectName == '':
 	print('Project Name property ... EMPTY')
 	exit()
 else:
-	print('Project name ... '+ projectFileName)
+	print('Project name ... '+ projectName)
 
+# Checking status for installers creation mode switch
+installerCreationMode = 'Disabled'
+for postgresVersion in postgresVersions:
+
+	if postgresVersion['createInstaller'] == '1':
+		installerCreationMode = 'Enabled'
+		break
+
+print('Installer creation status ... '+ installerCreationMode)
 
 
 
 print('Pre build checks are executed successfully ...')
-
-
-
-""" Checking if installers creation mode is Enabled or Disabled """
-installerCreationMode = 'Disabled'
-for postgresVersion in postgresVersions:
-
-    if postgresVersion['createInstaller'] == '1':
-        installerCreationMode = 'Enabled'
-        break
-
-print('Installer creation mode ... '+ installerCreationMode)
 
 
 """ Running check if Installer creation mode is Enabled """
