@@ -108,18 +108,39 @@ print('Project name ... '+ projectName)
 # Checking status for installers creation mode switch
 installerCreationMode = 'Disabled'
 for postgresVersion in postgresVersions:
-
 	if postgresVersion['createInstaller'] == '1':
 		installerCreationMode = 'Enabled'
 		break
-
 print('Installer creation status ... '+ installerCreationMode)
 
-# Running check if Installer creation mode is Enabled
 
+# Running checks if Installer creation mode is Enabled
 if installerCreationMode == 'Enabled':
-	# Some temp variables used to create installer
+	print('Checking signing directory ...')
+	time.sleep(2)
+	if os.path.exists(signingPasswordRoot):
+		if os.path.isfile(signingPasswordRoot +'/signing-pass.vault'):
+			print('signing-pass.vault ... ok')
+		else:
+			print('signing-pass.vault ... File not found\nError: signing-pass.vault does not exists at give path '+ signingPasswordRoot)
+			exit()
+	else:
+		print('Signing directory ... Not found\nError: signing directory does not exists at given path '+ signingPasswordRoot)
+		exit()
 
+
+	print('Checking Bitrock installation ...')
+	time.sleep(2)
+	if os.path.exists(bitrockInstallation):
+		res = os.system(bitrockInstallation +'/bin/builder --version')
+		if res != 0:
+			print('Bitrock version ... Not found\nError: Unable to check version of Bitrock it might be corrupted please try to re-install bitrock')
+			exit()
+		else:
+			print('Bitrock installation ... ok')
+
+
+	# Some temp variables used to create installer
 	if osType == 'Darwin':
 		tempOsType = 'OSX'
 		tempOsTypeForInstaller = 'osx'
@@ -129,9 +150,24 @@ if installerCreationMode == 'Enabled':
 
 
 	# Creating directory for Postgres installer source code and log files
+	print('Creating required directory to clone installer source code ...')
+	time.sleep(2)
 	installerSourcFolder = root +'/workDir/'+ projectName +"/installers" # Variable which will point to installer directory inside workDir
 	os.system('mkdir -p '+ installerSourcFolder)
 	os.system('mkdir -p '+ installerSourcFolder +'/logs')
+
+
+	if os.path.exists(installerSourcFolder):
+		if os.path.exists(installerSourcFolder +'/logs'):
+			print('Created ... '+ installerSourcFolder)
+			print('Created ... '+ installerSourcFolder +'/logs')
+		else:
+			print('Create directory ... Fails\nError: Unable to create following directory '+ installerSourcFolder)
+			exit()
+	else:
+		print('Create directory ... Fails\nError: Unable to create following directory '+ installerSourcFolder +'/logs')
+		exit()
+
 
 	# clone Postgres installer code
 	res = os.system('cd '+ installerSourcFolder +' && git clone --recursive https://github.com/2ndQuadrant/postgresql-installer.git > '+ installerSourcFolder +'/logs/Installer-source-clone.log 2>&1')
@@ -145,6 +181,7 @@ if installerCreationMode == 'Enabled':
         # Preparing a folder hierarchy for installers
 	os.system('mkdir -p '+ installerSourcFolder +'/postgresql-installer/final-installers' )
 	os.system('mkdir -p '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/OmniDB')
+
 
 	# Checking required directories are created or not
 	if os.path.exists(installerSourcFolder +'/postgresql-installer/final-installers'):
@@ -160,17 +197,17 @@ if installerCreationMode == 'Enabled':
 		exit()
 
 
-
 	# Checkout stable branch
-	res = os.system('cd '+ installerSourcFolder +'/postgresql-installer && git checkout stable')
+	print('Checkout stable branch ...')
+	res = os.system('cd '+ installerSourcFolder +'/postgresql-installer && git checkout stable > '+ installerSourcFolder +'/logs/checkout-stable.log 2>&1')
 	if res != 0:
 		print('Checkout stable branch ... FAILS')
 		exit()
 	else:
 		print('Checkout stable branch ... OK')
 
-	# Preparing components for installer
 
+	# Preparing components for installer
 	# Pl languages
 	res = os.system('cp -r '+ pl_languages +' '+ installerSourcFolder+'/postgresql-installer/Builds/'+ tempOsType)
 	if res != 0:
