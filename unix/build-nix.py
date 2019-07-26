@@ -431,7 +431,7 @@ for postgresVersion in postgresVersions:
 
 
 	if postgresVersion['POSTGIS'] == '1':
-		print('\n\nBuild POSTGIS now ...')
+		print('Build POSTGIS now ...')
 
 		""" Download source code """
 		res = os.system('cd '+ sourceDir +' && '+ DOWNLOAD_KEY +' '+ postgresVersion['POSTGISTARBALL'] +' > '+ logsDir +'/postgis-source.log 2>&1')
@@ -496,9 +496,6 @@ for postgresVersion in postgresVersions:
 			exit()
 
 
-	""" ****** POST BUILD STEPS ***** """
-	print('****** POST BUILD STEPS *****')
-	
 	""" Copy shareLib/lib into buildDir/lib """
 	print('Copy shareLib/lib into buildDir/lib ...')
 	os.system('cp -rv '+ shareLib +'/lib/* '+ buildDir +'/lib/ > '+ logsDir +'/copy.log')
