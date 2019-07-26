@@ -707,4 +707,8 @@ for postgresVersion in postgresVersions:
 
 			if res != 0:
 				print('Unable to generate installer ...')
-
+			else:
+				installerExetension = '.app.zip'
+				if osType == 'Linux':
+					installerExetension = '.run'
+				print('Installer placed at: '+ installerSourcFolder +'/postgresql-installer/final-installers/PostgreSQL-'+ postgresVersion['fullVersion'] +'-'+ postgresVersion['__BUILD_NUMBER__'] +'-'+ tempOsTypeForInstaller +'-installer'+ installerExetension)
