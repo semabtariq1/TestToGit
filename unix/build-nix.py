@@ -715,7 +715,7 @@ for postgresVersion in postgresVersions:
 
 			# Generating installer
 			print('Build installer ...')
-			res = os.system('source '+ signingPasswordRoot +'/signing-pass.vault && '+ bitrockInstallation +'/bin/builder build '+ installerSourcFolder +'/postgresql-installer/'+ projectFileName +' '+ tempOsTypeForInstaller +' --setvars project.outputDirectory='+ installerSourcFolder +'/postgresql-installer/installers > '+ logsDir +'/build-installer-'+ postgresVersion["majorVersion"] +'.log 2>&1')
+			res = os.system('source '+ signingPasswordRoot +'/signing-pass.vault && '+ bitrockInstallation +'/bin/builder build '+ installerSourcFolder +'/postgresql-installer/'+ projectFileName +' '+ tempOsTypeForInstaller +' --setvars project.outputDirectory='+ installerSourcFolder +'/postgresql-installer/final-installers > '+ logsDir +'/build-installer-'+ postgresVersion["majorVersion"] +'.log 2>&1')
 
 
 			if res != 0:
