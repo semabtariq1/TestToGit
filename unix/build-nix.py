@@ -670,10 +670,6 @@ for postgresVersion in postgresVersions:
 		""" Check if current version of PostgreSQL build needs an installer """
 		if postgresVersion['createInstaller'] == '1':
 
-			print('------------------')
-			print('INSTALLER CREATION')
-			print('------------------')
-
 			""" Creating required folder structure inside Postgres installer clone repo """
 			print(installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/'+ postgresVersion["majorVersion"])
 			os.makedirs(installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/'+ postgresVersion["majorVersion"])
