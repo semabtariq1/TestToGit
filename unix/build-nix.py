@@ -293,15 +293,7 @@ print(' ********************************************* \n')
 
 
 
-print('Preparing to generate builds now ...')
-
-""" Reading postgreSQ versions from postgres_versions.json """
-
-with open('postgres_versions.json', 'r') as postgresVersions:
-	postgresVersions = json.load(postgresVersions)
-
-
-""" Saving current state of PATH """
+# Saving current state of PATH
 PATH = os.environ['PATH']
 
 
@@ -309,24 +301,19 @@ currentProjectDir = root +'/workDir/'+ projectName
 
 
 for postgresVersion in postgresVersions:
+	print('\nStarting build process for '+ postgresVersion['fullVersion']+'\n')
 
-	""" Setting up system PATH variables
-        This section will hold/set/modify all the build related PATHS """
-
-	print('Setting up proper system PATH variables ...')
+	# Setting up system PATH variables
+        # This section will hold/set/modify all the build related PATHS
+	print('Setting up system PATH variables ...')
 	os.environ['LD_LIBRARY_PATH']   = shareLib +'/lib'
 	os.environ['CPPFLAGS']          = '-I'+ shareLib +'/include'
 	os.environ['LDFLAGS']           = ' -L'+ shareLib +'/lib'
 
-
 	dateTime = time.strftime("%Y%m%d%H%M%S")
 
-	print('\nStarting build process for '+ postgresVersion['fullVersion'])
-
-	print('\n\nSetting up work dir structure ...')
-
+	print('Setting up work dir structure ...')
 	currentBuild = currentProjectDir +'/'+ dateTime +'/'+ postgresVersion['fullVersion']
-
 	sourceDir = currentBuild +'/'+ 'source'
 	logsDir = currentBuild +'/'+ 'logs'
 	buildDir = currentBuild +'/'+ 'build' +'/'+ postgresVersion['majorVersion']
