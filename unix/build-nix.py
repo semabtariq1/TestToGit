@@ -29,6 +29,15 @@ print('Operating system ... '+ osType)
 
 
 # Checking all the required file, directories exists or not
+print('Checking Project directory ...')
+time.sleep(2)
+if os.path.exists(root +'/workDir/'+ projectName):
+	print('Project directory ... Already exist\nPlease specify different name for project in projectName variable inside local_env.py file')
+	exit()
+else:
+	print('Project directory ... ok')
+
+
 print('Checking postgres_versions.json ...')
 time.sleep(2)
 if os.path.isfile('postgres_versions.json') != True:
