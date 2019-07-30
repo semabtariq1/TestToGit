@@ -20,6 +20,16 @@ print(' ************************************* \n')
 
 
 
+# Checking operating system
+print('checking operating system ...')
+time.sleep(2)
+osType = platform.system();
+if osType != 'Windows':
+    print('This code is only for Windows can not execute on current operating system '+ osType)
+    exit()
+print('Operating system ... '+ osType)
+
+
 # Saving current state of system PATH variable
 print('Saving current state of system PATH variable ...')
 systemPATH = os.environ['PATH']
@@ -206,6 +216,43 @@ if installerCreationMode == 'Enabled':
     # Restoring system PATH variable into its orignal shape
     os.environ['PATH'] = systemPATH
 
+
+    # Preparing a folder hierarchy for final installers, Builds anc components
+    print('Creating directory hierarchy for final installers, builds and preparing components ...')
+    time.sleep(2)
+    os.system('mkdir '+ installerSourcFolder +'\\postgresql-installer\\final-installers' )
+    os.system('mkdir '+ installerSourcFolder +'\\postgresql-installer\\Builds\\'+ osType +'\\OmniDB')
+    os.system('mkdir '+ installerSourcFolder +'\\postgresql-installer\\Builds\\'+ osType +'\\pl-languages')
+
+    # Checking required directories are created or not
+    if os.path.exists(installerSourcFolder +'\\postgresql-installer\\final-installers'):
+        print('Created ... '+ installerSourcFolder +'\\postgresql-installer\\final-installers')
+    else:
+        print('Unable to create => '+ installerSourcFolder +'\\postgresql-installer\\final-installers')
+        exit()
+
+    if os.path.exists(installerSourcFolder +'\\postgresql-installer\\Builds\\'+ osType +'\\OmniDB'):
+        print('Created ... '+ installerSourcFolder +'\\postgresql-installer\\Builds\\'+ osType +'\\OmniDB')
+    else:
+        print('Unable to create => '+ installerSourcFolder +'\\postgresql-installer\\Builds\\'+ osType +'\\OmniDB')
+        exit()
+
+    if os.path.exists(installerSourcFolder +'\\postgresql-installer\\Builds\\'+ osType +'\\pl-languages'):
+        print('Created ... '+ installerSourcFolder +'\\postgresql-installer\\Builds\\'+ osType +'\\pl-languages')
+    else:
+        print('Unable to create => '+ installerSourcFolder +'\\postgresql-installer\\Builds\\'+ osType +'\\pl-languages')
+        exit()
+
+
+    # Preparing components for installer
+    # Pl languages
+    print('Prepare PL languages component ...')
+    copy_tree(shareLib +'\\pl-languages', installerSourcFolder +'\\postgresql-installer\\Builds\\'+ osType +'\\pl-languages')
+    if res != 0:
+        print('PL languages component ... FAILS')
+        exit()
+    else:
+        print('PL languages component ... OK')
 
 print('\n\nPre build checks are executed successfully ...')
 
