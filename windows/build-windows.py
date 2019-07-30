@@ -22,6 +22,11 @@ print(' ************************************* \n')
 # Checking all the required file, directories exists or not
 print('Checking Project directory ...')
 time.sleep(2)
+if projectName == '':
+	print('Project Name ... EMPTY\nError: Project name can not be an empty value please set a value in local_env.py')
+	exit()
+print('Project name ... '+ projectName)
+
 if os.path.exists(root +'/workDir/'+ projectName):
 	print('Project directory ... Already exist\nPlease specify different name for project in projectName variable inside local_env.py file')
 	exit()
