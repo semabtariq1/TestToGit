@@ -60,6 +60,55 @@ else:
 print('Shared libraries folder ... ok')
 
 
+print('Checking PL language directory ...')
+time.sleep(2)
+if os.path.exists(shareLib +'\\pl-languages'):
+    print('PL language directory ... ok')
+    if not os.listdir(shareLib +'\\pl-languages'):
+        print('PL languages directory ... Empty\nError: Provided PL languages directory is empty '+ pl_languages)
+        exit()
+else:
+    print('PL languages directory ... NOT FOUND\nError: Provided PL languages directory does not exists '+ pl_languages)
+    exit()
+
+print('Checking PL Python directory ...')
+time.sleep(2)
+if os.path.exists(shareLib +'\\pl-languages\\Python-3.3'):
+    print('PL Python directory ... ok')
+
+    if not os.listdir(shareLib +'\\pl-languages\\Python-3.3'):
+        print('PL Python directory ... Empty\nError: PL Python folder inside PL languages is empty '+ pl_languages)
+        exit()
+    os.system(shareLib +'\\pl-languages\\Python-3.3\\python --version')
+else:
+    print('PL Python directory ... NOT FOUND\nError: Provided PL languages folder do not have Pl Python folder '+ pl_languages)
+    exit()
+
+print('Checking PL Perl directory ...')
+time.sleep(2)
+if os.path.exists(shareLib +'\\pl-languages\\Perl-5.26'):
+    print('PL Perl directory ... ok')
+
+    if not os.listdir(shareLib +'\\pl-languages\\Perl-5.26'):
+        print('PL Perl directory ... Empty\nError: PL Perl folder inside PL languages is empty '+ pl_languages)
+        exit()
+else:
+    print('PL Perl directory ... NOT FOUND\nError: Provided PL languages folder do not have Pl Perl folder '+ pl_languages)
+    exit()
+
+print('Checking PL Tcl directory ...')
+time.sleep(2)
+if os.path.exists(shareLib +'\\pl-languages\\Tcl-8.6'):
+    print('PL Tcl directory ... ok')
+
+    if not os.listdir(shareLib +'\\pl-languages\\Tcl-8.6'):
+        print('PL Tcl directory ... Empty\nError: PL Tcl folder inside PL languages is empty '+ pl_languages)
+        exit()
+else:
+    print('PL Tcl directory ... NOT FOUND\nError: Provided PL languages folder do not have Pl Tcl folder '+ pl_languages)
+    exit()
+
+
 print('\n\nPre build checks are executed successfully ...')
 
 
