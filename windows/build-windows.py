@@ -29,20 +29,24 @@ else:
 	print('Project directory ... ok')
 
 
-try:
-	if os.path.isfile('postgres_versions.json') != True:
-		print('postgres_versions.json file not found ...')
+print('Checking postgres_versions.json ...')
+time.sleep(2)
+if os.path.isfile('postgres_versions.json') != True:
+	print('postgres_versions.json ... Not found\nError: Following property file is maybe deleted '+ root +'/postgres_versions.json')
+	exit()
+
+if os.path.getsize('postgres_versions.json') == 0:
+	print('postgres_versions.json ... Empty\nError: Following property file should not be an empty file '+ root +'/postgres_versions.json')
+	exit()
+else:
+	try:
+		with open('postgres_versions.json', 'r') as postgresVersions:
+			postgresVersions = json.load(postgresVersions)
+	except ValueError:
+		print('Reading postgres_versions.json ... FAILED\nError: Please check for proper json syntax in '+ root +'/postgres_versions.json')
 		exit()
+print('Reading postgres_versions.json ... ok')
 
-	if os.path.getsize('postgres_versions.json') == 0:
-		print('postgres_versions.json should not be an empty file ...')
-		exit()
-
-	with open('postgres_versions.json', 'r') as componentsInfo:
-		componentsInfo = json.load(componentsInfo)
-
-except:
-	print('Please use proper formatting for postgres_versions.json file ...')
 
 """ Check share lib folder available or not on give path """
 
