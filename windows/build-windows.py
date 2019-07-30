@@ -109,6 +109,19 @@ else:
     exit()
 
 
+print('Checking Openssl directory ...')
+time.sleep(2)
+if os.path.exists(shareLib +'\\openssl'):
+    print('Openssl directory ... ok')
+
+    if not os.listdir(shareLib +'\\Openssl'):
+        print('Openssl directory ... Empty\nError: Openssl folder is empty '+ pl_languages)
+        exit()
+else:
+    print('PL Tcl directory ... NOT FOUND\nError: Openssl folder not exists '+ pl_languages)
+    exit()
+
+
 print('\n\nPre build checks are executed successfully ...')
 
 
