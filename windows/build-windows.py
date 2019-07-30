@@ -9,9 +9,16 @@ from local_env import *
 from distutils.dir_util import copy_tree
 
 
-""" Pre build checks """
 
-""" Check file exists, Check if not empty, Read version file(postgres_versions.json) """
+print('\n\n\n')
+
+print(' ************************************* \n')
+
+print('           PRE BUILD SECTION           \n')
+
+print(' ************************************* \n')
+
+
 
 try:
 	if os.path.isfile('postgres_versions.json') != True:
