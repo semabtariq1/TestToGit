@@ -19,6 +19,12 @@ print('           PRE BUILD SECTION           \n')
 print(' ************************************* \n')
 
 
+
+# Saving current state of system PATH variable
+print('Saving current state of system PATH variable ...')
+systemPATH = os.environ['PATH']
+
+
 # Checking all the required file, directories exists or not
 print('Checking Project directory ...')
 time.sleep(2)
@@ -126,53 +132,92 @@ else:
     print('PL Tcl directory ... NOT FOUND\nError: Openssl folder not exists '+ pl_languages)
     exit()
 
-
-print('\n\nPre build checks are executed successfully ...')
-
-
-# Saving current state of system PATH variable
-print('Saving current state of system PATH variable ...')
-systemPATH = os.environ['PATH']
-
-
-""" Reading postgreSQ versions from postgres_versions.json """
-with open('postgres_versions.json', 'r') as postgresVersions:
-	postgresVersions = json.load(postgresVersions)
-
-
-# Checking if installers creation mode is Enabled or Disabled
+# Checking status for installers creation mode switch
+print('Checking installer creation mode ...')
+time.sleep(1)
 installerCreationMode = 'Disabled'
 for postgresVersion in postgresVersions:
-
     if postgresVersion['createInstaller'] == '1':
         installerCreationMode = 'Enabled'
         break
+print('Installer creation status ... '+ installerCreationMode)
 
-print('Installer creation mode ... '+ installerCreationMode)
-
-
-# Running check if Installer creation mode is Enabled
+# Running checks if Installer creation mode is Enabled
 if installerCreationMode == 'Enabled':
+    print('Checking signing directory ...')
+    time.sleep(2)
+    if os.path.exists(signingPasswordRoot):
+        if os.path.isfile(signingPasswordRoot +'\\signing-pass.vault'):
+            print('signing-pass.vault ... ok')
+            print('Creating signing-pass.vault.bat file ...')
+            # Read in the file
+            with open(signingPasswordRoot +'\\signing-pass.vault', 'r') as file :
+                filedata = file.read()
+
+            # Replace the target string
+            filedata = filedata.replace('export', 'set')
+
+            # Write the file out again
+            with open(signingPasswordRoot +'\\signing-pass.vault.bat', 'w') as file:
+                file.write(filedata)
+        else:
+            print('signing-pass.vault ... Not a file\nError: signing-pass.vault does not exists at give path '+ signingPasswordRoot)
+            exit()
+    else:
+        print('Signing directory ... Not found\nError: signing directory does not exists at given path '+ signingPasswordRoot)
+        exit()
+
+    print('Checking Bitrock installation ...')
+    time.sleep(2)
+    if os.path.exists(bitrockInstallation):
+        res = os.system(bitrockInstallation +'/bin/builder-cli --version')
+        if res != 0:
+            print('Bitrock version ... Not found\nError: Unable to check version of Bitrock it might be corrupted please try to re-install bitrock')
+            exit()
+    print('Bitrock installation ... ok')
+
+    # Creating directory for Postgres installer source code and log files
+    print('Creating required directory to clone installer source code ...')
+    time.sleep(2)
+    installerSourcFolder = root +'\\workDir\\'+ projectName +'\\installers' # Variable which will point to installer directory inside workDir
+    os.system('mkdir '+ installerSourcFolder +'\\logs')
+
+    if os.path.exists(installerSourcFolder):
+        if os.path.exists(installerSourcFolder +'\\logs'):
+            print('Created ... '+ installerSourcFolder)
+            print('Created ... '+ installerSourcFolder +'\\logs')
+        else:
+            print('Create directory ... Fails\nError: Unable to create following directory '+ installerSourcFolder +'\\logs')
+            exit()
+    else:
+        print('Create directory ... Fails\nError: Unable to create following directory '+ installerSourcFolder)
+        exit()
 
     # Add git in system PATH variable
     os.environ['PATH'] = 'C:\\Program Files\\Git\\bin;'+ systemPATH
 
-    # Creating a directory if not exists and clone installer code from GitHub
-    installerSourcFolder = root +'\\workDir\\'+ projectName +"\\installers"
-    print('Clone Postgres installer source repository from GitHub ...')
-    os.makedirs(installerSourcFolder)
-    res = os.system('cd '+ installerSourcFolder +' && git clone --recursive https://github.com/2ndQuadrant/postgresql-installer.git')
+    # Clone postgresql installer repo
+    print('Clone Postgres installer source repository ...')
+    res = os.system('cd '+ installerSourcFolder +' && git clone --recursive https://github.com/2ndQuadrant/postgresql-installer.git > '+ installerSourcFolder +'\\logs\\Installer-source-clone.log 2>&1')
     if res != 0:
         print('Could not able to clone Postgres installer repository ...')
         exit()
 
-    # Checkout stable branch and Getting latest commit hash
-    os.system('cd '+ installerSourcFolder +'\\postgresql-installer && git checkout stable')
-    latestCommitHash = subprocess.check_output('cd '+ installerSourcFolder +'\\postgresql-installer && git rev-parse HEAD', shell=True)
-    print('latest commit hash: '+ latestCommitHash.decode("utf-8"))
-
     # Restoring system PATH variable into its orignal shape
     os.environ['PATH'] = systemPATH
+
+
+print('\n\nPre build checks are executed successfully ...')
+
+
+
+print('\n\n\n')
+
+print(' ********************************************* \n')
+
+print('           BUILDS GENERATION SECTION           \n')
+
+print(' ********************************************* \n')
 
 
 currentProjectDir = root +'\\workDir\\'+ projectName
