@@ -48,15 +48,17 @@ else:
 print('Reading postgres_versions.json ... ok')
 
 
-""" Check share lib folder available or not on give path """
-
-if os.path.exists(shareLib) and os.path.isdir(shareLib):
+print('Checking shared libraries directory ...')
+time.sleep(2)
+if os.path.exists(shareLib):
 	if not os.listdir(shareLib):
-		print('Provided share lib is empty ...')
+		print('Shared libraries folder ... Empty\nError: Provided path to share libraries is empty '+ shareLib)
 		exit()
 else:
-	print('provided share lib don"t exists ...')
+	print('Shared libraries folder ... NOT FOUND\nError: Provided path to share libraries does not exists '+ shareLib)
 	exit()
+print('Shared libraries folder ... ok')
+
 
 print('\n\nPre build checks are executed successfully ...')
 
