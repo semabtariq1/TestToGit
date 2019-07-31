@@ -184,6 +184,9 @@ if installerCreationMode == 'Enabled':
         if res != 0:
             print('Bitrock version ... Not found\nError: Unable to check version of Bitrock it might be corrupted please try to re-install bitrock')
             exit()
+    else:
+        print('Installbuilder directory does not exists ...\nPlease provide a valid path to installbuilder installation directory ...')
+        exit()
     print('Bitrock installation ... ok')
 
     # Creating directory for Postgres installer source code and log files
@@ -253,6 +256,14 @@ if installerCreationMode == 'Enabled':
         exit()
     else:
         print('PL languages component ... OK')
+
+
+    # OmniDB
+    print('Prepare OmniDB ...')
+    print('Download OmniDB ...')
+    print('Getting OmniDB binaries ...')
+
+
 
 print('\n\nPre build checks are executed successfully ...')
 
@@ -427,10 +438,15 @@ for postgresVersion in postgresVersions:
     os.environ['PATH'] = systemPATH
 
 
-    # --------------------------
-    # Installer creation section
-    # --------------------------
 
+
+    print('\n\n\n')
+
+    print(' ************************************************ \n')
+
+    print('           INSTALLER GENERATION SECTION           \n')
+
+    print(' ************************************************ \n')
 
     # Checking installer creation mode
     if installerCreationMode == 'Enabled':
@@ -438,14 +454,41 @@ for postgresVersion in postgresVersions:
         # Check if current version of PostgreSQL build needs an installer
         if postgresVersion['createInstaller'] == '1':
 
-            print('------------------')
-            print('INSTALLER CREATION')
-            print('------------------')
 
-            # Creating required folder structure inside Postgres installer clone repo
-            print(installerSourcFolder +'\\postgresql-installer\\Builds\\Windows\\'+ postgresVersion["majorVersion"])
-            os.makedirs(installerSourcFolder +'\\postgresql-installer\\Builds\\Windows\\'+ postgresVersion["majorVersion"])
+            # Creating required folder structure inside Postgres installer cloned folder
+            print(installerSourcFolder +'\\postgresql-installer\\Builds\\'+ osType +'\\'+ postgresVersion["majorVersion"])
+            os.makedirs(installerSourcFolder +'\\postgresql-installer\\Builds\\'+ osType +'\\'+ postgresVersion["majorVersion"])
+            # Copy build into installerSourcFolder/postgresql-installer/Builds/ 
+            print('Copy build into: '+ installerSourcFolder +'\\postgresql-installer\\Builds\\'+ osType +'\\'+ postgresVersion["majorVersion"])
 
-            # Copy build into installerSourcFolder\postgresql-installer\Builds\Windows
-            print('Copy build into: '+ installerSourcFolder +'\\postgresql-installer\\Builds\\Windows\\'+ postgresVersion["majorVersion"])
             copy_tree(buildDir, installerSourcFolder +'\\postgresql-installer\\Builds\\Windows\\'+ postgresVersion["majorVersion"])
+
+
+            # Re-generating installer-properties.sh
+            print('Re-generating installer-properties.sh ...')
+            f = open(installerSourcFolder +'\\postgresql-installer\\installer-properties.sh',"w+")
+
+            f.write('__PG_MAJOR_VERSION__='+      postgresVersion['majorVersion']              +'\n')
+            f.write('__FULL_VERSION__='+          postgresVersion['fullVersion']               +'\n')
+            f.write('__EXTRA_VERSION_STRING__='+  postgresVersion['__EXTRA_VERSION_STRING__']  +'\n')
+            f.write('__RELEASE__='+               postgresVersion['__RELEASE__']               +'\n')
+            f.write('__BUILD_NUMBER__='+          postgresVersion['__BUILD_NUMBER__']          +'\n')
+            f.write('__DEV_TEST__='+              postgresVersion['__DEV_TEST__']              +'\n')
+            f.write('__DEBUG__='+                 postgresVersion['__DEBUG__']                 +'\n')
+
+            f.close()
+
+
+            # Running autogen.sh
+            os.system('cd '+ installerSourcFolder +'\\postgresql-installer && autogen.sh')
+
+
+            # Generating installer
+            print('Build installer ...')
+            res = os.system(signingPasswordRoot +'\\signing-pass.vault.bat && '+ bitrockInstallation +'\\bin\\builder-cli.exe build '+ installerSourcFolder +'\\postgresql-installer\\'+ projectFileName +' windows --setvars project.outputDirectory='+ installerSourcFolder  +'\\postgresql-installer\\final-installers  --verbose > '+ logsDir +'\\build-installer-'+ postgresVersion["majorVersion"] +'.log 2>&1')
+
+
+            if res != 0:
+                print('Unable to generate installer ...')
+            else:
+                print('Installer placed at: '+ installerSourcFolder +'\\postgresql-installer\\final-installers/PostgreSQL-'+ postgresVersion['fullVersion'] +'-'+ postgresVersion['__BUILD_NUMBER__'] +'-windows-installer.exe')

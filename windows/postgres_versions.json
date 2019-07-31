@@ -6,6 +6,12 @@
                 "tarball": "https://ftp.postgresql.org/pub/source/v11.4/postgresql-11.4.tar.gz",
 
 		"createInstaller": "1",
+			"createInstaller": "1",
+			"__EXTRA_VERSION_STRING__"  : "undef",
+                        "__RELEASE__"               : "1",
+                        "__BUILD_NUMBER__"          : "1",
+                        "__DEV_TEST__"              : "release",
+                        "__DEBUG__"                 : "0",
 
                 "QUANTILE"   : "1",
 		"POSTGIS"    : "1",
@@ -24,6 +30,12 @@
                 "tarball": "https://ftp.postgresql.org/pub/source/v10.9/postgresql-10.9.tar.gz",
 
 		"createInstaller": "1",
+			"createInstaller": "1",
+			"__EXTRA_VERSION_STRING__"  : "undef",
+                        "__RELEASE__"               : "1",
+                        "__BUILD_NUMBER__"          : "1",
+                        "__DEV_TEST__"              : "release",
+                        "__DEBUG__"                 : "0",
 
                 "QUANTILE"   : "1",
 		"POSTGIS"    : "1",
@@ -42,6 +54,12 @@
                 "tarball": "https://ftp.postgresql.org/pub/source/v9.6.14/postgresql-9.6.14.tar.gz",
 
 		"createInstaller": "1",
+			"createInstaller": "1",
+			"__EXTRA_VERSION_STRING__"  : "undef",
+                        "__RELEASE__"               : "1",
+                        "__BUILD_NUMBER__"          : "1",
+                        "__DEV_TEST__"              : "release",
+                        "__DEBUG__"                 : "0",
 
                 "QUANTILE"   : "1",
 		"POSTGIS"    : "1",
@@ -62,6 +80,12 @@
                 "tarball": "https://ftp.postgresql.org/pub/source/v9.5.18/postgresql-9.5.18.tar.gz",
 
 		"createInstaller": "1",
+			"createInstaller": "1",
+			"__EXTRA_VERSION_STRING__"  : "undef",
+                        "__RELEASE__"               : "1",
+                        "__BUILD_NUMBER__"          : "1",
+                        "__DEV_TEST__"              : "release",
+                        "__DEBUG__"                 : "0",
 
                 "QUANTILE"   : "1",
 		"POSTGIS"    : "1",
