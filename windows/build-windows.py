@@ -216,6 +216,9 @@ if installerCreationMode == 'Enabled':
         print('Could not able to clone Postgres installer repository ...')
         exit()
 
+    # Checkout master branch in codesign
+    os.system('cd '+ installerSourcFolder +'\\postgresql-installer\\codesign && git checkout master')
+
     # Restoring system PATH variable into its orignal shape
     os.environ['PATH'] = systemPATH
 
