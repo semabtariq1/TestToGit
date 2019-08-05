@@ -216,6 +216,9 @@ if installerCreationMode == 'Enabled':
         print('Could not able to clone Postgres installer repository ...')
         exit()
 
+    # Checkout stable branch in postgresql
+    os.system('cd '+ installerSourcFolder +'\\postgresql-installer && git checkout stable')
+
     # Checkout master branch in codesign
     os.system('cd '+ installerSourcFolder +'\\postgresql-installer\\codesign && git checkout master')
 
