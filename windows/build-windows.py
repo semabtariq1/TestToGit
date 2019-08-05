@@ -266,9 +266,7 @@ if installerCreationMode == 'Enabled':
 
     # OmniDB
     print('Prepare OmniDB ...')
-    print('Download OmniDB ...')
-    print('Getting OmniDB binaries ...')
-
+    copy_tree(shareLib +'\\OmniDB-server', installerSourcFolder +'\\postgresql-installer\\Builds\\'+ osType +'\\OmniDB')
 
 
 print('\n\nPre build checks are executed successfully ...')
