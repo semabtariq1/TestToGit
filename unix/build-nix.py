@@ -3,99 +3,306 @@ import os
 import time
 import platform
 import subprocess
-from config import *
 from local_env import *
+from urllib.parse import urlparse
 
 
-""" Call Linux build machine to generate builds """
-if platform.system() == 'Darwin' and callLinuxBuildMachine == 1:
-	os.system('ssh '+ userName +'@'+ ipAddr +' "cd '+ buildCode +' && python3 build-nix.py"')
+
+print('\n\n\n')
+
+print(' ************************************* \n')
+
+print('           PRE BUILD SECTION           \n')
+
+print(' ************************************* \n')
 
 
-""" Pre build checks """
 
-""" Check file exists, Check if not empty, Read version file(postgres_versions.json) """
-
-try:
-	if os.path.isfile('postgres_versions.json') != True:
-		print('postgres_versions.json file not found ...')
-		exit()
-
-	if os.path.getsize('postgres_versions.json') == 0:
-		print('postgres_versions.json should not be an empty file ...')
-		exit()
-
-	with open('postgres_versions.json', 'r') as componentsInfo:
-		componentsInfo = json.load(componentsInfo)
-
-except:
-	print('Please use proper formatting for postgres_versions.json file ...')
-
-""" Check share lib folder available or not on give path """
-
-if os.path.exists(shareLib) and os.path.isdir(shareLib):
-	if not os.listdir(shareLib):
-		print('Provided share lib is empty ...')
-		exit()
-else:
-	print('provided share lib don"t exists ...')
-	exit()
-
-print('Pre build checks are executed successfully ...')
-
-
-""" Checking operating system and setting platform related commands """
+# Checking operating system and setting platform specific commands
+print('checking operating system ...')
+time.sleep(2)
 DOWNLOAD_KEY = 'curl -O'
 osType = platform.system();
 if osType == 'Linux':
-	DOWNLOAD_KEY = 'wget'
+        DOWNLOAD_KEY = 'wget'
+print('Operating system ... '+ osType)
 
 
-""" Reading postgreSQ versions from postgres_versions.json """
-with open('postgres_versions.json', 'r') as postgresVersions:
-	postgresVersions = json.load(postgresVersions)
+# Checking all the required file, directories exists or not
+print('Checking Project directory ...')
+time.sleep(2)
+if os.path.exists(root +'/workDir/'+ projectName):
+	print('Project directory ... Already exist\nPlease specify different name for project in projectName variable inside local_env.py file')
+	exit()
+else:
+	print('Project directory ... ok')
 
 
-""" Checking if installers creation mode is Enabled or Disabled """
+print('Checking postgres_versions.json ...')
+time.sleep(2)
+if os.path.isfile('postgres_versions.json') != True:
+	print('postgres_versions.json ... Not found\nError: Following property file is maybe deleted '+ root +'/postgres_versions.json')
+	exit()
+
+
+if os.path.getsize('postgres_versions.json') == 0:
+	print('postgres_versions.json ... Empty\nError: Following property file should not be an empty file '+ root +'/postgres_versions.json')
+	exit()
+else:
+	try:
+		with open('postgres_versions.json', 'r') as postgresVersions:
+			postgresVersions = json.load(postgresVersions)
+	except ValueError:
+		print('Reading postgres_versions.json ... FAILED\nError: Please check for proper json syntax in '+ root +'/postgres_versions.json')
+		exit()
+print('Reading postgres_versions.json ... ok')
+
+
+print('Checking shared libraries directory ...')
+time.sleep(2)
+if os.path.exists(shareLib):
+	if not os.listdir(shareLib):
+		print('Shared libraries folder ... Empty\nError: Provided path to share libraries is empty '+ shareLib)
+		exit()
+else:
+	print('Shared libraries folder ... NOT FOUND\nError: Provided path to share libraries does not exists '+ shareLib)
+	exit()
+print('Shared libraries folder ... ok')
+
+
+print('Checking PL language directory ...')
+time.sleep(2)
+if os.path.exists(pl_languages):
+        if not os.listdir(pl_languages):
+                print('PL languages directory ... Empty\nError: Provided PL languages directory is empty '+ pl_languages)
+                exit()
+else:
+        print('PL languages directory ... NOT FOUND\nError: Provided PL languages directory does not exists '+ pl_languages)
+        exit()
+print('PL language directory ... ok')
+
+
+print('Checking Python directory ...')
+time.sleep(2)
+if os.path.exists(python_home):
+        if not os.listdir(python_home):
+                print('Python directory ... Empty\nError: Provided Python directory is empty '+ python_home)
+                exit()
+else:
+        print('Python directory ... Not found\nError: Provided Python directory does not exists '+ python_home)
+        exit()
+print('Python directory ... ok')
+
+
+print('Checking Openssl directory ...')
+time.sleep(2)
+if os.path.exists(openssl_home):
+        if not os.listdir(openssl_home):
+                print('Openssl directory ... Empty\nError: Provided Openssl directory is empty '+ openssl_home)
+                exit()
+else:
+        print('Openssl directory ... NOT FOUND\nError: Provided Openssl directory dose not exists '+ openssl_home)
+        exit()
+print('Openssl directory ... ok')
+
+
+print('Checking project name ...')
+time.sleep(2)
+if projectName == '':
+	print('Project Name ... EMPTY\nError: Project name can not be an empty value please set a value in local_env.py')
+	exit()
+print('Project name ... '+ projectName)
+
+
+# Checking status for installers creation mode switch
+print('Checking installer creation mode ...')
+time.sleep(1)
 installerCreationMode = 'Disabled'
 for postgresVersion in postgresVersions:
-
-    if postgresVersion['createInstaller'] == '1':
-        installerCreationMode = 'Enabled'
-        break
-
-print('Installer creation mode ... '+ installerCreationMode)
+	if postgresVersion['createInstaller'] == '1':
+		installerCreationMode = 'Enabled'
+		break
+print('Installer creation status ... '+ installerCreationMode)
 
 
-""" Running check if Installer creation mode is Enabled """
+# Running checks if Installer creation mode is Enabled
 if installerCreationMode == 'Enabled':
-
-    """ Creating a directory if not exists and clone installer code from GitHub """
-    installerSourcFolder = root +'/workDir/'+ projectName +"/installers"
-    print('Clone Postgres installer source repository from GitHub ...')
-    os.makedirs(installerSourcFolder)
-    res = os.system('cd '+ installerSourcFolder +' && git clone --recursive https://github.com/2ndQuadrant/postgresql-installer.git')
-    if res != 0:
-        print('Could not able to clone Postgres installer repository ...')
-        exit()
-
-    """ Checkout stable branch and Getting latest commit hash """
-    os.system('cd '+ installerSourcFolder +'/postgresql-installer && git checkout stable')
-    latestCommitHash = subprocess.check_output('cd '+ installerSourcFolder +'/postgresql-installer && git rev-parse HEAD', shell=True)
-    print('latest commit hash: '+ latestCommitHash.decode("utf-8"))
+	print('Checking signing directory ...')
+	time.sleep(2)
+	if os.path.exists(signingPasswordRoot):
+		if os.path.isfile(signingPasswordRoot +'/signing-pass.vault'):
+			print('signing-pass.vault ... ok')
+		else:
+			print('signing-pass.vault ... File not found\nError: signing-pass.vault does not exists at give path '+ signingPasswordRoot)
+			exit()
+	else:
+		print('Signing directory ... Not found\nError: signing directory does not exists at given path '+ signingPasswordRoot)
+		exit()
 
 
-""" Generate build """
+	print('Checking Bitrock installation ...')
+	time.sleep(2)
+	if os.path.exists(bitrockInstallation):
+		res = os.system(bitrockInstallation +'/bin/builder --version')
+		if res != 0:
+			print('Bitrock version ... Not found\nError: Unable to check version of Bitrock it might be corrupted please try to re-install bitrock')
+			exit()
+		else:
+			print('Bitrock installation ... ok')
 
-print('Preparing to generate builds now ...')
 
-""" Reading postgreSQ versions from postgres_versions.json """
+	# Some temp variables used to create installer
+	if osType == 'Darwin':
+		tempOsType = 'OSX'
+		tempOsTypeForInstaller = 'osx'
+	else:
+		tempOsType = 'Linux'
+		tempOsTypeForInstaller = 'linux-x64'
 
-with open('postgres_versions.json', 'r') as postgresVersions:
-	postgresVersions = json.load(postgresVersions)
+
+	# Creating directory for Postgres installer source code and log files
+	print('Creating required directory to clone installer source code ...')
+	time.sleep(2)
+	installerSourcFolder = root +'/workDir/'+ projectName +"/installers" # Variable which will point to installer directory inside workDir
+	os.system('mkdir -p '+ installerSourcFolder)
+	os.system('mkdir -p '+ installerSourcFolder +'/logs')
 
 
-""" Saving current state of PATH """
+	if os.path.exists(installerSourcFolder):
+		if os.path.exists(installerSourcFolder +'/logs'):
+			print('Created ... '+ installerSourcFolder)
+			print('Created ... '+ installerSourcFolder +'/logs')
+		else:
+			print('Create directory ... Fails\nError: Unable to create following directory '+ installerSourcFolder)
+			exit()
+	else:
+		print('Create directory ... Fails\nError: Unable to create following directory '+ installerSourcFolder +'/logs')
+		exit()
+
+
+	# clone Postgres installer code
+	print('Clone Installer repository ...')
+	res = os.system('cd '+ installerSourcFolder +' && git clone --recursive https://github.com/2ndQuadrant/postgresql-installer.git > '+ installerSourcFolder +'/logs/Installer-source-clone.log 2>&1')
+	if res != 0:
+		print('Clone Postgres installer source repository ... FAILS')
+		exit()
+	else:
+		print('Clone Postgres installer source repository ... OK')
+
+
+        # Preparing a folder hierarchy for installers
+	print('Creating directory hierarchy for builds and preparing components ...')
+	time.sleep(2)
+	os.system('mkdir -p '+ installerSourcFolder +'/postgresql-installer/final-installers' )
+	os.system('mkdir -p '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/OmniDB')
+
+
+	# Checking required directories are created or not
+	if os.path.exists(installerSourcFolder +'/postgresql-installer/final-installers'):
+		print('Created ... '+ installerSourcFolder +'/postgresql-installer/final-installers')
+	else:
+		print('Unable to create => '+ installerSourcFolder +'/postgresql-installer/final-installers')
+		exit()
+
+	if os.path.exists(installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/OmniDB'):
+		print('Created ... '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'OmniDB')
+	else:
+		print('Unable to create => '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'OmniDB')
+		exit()
+
+
+	# Checkout stable branch
+	print('Checkout stable branch ...')
+	time.sleep(2)
+	res = os.system('cd '+ installerSourcFolder +'/postgresql-installer && git checkout stable > '+ installerSourcFolder +'/logs/checkout-stable.log 2>&1')
+	if res != 0:
+		print('Checkout stable branch ... FAILS')
+		exit()
+	else:
+		print('Checkout stable branch ... OK')
+
+
+	# Preparing components for installer
+	# Pl languages
+	print('Prepare PL languages component ...')
+	res = os.system('cp -r '+ pl_languages +' '+ installerSourcFolder+'/postgresql-installer/Builds/'+ tempOsType)
+	if res != 0:
+		print('PL languages component ... FAILS')
+		exit()
+	else:
+		print('PL languages component ... OK')
+
+
+	# OmniDB
+	print('Prepare OmniDB component... ')
+	time.sleep(2)
+	print('Downloading OmniDB ...')
+	res = os.system('cd '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +' && '+ DOWNLOAD_KEY +'  '+ omnidbUrl +' > '+ installerSourcFolder +'/logs/OmniDB-download.log 2>&1')
+	if res != 0:
+		print('Download OmniDB ... FAILS\nErroe: OmniDB downloading fails please see followng file for more details '+ installerSourcFolder +'/logs/OmniDB-download.log')
+		exit()
+
+
+	# Get filename from url
+	omnidbFileName = urlparse(omnidbUrl)
+	omnidbFileName = os.path.basename(omnidbFileName.path)
+	print('OmniDB file name ... '+ omnidbFileName)
+
+
+	if osType == 'Linux':
+		res = os.system('cd '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +' && rpm2cpio ./'+ omnidbFileName +' | cpio -idmv > '+ installerSourcFolder +'/logs/OmniDB-extract.log 2>&1')
+		if res != 0:
+			print('Extract OmniDB files  ... FAILS\nError: Could not able to extract OmniDB file please see following file for more details '+ installerSourcFolder +'/logs/OmniDB-extract.log')
+			exit()
+		else:
+			print('Extract OmniDB files ... OK')
+		res = os.system('cp -r '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/opt/* '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/OmniDB')
+		if res != 0:
+			print('OmniDB component ... FAILS\nError: Copy fails from '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/opt/*')
+			exit()
+		else:
+			print('OmniDB component status ... OK')
+	else:
+		print('Running open on ... '+ omnidbFileName )
+		res = os.system('open '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/'+ omnidbFileName)
+		if res != 0:
+			print('open OmniDB file ... Fails\nError: open command returns non zeor value on '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/'+ omnidbFileName)
+			exit()
+
+		print('Waiting for /Volumes/OmniDB Installer/OmniDB.app path to became available ...')
+		while True:
+			if os.path.exists('/Volumes/OmniDB Installer/OmniDB.app'):
+				print('Copy OmniDB binaries ...')
+				os.system('cp -r "/Volumes/OmniDB Installer/OmniDB.app" '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/OmniDB > '+ installerSourcFolder +'/logs/OmniDB-copy.log 2>&1')
+				print('Detach the /Volumes/OmniDB Installer ...')
+				time.sleep(1)
+				res = os.system('hdiutil detach "/Volumes/OmniDB Installer" > '+ installerSourcFolder +'/logs/OmniDB-detach.log 2>&1')
+				if res != 0:
+					print('detach "/Volumes/OmniDB Installer" ... FAILS')
+					exit()
+				else:
+					print('detach "/Volumes/OmniDB Installer" ... OK')
+					print('OmniDB component ... ok')
+				break
+			else:
+				continue
+
+
+print('\nPre build checks are executed successfully ...')
+time.sleep(3)
+
+
+print('\n\n\n')
+
+print(' ********************************************* \n')
+
+print('           BUILDS GENERATION SECTION           \n')
+
+print(' ********************************************* \n')
+
+
+
+# Saving current state of PATH
 PATH = os.environ['PATH']
 
 
@@ -103,24 +310,19 @@ currentProjectDir = root +'/workDir/'+ projectName
 
 
 for postgresVersion in postgresVersions:
+	print('\nStarting build process for '+ postgresVersion['fullVersion']+'\n')
 
-	""" Setting up system PATH variables
-        This section will hold/set/modify all the build related PATHS """
-
-	print('Setting up proper system PATH variables ...')
+	# Setting up system PATH variables
+        # This section will hold/set/modify all the build related PATHS
+	print('Setting up system PATH variables ...')
 	os.environ['LD_LIBRARY_PATH']   = shareLib +'/lib'
 	os.environ['CPPFLAGS']          = '-I'+ shareLib +'/include'
 	os.environ['LDFLAGS']           = ' -L'+ shareLib +'/lib'
 
-
 	dateTime = time.strftime("%Y%m%d%H%M%S")
 
-	print('\nStarting build process for '+ postgresVersion['fullVersion'])
-
-	print('\n\nSetting up work dir structure ...')
-
+	print('Setting up work dir structure ...')
 	currentBuild = currentProjectDir +'/'+ dateTime +'/'+ postgresVersion['fullVersion']
-
 	sourceDir = currentBuild +'/'+ 'source'
 	logsDir = currentBuild +'/'+ 'logs'
 	buildDir = currentBuild +'/'+ 'build' +'/'+ postgresVersion['majorVersion']
@@ -238,7 +440,7 @@ for postgresVersion in postgresVersions:
 
 
 	if postgresVersion['POSTGIS'] == '1':
-		print('\n\nBuild POSTGIS now ...')
+		print('Build POSTGIS now ...')
 
 		""" Download source code """
 		res = os.system('cd '+ sourceDir +' && '+ DOWNLOAD_KEY +' '+ postgresVersion['POSTGISTARBALL'] +' > '+ logsDir +'/postgis-source.log 2>&1')
@@ -303,9 +505,6 @@ for postgresVersion in postgresVersions:
 			exit()
 
 
-	""" ****** POST BUILD STEPS ***** """
-	print('****** POST BUILD STEPS *****')
-	
 	""" Copy shareLib/lib into buildDir/lib """
 	print('Copy shareLib/lib into buildDir/lib ...')
 	os.system('cp -rv '+ shareLib +'/lib/* '+ buildDir +'/lib/ > '+ logsDir +'/copy.log')
@@ -460,9 +659,15 @@ for postgresVersion in postgresVersions:
 		exit()
 
 
-	"""	--------------------------
-		Installer creation section
-		--------------------------	"""
+
+	print('\n\n\n')
+
+	print(' ************************************************ \n')
+
+	print('           INSTALLER GENERATION SECTION           \n')
+
+	print(' ************************************************ \n')
+
 
 
 	""" Checking installer creation mode """
@@ -471,14 +676,41 @@ for postgresVersion in postgresVersions:
 		""" Check if current version of PostgreSQL build needs an installer """
 		if postgresVersion['createInstaller'] == '1':
 
-			print('------------------')
-			print('INSTALLER CREATION')
-			print('------------------')
-
 			""" Creating required folder structure inside Postgres installer clone repo """
-			print(installerSourcFolder +'/postgresql-installer/Builds/'+ osType +'/'+ postgresVersion["majorVersion"])
-			os.makedirs(installerSourcFolder +'/postgresql-installer/Builds/'+ osType +'/'+ postgresVersion["majorVersion"])
-
+			print(installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/'+ postgresVersion["majorVersion"])
+			os.makedirs(installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/'+ postgresVersion["majorVersion"])
 			""" Copy build into installerSourcFolder/postgresql-installer/Builds/ """
-			print('Copy build into: '+ installerSourcFolder +'/postgresql-installer/Builds/'+ osType +'/'+ postgresVersion["majorVersion"])
-			os.system('cp -r '+ buildDir +'/* '+ installerSourcFolder +'/postgresql-installer/Builds/'+ osType +'/'+ postgresVersion["majorVersion"])
+			print('Copy build into: '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/'+ postgresVersion["majorVersion"])
+			os.system('cp -r '+ buildDir +'/* '+ installerSourcFolder +'/postgresql-installer/Builds/'+ tempOsType +'/'+ postgresVersion["majorVersion"])
+
+			# Re-generating installer-properties.sh
+			print('Re-generating installer-properties.sh ...')
+			f = open(installerSourcFolder +'/postgresql-installer/installer-properties.sh',"w+")
+
+			f.write('__PG_MAJOR_VERSION__='+      postgresVersion['majorVersion']              +'\n')
+			f.write('__FULL_VERSION__='+          postgresVersion['fullVersion']               +'\n')
+			f.write('__EXTRA_VERSION_STRING__='+  postgresVersion['__EXTRA_VERSION_STRING__']  +'\n')
+			f.write('__RELEASE__='+               postgresVersion['__RELEASE__']               +'\n')
+			f.write('__BUILD_NUMBER__='+          postgresVersion['__BUILD_NUMBER__']          +'\n')
+			f.write('__DEV_TEST__='+              postgresVersion['__DEV_TEST__']              +'\n')
+			f.write('__DEBUG__='+                 postgresVersion['__DEBUG__']                 +'\n')
+
+			f.close()
+
+
+			# Running autogen.sh
+			os.system('cd '+ installerSourcFolder +'/postgresql-installer && ./autogen.sh')
+
+
+			# Generating installer
+			print('Build installer ...')
+			res = os.system('source '+ signingPasswordRoot +'/signing-pass.vault && '+ bitrockInstallation +'/bin/builder build '+ installerSourcFolder +'/postgresql-installer/'+ projectFileName +' '+ tempOsTypeForInstaller +' --setvars project.outputDirectory='+ installerSourcFolder +'/postgresql-installer/final-installers --verbose > '+ logsDir +'/build-installer-'+ postgresVersion["majorVersion"] +'.log 2>&1')
+
+
+			if res != 0:
+				print('Unable to generate installer ...')
+			else:
+				installerExetension = '.app.zip'
+				if osType == 'Linux':
+					installerExetension = '.run'
+				print('Installer placed at: '+ installerSourcFolder +'/postgresql-installer/final-installers/PostgreSQL-'+ postgresVersion['fullVersion'] +'-'+ postgresVersion['__BUILD_NUMBER__'] +'-'+ tempOsTypeForInstaller +'-installer'+ installerExetension)
