@@ -3,7 +3,7 @@
                 "fullVersion": "12beta3",
                 "majorVersion": "12",
                 "minerVersion": "beta3",
-                "tarball": "https8://borka.postgresql.org/staging/c2a3ba58a4e5292f92b625868f97075a2d783be0/postgresql-12beta3.tar.gz",
+                "tarball": "https://borka.postgresql.org/staging/c2a3ba58a4e5292f92b625868f97075a2d783be0/postgresql-12beta3.tar.gz",
 
                 "createInstaller": "1",
                         "createInstaller": "1",
@@ -27,7 +27,7 @@
                 "fullVersion": "11.5",
                 "majorVersion": "11",
                 "minerVersion": "5",
-                "tarball": ".https://borka.postgresql.org/staging/c2a3ba58a4e5292f92b625868f97075a2d783be0/postgresql-11.5.tar.gz",
+                "tarball": "https://borka.postgresql.org/staging/c2a3ba58a4e5292f92b625868f97075a2d783be0/postgresql-11.5.tar.gz",
 
 		"createInstaller": "1",
 			"createInstaller": "1",
