@@ -3,14 +3,14 @@ import os
 
 os_name = platform.system()
 
-projectName = '11_10_9.6_9.5'
+projectName = '12beta_11_10_9.6_9.5'
 
 pl_languages = "/Applications/2ndQuadrant/PostgreSQL/pl-languages"
 python_home = "/Users/2ndquadrant/2UDA/Python-3.4.4/inst"
 openssl_home = "/Users/2ndquadrant/2UDA/openssl-1.0.2g/inst"
 shareLib = "/Users/2ndquadrant/pythonAutomation/srcBuild"
 signingPasswordRoot = '/Users/2ndquadrant/semabHome/automation/codesign/signing'
-bitrockInstallation = '/Applications/BitRockInstallBuilderProfessional16'
+bitrockInstallation = '/Applications/BitRockInstallBuilderEnterprise19.5.0'
 omnidbUrl = 'https://omnidb.org/dist/2.16.0/omnidb-app_2.16.0-mac.dmg'
 projectFileName = 'PGInstaller.xml'
 
