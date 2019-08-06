@@ -22,6 +22,7 @@ if os_name == "Linux":
     shareLib = "/opt/PGInstaller/Python-automation-code/linux_share_lib1"
     signingPasswordRoot = '/opt/semabHome/automation/postgres-installer-private/signing'
     bitrockInstallation = '/opt/semabHome/bitrock/installation/'
+    omnidbUrl = 'https://omnidb.org/dist/2.16.0/omnidb-server_2.16.0-centos7-amd64.rpm'
 
 else:
     """ Variables that are used to call linux machine and execute build code are ipAddr, userName, buildCode """
