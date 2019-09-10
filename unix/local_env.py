@@ -3,7 +3,7 @@ import os
 
 os_name = platform.system()
 
-projectName = '12beta3'
+projectName = '12beta4'
 
 pl_languages = "/Applications/2ndQuadrant/PostgreSQL/pl-languages"
 python_home = "/Users/2ndquadrant/2UDA/Python-3.4.4/inst"
