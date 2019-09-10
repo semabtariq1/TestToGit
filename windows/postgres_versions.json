@@ -1,9 +1,9 @@
 [
 	{
-                "fullVersion": "12beta3",
+                "fullVersion": "12beta4",
                 "majorVersion": "12",
-                "minerVersion": "beta3",
-                "tarball": "https://borka.postgresql.org/staging/c2a3ba58a4e5292f92b625868f97075a2d783be0/postgresql-12beta3.tar.gz",
+                "minerVersion": "beta4",
+                "tarball": "https://borka.postgresql.org/staging/a240231f0c617335998d9cf8e14ab328ad3dc468/postgresql-12beta4.tar.gz",
 
                 "createInstaller": "1",
                         "createInstaller": "1",
@@ -21,105 +21,5 @@
                 "ZLIB"       : "1",
                 "TCL"        : "1",
                 "ICU"        : "1"
-        },
-
-	{
-                "fullVersion": "11.5",
-                "majorVersion": "11",
-                "minerVersion": "5",
-                "tarball": "https://borka.postgresql.org/staging/c2a3ba58a4e5292f92b625868f97075a2d783be0/postgresql-11.5.tar.gz",
-
-		"createInstaller": "1",
-			"createInstaller": "1",
-			"__EXTRA_VERSION_STRING__"  : "undef",
-                        "__RELEASE__"               : "1",
-                        "__BUILD_NUMBER__"          : "1",
-                        "__DEV_TEST__"              : "release",
-                        "__DEBUG__"                 : "0",
-
-                "QUANTILE"   : "0",
-		"POSTGIS"    : "1",
-                "OPENSSL"    : "1",
-                "PYTHON"     : "1",
-                "PERL"       : "1",
-                "ZLIB"       : "1",
-                "TCL"        : "1",
-                "ICU"        : "1"
-        },
-
-	{
-                "fullVersion": "10.10",
-                "majorVersion": "10",
-                "minerVersion": "10",
-                "tarball": "https://borka.postgresql.org/staging/c2a3ba58a4e5292f92b625868f97075a2d783be0/postgresql-10.10.tar.gz",
-
-		"createInstaller": "1",
-			"createInstaller": "1",
-			"__EXTRA_VERSION_STRING__"  : "undef",
-                        "__RELEASE__"               : "1",
-                        "__BUILD_NUMBER__"          : "1",
-                        "__DEV_TEST__"              : "release",
-                        "__DEBUG__"                 : "0",
-
-                "QUANTILE"   : "0",
-		"POSTGIS"    : "1",
-                "OPENSSL"    : "1",
-                "PYTHON"     : "1",
-                "PERL"       : "1",
-                "ZLIB"       : "1",
-                "TCL"        : "1",
-                "ICU"        : "1"
-        },
-
-	{
-                "fullVersion": "9.6.15",
-                "majorVersion": "9.6",
-                "minerVersion": "15",
-                "tarball": "https://borka.postgresql.org/staging/c2a3ba58a4e5292f92b625868f97075a2d783be0/postgresql-9.6.15.tar.gz",
-
-		"createInstaller": "1",
-			"createInstaller": "1",
-			"__EXTRA_VERSION_STRING__"  : "undef",
-                        "__RELEASE__"               : "1",
-                        "__BUILD_NUMBER__"          : "1",
-                        "__DEV_TEST__"              : "release",
-                        "__DEBUG__"                 : "0",
-
-                "QUANTILE"   : "0",
-		"POSTGIS"    : "1",
-                "OPENSSL"    : "1",
-                "PYTHON"     : "1",
-                "PERL"       : "1",
-                "ZLIB"       : "1",
-                "TCL"        : "1",
-                "ICU"        : "0",
-
-                "Comments": "ICU is not supported for PostgreSQL 9.6.*"
-        },
-
-	{
-                "fullVersion": "9.5.19",
-                "majorVersion": "9.5",
-                "minerVersion": "19",
-                "tarball": "https://borka.postgresql.org/staging/c2a3ba58a4e5292f92b625868f97075a2d783be0/postgresql-9.5.19.tar.gz",
-
-		"createInstaller": "1",
-			"createInstaller": "1",
-			"__EXTRA_VERSION_STRING__"  : "undef",
-                        "__RELEASE__"               : "1",
-                        "__BUILD_NUMBER__"          : "1",
-                        "__DEV_TEST__"              : "release",
-                        "__DEBUG__"                 : "0",
-
-                "QUANTILE"   : "0",
-		"POSTGIS"    : "1",
-                "OPENSSL"    : "1",
-                "PYTHON"     : "1",
-                "PERL"       : "1",
-                "ZLIB"       : "1",
-                "TCL"        : "1",
-                "ICU"        : "0",
-
-                "Comments": "ICU is not supported for PostgreSQL 9.5.*"
         }
 ]

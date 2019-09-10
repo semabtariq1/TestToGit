@@ -2,7 +2,7 @@ import platform
 import os
 
 
-projectName = 'test'
+projectName = '12beta4'
 
 vsCommandPromptX64    = "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC"
 shareLib                 = "C:\\build-python-dev\\PGInstaller\\windows\\winShareLib"
