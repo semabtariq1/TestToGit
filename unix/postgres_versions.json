@@ -3,7 +3,7 @@
                 "fullVersion": "12beta4",
                 "majorVersion": "12",
                 "minerVersion": "beta4",
-                "tarball": "https://borka.postgresql.org/staging/a240231f0c617335998d9cf8e14ab328ad3dc468/postgresql-12beta4.tar.gz",
+                "tarball": "https://ftp.postgresql.org/pub/source/v12beta4/postgresql-12beta4.tar.gz",
 
                 "POSTGIS": "0",
                 "POSTGISVERSION": "2.5.2",
