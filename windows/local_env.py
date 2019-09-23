@@ -7,7 +7,7 @@ projectName = '12beta4'
 vsCommandPromptX64    = "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC"
 shareLib                 = "C:\\build-python-dev\\PGInstaller\\windows\\winShareLib"
 windowsCmd              = 'C:\\Windows\\system32\\cmd.exe'
-signingPasswordRoot = 'C:\\semabHome\\codesign\\signing'
+signingPasswordRoot = 'C:\\signing'
 bitrockInstallation = 'C:\\installBuilder'
 projectFileName = 'PGInstaller.xml'
 
