@@ -1,9 +1,9 @@
 [
 	{
-                "fullVersion": "12rc1",
+                "fullVersion": "12.0",
                 "majorVersion": "12",
-                "minerVersion": "rc1",
-                "tarball": "https://borka.postgresql.org/staging/d9f4052f0eac7c734dfbe6dde821f9f038e13bd4/postgresql-12rc1.tar.gz",
+                "minerVersion": "0",
+                "tarball": "https://borka.postgresql.org/staging/1a2c7f9ac38877a99424115bd4aa07e6cb4f8ccb/postgresql-12.0.tar.gz",
 
                 "createInstaller": "1",
                         "createInstaller": "1",
