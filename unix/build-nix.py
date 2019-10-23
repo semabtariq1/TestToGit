@@ -409,7 +409,7 @@ for postgresVersion in postgresVersions:
 
 	""" Executing ./configure command now """
 	print('./configure '+ configureWith)
-	res = os.system('cd '+ sourceDir +'/postgresql-'+ postgresVersion['fullVersion'] +' && ./configure '+ configureWith +' '+ configureFlags +' --prefix='+ buildDir +' > '+ logsDir +'/postgreSQL-configure.log 2>&1')
+	res = os.system('cd '+ sourceDir +'/postgresql-'+ postgresVersion['fullVersion'] +' && ./configure --with-libedit-preferred '+ configureWith +' '+ configureFlags +' --prefix='+ buildDir +' > '+ logsDir +'/postgreSQL-configure.log 2>&1')
 	if res != 0:
 		print('\nSomething went wrong with ./configure see\n'+ logsDir +'/postgreSQL-configure.log ...')
 		exit()
@@ -558,19 +558,23 @@ for postgresVersion in postgresVersions:
 
                                     os.system('cd '+ buildDir +'/bin && install_name_tool -change "'+ shareLib +'/lib/libgeos_c.1.dylib" "@executable_path/../lib/libgeos_c.1.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-bin-rpath.log 2>&1")
 
-                                    os.system('cd '+ buildDir +'/bin && install_name_tool -change "'+ shareLib +'/lib/libproj.13.dylib" "@executable_path/../lib/libproj.13.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-bin-rpath.log 2>&1")
+                                    os.system('cd '+ buildDir +'/bin && install_name_tool -change "/Users/2ndquadrant/pythonAutomation/srcBuild/lib/libproj.13.dylib" "@executable_path/../lib/libproj.13.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-bin-rpath.log 2>&1")
 
-                                    os.system('cd '+ buildDir +'/bin && install_name_tool -change "'+ shareLib +'/lib/libgeos-3.6.2.dylib" "@executable_path/../lib/libgeos-3.6.2.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-bin-rpath.log 2>&1")
+                                    os.system('cd '+ buildDir +'/bin && install_name_tool -change "/Users/2ndquadrant/pythonAutomation/srcBuild/lib/libgeos-3.6.2.dylib" "@executable_path/../lib/libgeos-3.6.2.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-bin-rpath.log 2>&1")
 
-                                    os.system('cd '+ buildDir +'/bin && install_name_tool -change "'+ shareLib +'/lib/libxml2.2.dylib" "@executable_path/../lib/libxml2.2.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-bin-rpath.log 2>&1")
+                                    os.system('cd '+ buildDir +'/bin && install_name_tool -change "/Users/2ndquadrant/pythonAutomation/srcBuild/lib/libxml2.2.dylib" "@executable_path/../lib/libxml2.2.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-bin-rpath.log 2>&1")
 
-                                    os.system('cd '+ buildDir +'/bin && install_name_tool -change "'+ shareLib +'/lib/libgdal.20.dylib" "@executable_path/../lib/libgdal.20.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-bin-rpath.log 2>&1")
+                                    os.system('cd '+ buildDir +'/bin && install_name_tool -change "/Users/2ndquadrant/pythonAutomation/srcBuild/lib/libgdal.20.dylib" "@executable_path/../lib/libgdal.20.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-bin-rpath.log 2>&1")
 
-                                    os.system('cd '+ buildDir +'/bin && install_name_tool -change "'+ shareLib +'/lib/libicui18n.62.dylib" "@executable_path/../lib/libicui18n.62.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-bin-rpath.log 2>&1")
+                                    os.system('cd '+ buildDir +'/bin && install_name_tool -change "/Users/2ndquadrant/pythonAutomation/srcBuild/lib/libicui18n.62.dylib" "@executable_path/../lib/libicui18n.62.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-bin-rpath.log 2>&1")
 
-                                    os.system('cd '+ buildDir +'/bin && install_name_tool -change "'+ shareLib +'/lib/libicuuc.62.dylib" "@executable_path/../lib/libicuuc.62.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-bin-rpath.log 2>&1")
+                                    os.system('cd '+ buildDir +'/bin && install_name_tool -change "/Users/2ndquadrant/sharedLibs/lib/libedit.0.dylib" "@executable_path/../lib/libedit.0.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-bin-rpath.log 2>&1")
 
-                                    os.system('cd '+ buildDir +'/bin && install_name_tool -change "'+ shareLib +'/lib/libicudata.62.dylib" "@executable_path/../lib/libicudata.62.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-bin-rpath.log 2>&1")
+                                    os.system('cd '+ buildDir +'/bin && install_name_tool -change "/Users/2ndquadrant/sharedLibs/lib/libncurses.6.dylib" "@executable_path/../lib/libncurses.6.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-bin-rpath.log 2>&1")
+
+                                    os.system('cd '+ buildDir +'/bin && install_name_tool -change "/Users/2ndquadrant/pythonAutomation/srcBuild/lib/libicuuc.62.dylib" "@executable_path/../lib/libicuuc.62.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-bin-rpath.log 2>&1")
+
+                                    os.system('cd '+ buildDir +'/bin && install_name_tool -change "/Users/2ndquadrant/pythonAutomation/srcBuild/lib/libicudata.62.dylib" "@executable_path/../lib/libicudata.62.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-bin-rpath.log 2>&1")
 
 
 		print('Setting rpaths for lib ...')
@@ -583,21 +587,25 @@ for postgresVersion in postgresVersions:
 
                                     os.system('cd '+ buildDir +'/lib && install_name_tool -change "'+ os.environ['OPENSSL_HOME'] +'/lib/libcrypto.1.0.0.dylib" "@executable_path/../lib/libcrypto.1.0.0.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-lib-rpath.log 2>&1")
 
-                                    os.system('cd '+ buildDir +'/lib && install_name_tool -change "'+ shareLib +'/lib/libgeos_c.1.dylib" "@executable_path/../lib/libgeos_c.1.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-lib-rpath.log 2>&1")
+                                    os.system('cd '+ buildDir +'/lib && install_name_tool -change "/Users/2ndquadrant/pythonAutomation/srcBuild/lib/libgeos_c.1.dylib" "@executable_path/../lib/libgeos_c.1.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-lib-rpath.log 2>&1")
 
-                                    os.system('cd '+ buildDir +'/lib && install_name_tool -change "'+ shareLib +'/lib/libproj.13.dylib" "@executable_path/../lib/libproj.13.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-lib-rpath.log 2>&1")
+                                    os.system('cd '+ buildDir +'/lib && install_name_tool -change "/Users/2ndquadrant/pythonAutomation/srcBuild/lib/libproj.13.dylib" "@executable_path/../lib/libproj.13.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-lib-rpath.log 2>&1")
 
-                                    os.system('cd '+ buildDir +'/lib && install_name_tool -change "'+ shareLib +'/lib/libgeos-3.6.2.dylib" "@executable_path/../lib/libgeos-3.6.2.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-lib-rpath.log 2>&1")
+                                    os.system('cd '+ buildDir +'/lib && install_name_tool -change "/Users/2ndquadrant/pythonAutomation/srcBuild/lib/libgeos-3.6.2.dylib" "@executable_path/../lib/libgeos-3.6.2.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-lib-rpath.log 2>&1")
 
-                                    os.system('cd '+ buildDir +'/lib && install_name_tool -change "'+ shareLib +'/lib/libxml2.2.dylib" "@executable_path/../lib/libxml2.2.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-lib-rpath.log 2>&1")
+                                    os.system('cd '+ buildDir +'/lib && install_name_tool -change "/Users/2ndquadrant/pythonAutomation/srcBuild/lib/libxml2.2.dylib" "@executable_path/../lib/libxml2.2.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-lib-rpath.log 2>&1")
 
-                                    os.system('cd '+ buildDir +'/lib && install_name_tool -change "'+ shareLib +'/lib/libgdal.20.dylib" "@executable_path/../lib/libgdal.20.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-lib-rpath.log 2>&1")
+                                    os.system('cd '+ buildDir +'/lib && install_name_tool -change "/Users/2ndquadrant/pythonAutomation/srcBuild/lib/libgdal.20.dylib" "@executable_path/../lib/libgdal.20.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-lib-rpath.log 2>&1")
 
-                                    os.system('cd '+ buildDir +'/lib && install_name_tool -change "'+ shareLib +'/lib/libicui18n.62.dylib" "@executable_path/../lib/libicui18n.62.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-lib-rpath.log 2>&1")
+                                    os.system('cd '+ buildDir +'/lib && install_name_tool -change "/Users/2ndquadrant/pythonAutomation/srcBuild/lib/libicui18n.62.dylib" "@executable_path/../lib/libicui18n.62.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-lib-rpath.log 2>&1")
 
-                                    os.system('cd '+ buildDir +'/lib && install_name_tool -change "'+ shareLib +'/lib/libicuuc.62.dylib" "@executable_path/../lib/libicuuc.62.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-lib-rpath.log 2>&1")
+                                    os.system('cd '+ buildDir +'/lib && install_name_tool -change "/Users/2ndquadrant/pythonAutomation/srcBuild/lib/libicuuc.62.dylib" "@executable_path/../lib/libicuuc.62.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-lib-rpath.log 2>&1")
 
-                                    os.system('cd '+ buildDir +'/lib && install_name_tool -change "'+ shareLib +'/lib/libicudata.62.dylib" "@executable_path/../lib/libicudata.62.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-lib-rpath.log 2>&1")
+                                    os.system('cd '+ buildDir +'/lib && install_name_tool -change "/Users/2ndquadrant/pythonAutomation/srcBuild/lib/libicudata.62.dylib" "@executable_path/../lib/libicudata.62.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-lib-rpath.log 2>&1")
+
+                                    os.system('cd '+ buildDir +'/lib && install_name_tool -change "/Users/2ndquadrant/sharedLibs/lib/libedit.0.dylib" "@executable_path/../lib/libedit.0.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-bin-rpath.log 2>&1")
+
+                                    os.system('cd '+ buildDir +'/lib && install_name_tool -change "/Users/2ndquadrant/sharedLibs/lib/libncurses.6.dylib" "@executable_path/../lib/libncurses.6.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-bin-rpath.log 2>&1")
 
                                     os.system('cd '+ buildDir +'/lib && install_name_tool -change "/Users/2ndquadrant/pl-languages/perl-5.26/lib/CORE/libperl.dylib" "@executable_path/../../pl-languages/Perl-5.26/lib/CORE/libperl.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-postgresql-rpath.log 2>&1")
 
@@ -615,21 +623,25 @@ for postgresVersion in postgresVersions:
 
                                     os.system('cd '+ buildDir +'/lib/postgresql && install_name_tool -change "'+ os.environ['OPENSSL_HOME'] +'/lib/libcrypto.1.0.0.dylib" "@executable_path/../lib/libcrypto.1.0.0.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-postgresql-rpath.log 2>&1")
 
-                                    os.system('cd '+ buildDir +'/lib/postgresql && install_name_tool -change "'+ shareLib +'/lib/libgeos_c.1.dylib" "@executable_path/../lib/libgeos_c.1.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-postgresql-rpath.log 2>&1")
+                                    os.system('cd '+ buildDir +'/lib/postgresql && install_name_tool -change "/Users/2ndquadrant/pythonAutomation/srcBuild/lib/libgeos_c.1.dylib" "@executable_path/../lib/libgeos_c.1.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-postgresql-rpath.log 2>&1")
 
-                                    os.system('cd '+ buildDir +'/lib/postgresql && install_name_tool -change "'+ shareLib +'/lib/libproj.13.dylib" "@executable_path/../lib/libproj.13.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-postgresql-rpath.log 2>&1")
+                                    os.system('cd '+ buildDir +'/lib/postgresql && install_name_tool -change "/Users/2ndquadrant/pythonAutomation/srcBuild/lib/libproj.13.dylib" "@executable_path/../lib/libproj.13.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-postgresql-rpath.log 2>&1")
 
-                                    os.system('cd '+ buildDir +'/lib/postgresql && install_name_tool -change "'+ shareLib +'/lib/libgeos-3.6.2.dylib" "@executable_path/../lib/libgeos-3.6.2.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-postgresql-rpath.log 2>&1")
+                                    os.system('cd '+ buildDir +'/lib/postgresql && install_name_tool -change "/Users/2ndquadrant/pythonAutomation/srcBuild/lib/libgeos-3.6.2.dylib" "@executable_path/../lib/libgeos-3.6.2.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-postgresql-rpath.log 2>&1")
 
-                                    os.system('cd '+ buildDir +'/lib/postgresql && install_name_tool -change "'+ shareLib +'/lib/libgdal.20.dylib" "@executable_path/../lib/libgdal.20.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-postgresql-rpath.log 2>&1")
+                                    os.system('cd '+ buildDir +'/lib/postgresql && install_name_tool -change "/Users/2ndquadrant/pythonAutomation/srcBuild/lib/libgdal.20.dylib" "@executable_path/../lib/libgdal.20.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-postgresql-rpath.log 2>&1")
 
-                                    os.system('cd '+ buildDir +'/lib/postgresql && install_name_tool -change "'+ shareLib +'/lib/libxml2.2.dylib" "@executable_path/../lib/libxml2.2.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-postgresql-rpath.log 2>&1")
+                                    os.system('cd '+ buildDir +'/lib/postgresql && install_name_tool -change "/Users/2ndquadrant/pythonAutomation/srcBuild/lib/libxml2.2.dylib" "@executable_path/../lib/libxml2.2.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-postgresql-rpath.log 2>&1")
 
-                                    os.system('cd '+ buildDir +'/lib/postgresql && install_name_tool -change "'+ shareLib +'/lib/libicui18n.62.dylib" "@executable_path/../lib/libicui18n.62.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-postgresql-rpath.log 2>&1")
+                                    os.system('cd '+ buildDir +'/lib/postgresql && install_name_tool -change "/Users/2ndquadrant/pythonAutomation/srcBuild/lib/libicui18n.62.dylib" "@executable_path/../lib/libicui18n.62.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-postgresql-rpath.log 2>&1")
 
-                                    os.system('cd '+ buildDir +'/lib/postgresql && install_name_tool -change "'+ shareLib +'/lib/libicuuc.62.dylib" "@executable_path/../lib/libicuuc.62.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-postgresql-rpath.log 2>&1")
+                                    os.system('cd '+ buildDir +'/lib/postgresql && install_name_tool -change "/Users/2ndquadrant/pythonAutomation/srcBuild/lib/libicuuc.62.dylib" "@executable_path/../lib/libicuuc.62.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-postgresql-rpath.log 2>&1")
 
-                                    os.system('cd '+ buildDir +'/lib/postgresql && install_name_tool -change "'+ shareLib +'/lib/libicudata.62.dylib" "@executable_path/../lib/libicudata.62.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-postgresql-rpath.log 2>&1")
+                                    os.system('cd '+ buildDir +'/lib/postgresql && install_name_tool -change "/Users/2ndquadrant/pythonAutomation/srcBuild/lib/libicudata.62.dylib" "@executable_path/../lib/libicudata.62.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-postgresql-rpath.log 2>&1")
+
+                                    os.system('cd '+ buildDir +'/lib/postgresql && install_name_tool -change "/Users/2ndquadrant/sharedLibs/lib/libedit.0.dylib" "@executable_path/../lib/libedit.0.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-bin-rpath.log 2>&1")
+
+                                    os.system('cd '+ buildDir +'/lib/postgresql && install_name_tool -change "/Users/2ndquadrant/sharedLibs/lib/libncurses.6.dylib" "@executable_path/../lib/libncurses.6.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-bin-rpath.log 2>&1")
 
                                     os.system('cd '+ buildDir +'/lib/postgresql && install_name_tool -change "/Users/2ndquadrant/pl-languages/perl-5.26/lib/CORE/libperl.dylib" "@executable_path/../../pl-languages/Perl-5.26/lib/CORE/libperl.dylib" "./'+ file +'" >> '+ logsDir +"/postgreSQL-postgresql-rpath.log 2>&1")
 
