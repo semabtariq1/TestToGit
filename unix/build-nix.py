@@ -407,6 +407,14 @@ for postgresVersion in postgresVersions:
 		configureWith += ' --with-icu '
 		configureFlags = ' ICU_CFLAGS=\'-I'+ shareLib +'/include\' ICU_LIBS=\'-L'+ shareLib +'/lib -licui18n -licuuc -licudata\' '
 
+	if postgresVersion['LLVM']    == '1':
+                configureWith += ' --with-llvm '
+                os.environ['PATH']              = shareLib +'/llvm_current/bin:'+ os.environ['PATH']
+                os.environ['LD_LIBRARY_PATH']   = shareLib +'/llvm_current/lib:'+ os.environ['LD_LIBRARY_PATH']
+                os.environ['CPPFLAGS']          = '-I'+ shareLib +'/llvm_current/include '+ os.environ['CPPFLAGS']
+                os.environ['LDFLAGS']           = '-L'+ shareLib +'/llvm_current/lib '+ os.environ['LDFLAGS']
+                os.environ['LLVM_CONFIG']       = shareLib +'/llvm_current/bin/llvm-config'
+
 	""" Executing ./configure command now """
 	print('./configure '+ configureWith)
 	res = os.system('cd '+ sourceDir +'/postgresql-'+ postgresVersion['fullVersion'] +' && ./configure --with-libedit-preferred '+ configureWith +' '+ configureFlags +' --prefix='+ buildDir +' > '+ logsDir +'/postgreSQL-configure.log 2>&1')
