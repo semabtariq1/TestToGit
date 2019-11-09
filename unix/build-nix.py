@@ -425,7 +425,7 @@ for postgresVersion in postgresVersions:
 
 	""" Running make on PostgreSQL source code """
 	print('Running make ...')
-	res = os.system('cd '+ sourceDir +'/postgresql-'+ postgresVersion['fullVersion'] +' && make world > '+ logsDir +'/postgreSQL-make.log 2>&1')
+	res = os.system('cd '+ sourceDir +'/postgresql-'+ postgresVersion['fullVersion'] +' && make world -j2 > '+ logsDir +'/postgreSQL-make.log 2>&1')
 	if res != 0:
 		print('\nSomething went wrong with make see\n'+ logsDir +'/postgreSQL-make.log ...')
 		exit()
@@ -529,7 +529,7 @@ for postgresVersion in postgresVersions:
 	print('Copy openssl/lib into buildDir/lib ...')
 	os.system('cp -rv '+ openssl_home +'/lib/* '+ buildDir +'/lib/ >> '+ logsDir +'/copy.log')
 
-	if postgresVersion['LLVM']    == '1':
+	if postgresVersion['LLVM']    == '1' and  osType == 'Linux':
             os.system('cp '+ llvmPath +'/lib/libLLVM* '+ buildDir +'/lib && cp '+ llvmPath +'/local/lib64/libstdc++.so.6 '+ buildDir +'/lib')
 
 	""" Platform related actions """
