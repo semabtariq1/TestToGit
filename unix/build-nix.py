@@ -409,10 +409,10 @@ for postgresVersion in postgresVersions:
 
 	if postgresVersion['LLVM']    == '1':
                 configureWith += ' --with-llvm '
-                os.environ['PATH']              = llvmPath +'/bin:'+ os.environ['PATH']
-                os.environ['LD_LIBRARY_PATH']   = llvmPath +'/lib:'+ os.environ['LD_LIBRARY_PATH']
-                os.environ['CPPFLAGS']          = '-I'+ llvmPath +'/include '+ os.environ['CPPFLAGS']
-                os.environ['LDFLAGS']           = '-L'+ llvmPath +'/lib '+ os.environ['LDFLAGS']
+                os.environ['PATH']              = llvmPath +'/bin:'+ llvmPath +'/local/bin:'+ os.environ['PATH']
+                os.environ['LD_LIBRARY_PATH']   = llvmPath +'/lib:'+ llvmPath +'/local/lib64:'+ os.environ['LD_LIBRARY_PATH']
+                os.environ['CPPFLAGS']          = '-I'+ llvmPath +'/include -I'+ llvmPath +'/local/include '+ os.environ['CPPFLAGS']
+                os.environ['LDFLAGS']           = '-L'+ llvmPath +'/lib -L'+ llvmPath +'/local/lib64 -L'+ llvmPath +'/local/lib '+ os.environ['LDFLAGS']
                 os.environ['LLVM_CONFIG']       = llvmPath +'/bin/llvm-config'
 
 	""" Executing ./configure command now """
@@ -528,6 +528,9 @@ for postgresVersion in postgresVersions:
 	""" Copy openssl/lib into buildDir/lib """
 	print('Copy openssl/lib into buildDir/lib ...')
 	os.system('cp -rv '+ openssl_home +'/lib/* '+ buildDir +'/lib/ >> '+ logsDir +'/copy.log')
+
+	if postgresVersion['LLVM']    == '1':
+            os.system('cp '+ llvmPath +'/lib/libLLVM* '+ buildDir +'/lib && cp '+ llvmPath +'/local/lib64/libstdc++.so.6 '+ buildDir +'/lib')
 
 	""" Platform related actions """
 	if osType == 'Linux':
