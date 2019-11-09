@@ -13,6 +13,7 @@ signingPasswordRoot = '/Users/2ndquadrant/semabHome/automation/codesign/signing'
 bitrockInstallation = '/Applications/BitRockInstallBuilderEnterprise19.5.0'
 omnidbUrl = 'https://omnidb.org/dist/2.16.0/omnidb-app_2.16.0-mac.dmg'
 projectFileName = 'PGInstaller.xml'
+llvmPath = "/opt/llvm"
 
 
 if os_name == "Linux":

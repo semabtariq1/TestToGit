@@ -409,11 +409,11 @@ for postgresVersion in postgresVersions:
 
 	if postgresVersion['LLVM']    == '1':
                 configureWith += ' --with-llvm '
-                os.environ['PATH']              = shareLib +'/llvm_current/bin:'+ os.environ['PATH']
-                os.environ['LD_LIBRARY_PATH']   = shareLib +'/llvm_current/lib:'+ os.environ['LD_LIBRARY_PATH']
-                os.environ['CPPFLAGS']          = '-I'+ shareLib +'/llvm_current/include '+ os.environ['CPPFLAGS']
-                os.environ['LDFLAGS']           = '-L'+ shareLib +'/llvm_current/lib '+ os.environ['LDFLAGS']
-                os.environ['LLVM_CONFIG']       = shareLib +'/llvm_current/bin/llvm-config'
+                os.environ['PATH']              = llvmPath +'/bin:'+ os.environ['PATH']
+                os.environ['LD_LIBRARY_PATH']   = llvmPath +'/lib:'+ os.environ['LD_LIBRARY_PATH']
+                os.environ['CPPFLAGS']          = '-I'+ llvmPath +'/include '+ os.environ['CPPFLAGS']
+                os.environ['LDFLAGS']           = '-L'+ llvmPath +'/lib '+ os.environ['LDFLAGS']
+                os.environ['LLVM_CONFIG']       = llvmPath +'/bin/llvm-config'
 
 	""" Executing ./configure command now """
 	print('./configure '+ configureWith)
