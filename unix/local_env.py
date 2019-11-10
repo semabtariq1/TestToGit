@@ -21,8 +21,8 @@ if os_name == "Linux":
     python_home = "/opt/Python-3.4.4/inst"
     openssl_home = "/opt/openssl-1.0.2g/inst"
     shareLib = "/opt/PGInstaller/Python-automation-code/linux_share_lib1"
-    signingPasswordRoot = '/opt/semabHome/automation/postgres-installer-private/signing'
-    bitrockInstallation = '/opt/semabHome/bitrock/installation/'
+    signingPasswordRoot = '/opt/signing'
+    bitrockInstallation = '/opt/installbuilder-19.10.0'
     omnidbUrl = 'https://omnidb.org/dist/2.16.0/omnidb-server_2.16.0-centos7-amd64.rpm'
     llvmPath = "/opt/llvm"
 
