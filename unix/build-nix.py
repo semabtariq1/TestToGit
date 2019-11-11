@@ -214,7 +214,7 @@ if installerCreationMode == 'Enabled':
 	# Checkout stable branch
 	print('Checkout stable branch ...')
 	time.sleep(2)
-	res = os.system('cd '+ installerSourcFolder +'/postgresql-installer && git checkout stable > '+ installerSourcFolder +'/logs/checkout-stable.log 2>&1')
+	res = os.system('cd '+ installerSourcFolder +'/postgresql-installer && git checkout stable-14112019 > '+ installerSourcFolder +'/logs/checkout-stable.log 2>&1')
 	if res != 0:
 		print('Checkout stable branch ... FAILS')
 		exit()
@@ -528,6 +528,10 @@ for postgresVersion in postgresVersions:
 	""" Copy openssl/lib into buildDir/lib """
 	print('Copy openssl/lib into buildDir/lib ...')
 	os.system('cp -rv '+ openssl_home +'/lib/* '+ buildDir +'/lib/ >> '+ logsDir +'/copy.log')
+
+	# Copy serverctl.vbs into bin
+	if osType == 'Windows':
+		os.system('cp '+ shareLib +'/scripts/serverctl.vbs '+ buildDir +'/bin')
 
 	if postgresVersion['LLVM']    == '1' and  osType == 'Linux':
             os.system('cp '+ llvmPath +'/lib/libLLVM* '+ buildDir +'/lib && cp '+ llvmPath +'/local/lib64/libstdc++.so.6 '+ buildDir +'/lib')
