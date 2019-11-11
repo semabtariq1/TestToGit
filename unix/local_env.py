@@ -20,7 +20,7 @@ if os_name == "Linux":
     pl_languages = "/opt/2ndQuadrant/PostgreSQL/pl-languages"
     python_home = "/opt/Python-3.4.4/inst"
     openssl_home = "/opt/openssl-1.0.2g/inst"
-    shareLib = "/opt/PGInstaller/Python-automation-code/linux_share_lib1"
+    shareLib = "/opt/sharedLibs"
     signingPasswordRoot = '/opt/signing'
     bitrockInstallation = '/opt/installbuilder-19.10.0'
     omnidbUrl = 'https://omnidb.org/dist/2.16.0/omnidb-server_2.16.0-centos7-amd64.rpm'

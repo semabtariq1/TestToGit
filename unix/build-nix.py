@@ -316,7 +316,7 @@ for postgresVersion in postgresVersions:
         # This section will hold/set/modify all the build related PATHS
 	print('Setting up system PATH variables ...')
 	os.environ['LD_LIBRARY_PATH']   = shareLib +'/lib'
-	os.environ['CPPFLAGS']          = '-I'+ shareLib +'/include'
+	os.environ['CPPFLAGS']          = '-I'+ shareLib +'/include -I'+ shareLib +'/include/ncurses -I'+ shareLib +'/include/editline'
 	os.environ['LDFLAGS']           = ' -L'+ shareLib +'/lib'
 
 	dateTime = time.strftime("%Y%m%d%H%M%S")
