@@ -432,6 +432,9 @@ for postgresVersion in postgresVersions:
         src = shareLib +"\\postgis-"+ postgresVersion['majorVersion']
         copy_tree(src, buildDir)
 
+    # Copy serverctl.vbs into bin
+    os.system('cp '+ shareLib +'\scripts\serverctl.vbs '+ buildDir +'\\bin')
+
 
     # Generating zip
     print('Generating zip file for build ...')
