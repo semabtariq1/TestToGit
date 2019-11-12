@@ -529,6 +529,10 @@ for postgresVersion in postgresVersions:
 	print('Copy openssl/lib into buildDir/lib ...')
 	os.system('cp -rv '+ openssl_home +'/lib/* '+ buildDir +'/lib/ >> '+ logsDir +'/copy.log')
 
+	if osType == 'Linux':
+		os.system('mv '+ buildDir +'/bin/psql '+ buildDir +'/bin/psql.bin')
+		os.system('cp '+ shareLib +'/scripts/psql '+ buildDir +'/bin')
+
 	if postgresVersion['LLVM']    == '1' and  osType == 'Linux':
             os.system('cp '+ llvmPath +'/lib/libLLVM* '+ buildDir +'/lib && cp '+ llvmPath +'/local/lib64/libstdc++.so.6 '+ buildDir +'/lib')
 
