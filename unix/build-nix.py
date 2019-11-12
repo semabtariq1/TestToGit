@@ -417,7 +417,7 @@ for postgresVersion in postgresVersions:
 
 	""" Executing ./configure command now """
 	print('./configure '+ configureWith)
-	res = os.system('cd '+ sourceDir +'/postgresql-'+ postgresVersion['fullVersion'] +' && ./configure --enable-debug --enable-thread-safety  --with-libedit-preferred '+ configureWith +' '+ configureFlags +' --prefix='+ buildDir +' > '+ logsDir +'/postgreSQL-configure.log 2>&1')
+	res = os.system('cd '+ sourceDir +'/postgresql-'+ postgresVersion['fullVersion'] +' && ./configure  --enable-thread-safety  --with-libedit-preferred '+ configureWith +' '+ configureFlags +' --prefix='+ buildDir +' > '+ logsDir +'/postgreSQL-configure.log 2>&1')
 	if res != 0:
 		print('\nSomething went wrong with ./configure see\n'+ logsDir +'/postgreSQL-configure.log ...')
 		exit()
