@@ -433,8 +433,8 @@ for postgresVersion in postgresVersions:
         copy_tree(src, buildDir)
 
     # Copy serverctl.vbs into bin
-    os.system('cp '+ shareLib +'\scripts\serverctl.vbs '+ buildDir +'\\bin')
-
+    src = shareLib +"\\scripts"
+    copy_tree(src, buildDir +"\\bin")
 
     # Generating zip
     print('Generating zip file for build ...')
