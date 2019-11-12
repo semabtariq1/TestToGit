@@ -3,7 +3,7 @@
                 "fullVersion": "12.1",
                 "majorVersion": "12",
                 "minerVersion": "1",
-                "tarball": https://borka.postgresql.org/staging/57796465ef590ebc229dde80febbd6f39a1d22cd/postgresql-12.1.tar.gz"",
+                "tarball": "https://borka.postgresql.org/staging/57796465ef590ebc229dde80febbd6f39a1d22cd/postgresql-12.1.tar.gz",
 
                 "POSTGIS": "0",
                 "POSTGISVERSION": "2.5.2",
