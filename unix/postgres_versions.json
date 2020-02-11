@@ -1,9 +1,9 @@
 [
 	{
-                "fullVersion": "12.1",
+                "fullVersion": "12.2",
                 "majorVersion": "12",
-                "minerVersion": "1",
-                "tarball": "https://borka.postgresql.org/staging/57796465ef590ebc229dde80febbd6f39a1d22cd/postgresql-12.1.tar.gz",
+                "minerVersion": "2",
+                "tarball": "https://borka.postgresql.org/staging/ceb34a69ae75858980a8e40adb30188d985c7f18/postgresql-12.2.tar.gz",
 
                 "POSTGIS": "0",
                 "POSTGISVERSION": "2.5.2",
@@ -29,10 +29,10 @@
         },
 
 	{
-                "fullVersion": "11.6",
+                "fullVersion": "11.7",
                 "majorVersion": "11",
-                "minerVersion": "6",
-                "tarball": "https://borka.postgresql.org/staging/57796465ef590ebc229dde80febbd6f39a1d22cd/postgresql-11.6.tar.gz",
+                "minerVersion": "7",
+                "tarball": "https://borka.postgresql.org/staging/ceb34a69ae75858980a8e40adb30188d985c7f18/postgresql-11.7.tar.gz",
 
                 "POSTGIS": "1",
                 "POSTGISVERSION": "2.5.2",
@@ -58,10 +58,10 @@
         },
 
 	{
-                "fullVersion": "10.11",
+                "fullVersion": "10.12",
                 "majorVersion": "10",
-                "minerVersion": "11",
-                "tarball": "https://borka.postgresql.org/staging/57796465ef590ebc229dde80febbd6f39a1d22cd/postgresql-10.11.tar.gz",
+                "minerVersion": "12",
+                "tarball": "https://borka.postgresql.org/staging/ceb34a69ae75858980a8e40adb30188d985c7f18/postgresql-10.12.tar.gz",
 
                 "POSTGIS": "1",
                 "POSTGISVERSION": "2.5.2",
@@ -87,10 +87,10 @@
         },
 
 	{
-                "fullVersion": "9.6.16",
+                "fullVersion": "9.6.17",
                 "majorVersion": "9.6",
-                "minerVersion": "16",
-                "tarball": "https://borka.postgresql.org/staging/57796465ef590ebc229dde80febbd6f39a1d22cd/postgresql-9.6.16.tar.gz",
+                "minerVersion": "17",
+                "tarball": "https://borka.postgresql.org/staging/ceb34a69ae75858980a8e40adb30188d985c7f18/postgresql-9.6.17.tar.gz",
 
                 "POSTGIS": "1",
                 "POSTGISVERSION": "2.5.2",
@@ -116,10 +116,10 @@
         },
 
 	{
-                "fullVersion": "9.5.20",
+                "fullVersion": "9.5.21",
                 "majorVersion": "9.5",
-                "minerVersion": "20",
-                "tarball": "https://borka.postgresql.org/staging/57796465ef590ebc229dde80febbd6f39a1d22cd/postgresql-9.5.20.tar.gz",
+                "minerVersion": "21",
+                "tarball": "https://borka.postgresql.org/staging/ceb34a69ae75858980a8e40adb30188d985c7f18/postgresql-9.5.21.tar.gz",
 
                 "POSTGIS": "1",
                 "POSTGISVERSION": "2.5.2",
