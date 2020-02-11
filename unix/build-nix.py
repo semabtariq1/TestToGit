@@ -214,7 +214,7 @@ if installerCreationMode == 'Enabled':
 	# Checkout stable branch
 	print('Checkout stable branch ...')
 	time.sleep(2)
-	res = os.system('cd '+ installerSourcFolder +'/postgresql-installer && git checkout stable-14112019 > '+ installerSourcFolder +'/logs/checkout-stable.log 2>&1')
+	res = os.system('cd '+ installerSourcFolder +'/postgresql-installer && git checkout stable > '+ installerSourcFolder +'/logs/checkout-stable.log 2>&1')
 	if res != 0:
 		print('Checkout stable branch ... FAILS')
 		exit()

@@ -217,7 +217,7 @@ if installerCreationMode == 'Enabled':
         exit()
 
     # Checkout stable branch in postgresql
-    os.system('cd '+ installerSourcFolder +'\\postgresql-installer && git checkout stable-14112019')
+    os.system('cd '+ installerSourcFolder +'\\postgresql-installer && git checkout stable')
 
     # Checkout master branch in codesign
     os.system('cd '+ installerSourcFolder +'\\postgresql-installer\\codesign && git checkout master')
