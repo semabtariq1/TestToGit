@@ -2,7 +2,7 @@ import platform
 import os
 
 
-projectName = '13022020'
+projectName = '26032020'
 
 vsCommandPromptX64    = "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC"
 shareLib                 = "C:\\winShareLib"
