@@ -3,7 +3,7 @@
                 "fullVersion": "12.2",
                 "majorVersion": "12",
                 "minerVersion": "2",
-                "tarball": "https://borka.postgresql.org/staging/ceb34a69ae75858980a8e40adb30188d985c7f18/postgresql-12.2.tar.gz",
+                "tarball": "https://ftp.postgresql.org/pub/source/v12.2/postgresql-12.2.tar.gz",
 
                 "POSTGIS": "0",
                 "POSTGISVERSION": "2.5.2",
@@ -12,7 +12,7 @@
                 "createInstaller": "1",
                         "__EXTRA_VERSION_STRING__"  : "undef",
                         "__RELEASE__"               : "1",
-                        "__BUILD_NUMBER__"          : "1",
+                        "__BUILD_NUMBER__"          : "2",
                         "__DEV_TEST__"              : "release",
                         "__DEBUG__"                 : "0",
 
@@ -31,7 +31,7 @@
                 "fullVersion": "11.7",
                 "majorVersion": "11",
                 "minerVersion": "7",
-                "tarball": "https://borka.postgresql.org/staging/ceb34a69ae75858980a8e40adb30188d985c7f18/postgresql-11.7.tar.gz",
+                "tarball": "https://ftp.postgresql.org/pub/source/v11.7/postgresql-11.7.tar.gz",
 
                 "POSTGIS": "1",
                 "POSTGISVERSION": "2.5.2",
@@ -40,7 +40,7 @@
                 "createInstaller": "1",
                         "__EXTRA_VERSION_STRING__"  : "undef",
                         "__RELEASE__"               : "1",
-                        "__BUILD_NUMBER__"          : "1",
+                        "__BUILD_NUMBER__"          : "2",
                         "__DEV_TEST__"              : "release",
                         "__DEBUG__"                 : "0",
 
@@ -59,7 +59,7 @@
                 "fullVersion": "10.12",
                 "majorVersion": "10",
                 "minerVersion": "12",
-                "tarball": "https://borka.postgresql.org/staging/ceb34a69ae75858980a8e40adb30188d985c7f18/postgresql-10.12.tar.gz",
+                "tarball": "https://ftp.postgresql.org/pub/source/v10.12/postgresql-10.12.tar.gz",
 
                 "POSTGIS": "1",
                 "POSTGISVERSION": "2.5.2",
@@ -68,7 +68,7 @@
                 "createInstaller": "1",
                         "__EXTRA_VERSION_STRING__"  : "undef",
                         "__RELEASE__"               : "1",
-                        "__BUILD_NUMBER__"          : "1",
+                        "__BUILD_NUMBER__"          : "2",
                         "__DEV_TEST__"              : "release",
                         "__DEBUG__"                 : "0",
 
@@ -87,7 +87,7 @@
                 "fullVersion": "9.6.17",
                 "majorVersion": "9.6",
                 "minerVersion": "17",
-                "tarball": "https://borka.postgresql.org/staging/ceb34a69ae75858980a8e40adb30188d985c7f18/postgresql-9.6.17.tar.gz",
+                "tarball": "https://ftp.postgresql.org/pub/source/v9.6.17/postgresql-9.6.17.tar.gz",
 
                 "POSTGIS": "1",
                 "POSTGISVERSION": "2.5.2",
@@ -96,7 +96,7 @@
                 "createInstaller": "1",
                         "__EXTRA_VERSION_STRING__"  : "undef",
                         "__RELEASE__"               : "1",
-                        "__BUILD_NUMBER__"          : "1",
+                        "__BUILD_NUMBER__"          : "2",
                         "__DEV_TEST__"              : "release",
                         "__DEBUG__"                 : "0",
 
@@ -115,7 +115,7 @@
                 "fullVersion": "9.5.21",
                 "majorVersion": "9.5",
                 "minerVersion": "21",
-                "tarball": "https://borka.postgresql.org/staging/ceb34a69ae75858980a8e40adb30188d985c7f18/postgresql-9.5.21.tar.gz",
+                "tarball": "https://ftp.postgresql.org/pub/source/v9.5.21/postgresql-9.5.21.tar.gz",
 
                 "POSTGIS": "1",
                 "POSTGISVERSION": "2.5.2",
@@ -124,7 +124,7 @@
                 "createInstaller": "1",
                         "__EXTRA_VERSION_STRING__"  : "undef",
                         "__RELEASE__"               : "1",
-                        "__BUILD_NUMBER__"          : "1",
+                        "__BUILD_NUMBER__"          : "2",
                         "__DEV_TEST__"              : "release",
                         "__DEBUG__"                 : "0",
 
